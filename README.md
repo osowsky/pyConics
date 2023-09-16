@@ -1,1 +1,1 @@
-# course-py
+# pyConics
