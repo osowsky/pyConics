@@ -1,0 +1,15 @@
+{
+    "window.zoomLevel": 0.5,
+        "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "editor.fontSize": 12,
+    "terminal.integrated.fontSize": 12,
+    "task.saveBeforeRun": "always",
+    "workbench.startupEditor": "none",
+    "files.autoSave": "afterDelay",
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "explorer.confirmDelete": false
+}
