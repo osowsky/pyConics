@@ -1,4 +1,9 @@
 #------------------------------------------------------------------
+# Import it to be able to pass an object of same class as argument
+# to a member function
+from __future__ import annotations
+
+#------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
 __all__ = [ 'AGObj' ]
@@ -6,9 +11,15 @@ __all__ = [ 'AGObj' ]
 #------------------------------------------------------------------
 # Import from...
 #  
+from os.path import basename, splitext
 from abc import ABC, abstractmethod
 from varname import varname
-from errors import AttributeError
+
+if ( __name__ == '__main__' ) or \
+    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
+    from errors import AttributeError
+else:
+    from .errors import AttributeError
 
 #------------------------------------------------------------------
 # Import as...
@@ -49,11 +60,11 @@ class AGObj( ABC ):
         pass # Do nothing.
 
     @abstractmethod
-    def cross( self, other ):
+    def cross( self, other: AGObj ) ->  AGObj:
         pass
 
     @abstractmethod
-    def __mul__( self, other ):
+    def __mul__( self, other: AGObj ) -> AGObj:
         pass
 
     @property
