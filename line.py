@@ -10,11 +10,19 @@ __all__ = [ 'Line' ]
 
 #------------------------------------------------------------------
 # Import from...
-#  
+#
+from os.path import basename, splitext
 from varname import varname
-from agobj import AGObj
-from errors import LineTypeError
-from origin import origin
+
+if ( __name__ == '__main__' ) or \
+    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
+    from agobj import AGObj
+    from errors import LineTypeError
+    from origin import origin
+else:
+    from .agobj import AGObj
+    from .errors import LineTypeError
+    from .origin import origin
 
 #------------------------------------------------------------------
 # Import as...
