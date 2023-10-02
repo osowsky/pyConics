@@ -11,10 +11,18 @@ __all__ = [ 'skew_symmetric', 'cross' ]
 #------------------------------------------------------------------
 # Import from...
 #
+from os.path import basename, splitext
 from varname import varname
-from errors import TypeError
-from point import Point
-from line import Line
+
+if ( __name__ == '__main__' ) or \
+    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
+    from errors import TypeError
+    from point import Point
+    from line import Line
+else:
+    from .errors import TypeError
+    from .point import Point
+    from .line import Line
 
 #------------------------------------------------------------------
 # Import as...
