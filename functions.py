@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'skew_symmetric', 'cross' ]
+__all__ = [ 'skew_symmetric', 'cross', 'dot' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -17,11 +17,11 @@ from typing import Any
 
 if ( __name__ == '__main__' ) or \
     ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from errors import TypeError
+    from errors import TypeError, ArgumentsError
     from point import Point
     from line import Line
 else:
-    from .errors import TypeError
+    from .errors import TypeError, ArgumentsError
     from .point import Point
     from .line import Line
 
@@ -89,6 +89,22 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
         res.name = str( varname() )
         return res
 
+def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
+    if ( not isinstance( gf1, ( Point, Line ) ) ):
+        raise TypeError( gf1.__class__.__name__ )
+    if ( not isinstance( gf2, ( Point, Line ) ) ):
+        raise TypeError( gf2.__class__.__name__ )
+    
+    # There are 2 conditions:
+    # 1) Point x Line returns their inner product.
+    # 2) Line x Point returns their inner product.
+    if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Line ) ) ) ):
+        return np.inner( gf1.gform, gf2.gform )
+    elif ( ( isinstance( gf1, ( Line ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
+        return np.inner( gf1.gform, gf2.gform )
+    else:
+        raise ArgumentsError( dot.__name__, gf1.__class__.__name__, gf2.__class__.__name__ )
+    
 
 #------------------------------------------------------------------
 # For development and test.
@@ -132,3 +148,15 @@ if __name__ == '__main__':
     print( l4, '\n' )
     l5: Line = cross( p6, l1 )   # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
+
+    # Test invalid argument for dot function.
+    try:
+        print( dot( l1, l2 ) )
+    except ArgumentsError as e:
+        print( e )
+    print()
+
+    # Get the inner product from a Line and a Point.
+    # l1: y = x + 1 and p4 = ( 0, 1 ) => <p4, l1> = 0.0 
+    print( f'< p4, l1 > = {dot( p4, l1 )}' )
+    print( f'< l1, p4 > = {dot( l1, p4 )}' )
