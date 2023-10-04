@@ -59,14 +59,6 @@ class AGObj( ABC ):
         # Each child class will implement this method.
         pass # Do nothing.
 
-    @abstractmethod
-    def cross( self, other: AGObj ) ->  AGObj:
-        pass
-
-    @abstractmethod
-    def __mul__( self, other: AGObj ) -> AGObj:
-        pass
-
     @property
     def name( self ) -> str:
        return self._name
