@@ -25,7 +25,7 @@ class Origin:
         return point - np.array( ( self.x, self.y, 0.0 ) )
     
     def change_line( self, line: np.ndarray ) -> np.ndarray:
-        c = ( line[ 0 ] * self.x ) - self.y
+        c = ( line[ 0 ] * self.x ) + ( line[ 1 ] * self.y )
         return line + np.array( ( 0.0, 0.0, c ) )
 
     def reset( self ) -> None:
