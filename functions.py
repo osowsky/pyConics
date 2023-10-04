@@ -13,6 +13,7 @@ __all__ = [ 'skew_symmetric', 'cross' ]
 #
 from os.path import basename, splitext
 from varname import varname
+from typing import Any
 
 if ( __name__ == '__main__' ) or \
     ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
@@ -39,7 +40,7 @@ def skew_symmetric( gf: Point | Line ) -> np.ndarray:
     l3 = [ -gf.gform[ 1 ], gf.gform[ 0 ], 0.0 ]
     return np.array( [ l1, l2, l3 ] )
 
-def cross( gf1: Point | Line, gf2: Point | Line ) -> Point | Line:
+def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
     if ( not isinstance( gf1, ( Point, Line ) ) ):
         raise TypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, ( Point, Line ) ) ):
@@ -113,21 +114,21 @@ if __name__ == '__main__':
     # How to use cross product.
     p1 = Point( ( 1, 1 ) )      # p1 = ( 1, 1 )
     p2 = Point( ( -1, -1 ) )    # p2 = ( -1, -1 ) 
-    l1 = cross( p1, p2 )        # l1: y = x
+    l1: Line = cross( p1, p2 )  # l1: y = x
     print( l1, '\n' )
     
     l1 = Line( ( 1, -1, 1 ) )
     l2 = Line( ( 1, -1, -1 ) )
     l3 = Line( ( -1, -1, 1 ) )
-    p3 = cross( l1, l2 )       # p3 is a point at the infinity.
+    p3: Point = cross( l1, l2 )  # p3 is a point at the infinity.
     print( p3, '\n' )
-    p4 = cross( l1, l3 )       # p4 = ( 0, 1 )
+    p4: Point = cross( l1, l3 )  # p4 = ( 0, 1 )
     print( p4, '\n' )
-    p5 = cross( l2, l3 )       # p5 = ( 1, 0 )
+    p5: Point = cross( l2, l3 )  # p5 = ( 1, 0 )
     print( p5, '\n' )
     
     p6 = Point( ( 1, 0 ) )
-    l4 = cross( l1, p6 )        # l4 = ( 1, 1, -1 ) that pass through p6
+    l4: Line = cross( l1, p6 )   # l4 = ( 1, 1, -1 ) that pass through p6
     print( l4, '\n' )
-    l5 = cross( p6, l1 )        # l5 = ( 1, 1, -1 ) that pass through p6
+    l5: Line = cross( p6, l1 )   # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )

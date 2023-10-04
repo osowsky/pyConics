@@ -13,6 +13,7 @@ __all__ = [ 'Point' ]
 #
 from os.path import basename, splitext
 from varname import varname
+from typing import Any
 
 if ( __name__ == '__main__' ) or \
     ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
@@ -64,7 +65,7 @@ class Point( AGObj ):
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         self._gform = origin.change_point( self._from_origin )
 
-    def cross( self, other: Point | Line ) -> Point | Line:
+    def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
         from functions import cross
 
         # Get the cross product.
@@ -72,7 +73,7 @@ class Point( AGObj ):
         res.name = str( varname() )
         return res
 
-    def __mul__( self, other: Point | Line ) -> Point | Line:
+    def __mul__( self, other: Point | Line ) -> Any[ Point | Line ]:
         # Get the cross product.
         res = self.cross( other )
         res.name = str( varname() )
