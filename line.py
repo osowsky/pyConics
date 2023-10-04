@@ -76,7 +76,10 @@ class Line( AGObj ):
         return res
 
     def __contains__( self, other: Point ) -> bool:
-        return True
+        from functions import dot
+        if ( dot( self, other ) == 0.0 ):
+            return True
+        return False
 
 #------------------------------------------------------------------
 # Internal functions.
@@ -162,6 +165,13 @@ if __name__ == '__main__':
 
     # Point is in or is not in a Line.
     # for...
-    #  l1: y = x + 1 and p4 = ( 0, 1 ) => p4 in l1 
-    print( p4 in l1 )
+    #  l1: y = x + 1 and p4 = ( 0, 1 ) => p4 in l1
+    print( l1 ) 
+    print( p4 )
+    print( f'Point p4 belongs to Line l1? {p4 in l1}\n' )
+    
+    #  l1: y = x + 1 and p5 = ( 1, 0 ) => p5 in l1 
+    print( l1 ) 
+    print( p5 )
+    print( f'Point p5 belongs to Line l1? {p5 in l1}\n' )
     
