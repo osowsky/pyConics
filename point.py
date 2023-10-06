@@ -12,7 +12,6 @@ __all__ = [ 'Point' ]
 # Import from...
 #
 from os.path import basename, splitext
-from varname import varname
 from typing import Any
 
 if ( __name__ == '__main__' ) or \
@@ -69,16 +68,16 @@ class Point( AGObj ):
         from functions import cross
 
         # Get the cross product.
-        res = cross( self, other )
-        res.name = str( varname() )
-        return res
+        return cross( self, other )
 
     def __mul__( self, other: Point | Line ) -> Any[ Point | Line ]:
         # Get the cross product.
-        res = self.cross( other )
-        res.name = str( varname() )
-        return res
+        return self.cross( other )
 
+    def distance( self, other: Point | Line ) -> float:
+        from functions import distance
+        return distance( self, other )
+        
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -177,3 +176,19 @@ if __name__ == '__main__':
     print( l5, '\n' )
     l5: Line = p6 * l1         # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
+
+    # Distance between 2 points.
+    p1 = Point( ( 0, 1 ), 'p1' )
+    p2 = Point( ( 1, 0 ), 'p2' )
+    d12 = p1.distance( p2 )
+    d21 = p2.distance( p1 )
+    print( f'The distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
+    print( f'The distance from {p2}\nto {p1}\nis {d21:.4f}.\n' )
+
+    # Distance between a point and a line.
+    p1 = Point( ( 1, 0 ), 'p1' )
+    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    dlp = l1.distance( p1 )
+    dpl =  p1.distance( l1 )
+    print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
+    print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
