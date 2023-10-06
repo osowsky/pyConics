@@ -6,14 +6,15 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'skew_symmetric', 'cross', 'dot' ]
+__all__ = [ 'skew_symmetric', 'cross', 'dot', 'are_orthogonal', \
+            'are_parallel', 'distance' ]
 
 #------------------------------------------------------------------
 # Import from...
 #
 from os.path import basename, splitext
-from varname import varname
 from typing import Any
+from numpy import linalg as LA
 
 if ( __name__ == '__main__' ) or \
     ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
@@ -65,9 +66,7 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
         else:
             ss_gf = skew_symmetric( gf2 )
             res = ss_gf @ to_origin @ gf1.gform
-        res = Line( tuple[float, float, float]( res ) )
-        res.name = str( varname() )
-        return res
+        return Line( tuple[float, float, float]( res ) )
     else:
         # Get the skew-symmetric matrix from gf1.
         ss_gf1 = skew_symmetric( gf1 )
@@ -77,16 +76,13 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
 
         # Condition 1.
         if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
-            res = Line( tuple[float, float, float]( res ) )
-            res.name = str( varname() )
-            return res
+            return Line( tuple[float, float, float]( res ) )
         
         # Condition 2.
         if ( res[ -1 ] != 0.0 ):
             res = Point( tuple[float, float, float]( res / res[ -1 ] ) )
         else:
             res = Point( tuple[ float, float, float ]( res ) )
-        res.name = str( varname() )
         return res
 
 def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
@@ -99,12 +95,71 @@ def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
     # 1) Point x Line returns their inner product.
     # 2) Line x Point returns their inner product.
     if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Line ) ) ) ):
+        # Condition 1.
         return np.inner( gf1.gform, gf2.gform )
     elif ( ( isinstance( gf1, ( Line ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
+        # Condition 2.
         return np.inner( gf1.gform, gf2.gform )
     else:
         raise ArgumentsError( dot.__name__, gf1.__class__.__name__, gf2.__class__.__name__ )
+
+def are_parallel( gf1: Line, gf2: Line ) -> bool:
+    if ( not isinstance( gf1, Line ) ):
+        raise TypeError( gf1.__class__.__name__ )
+    if ( not isinstance( gf2, Line ) ):
+        raise TypeError( gf2.__class__.__name__ )
     
+    # To be parallel lines, x1 == x2 and y1 == y2 must be the equal.
+    if ( ( ( gf1.gform[ 0 ] - gf2.gform[ 0 ] ) == 0.0 ) and \
+        ( ( gf1.gform[ 1 ] - gf2.gform[ 1 ] ) == 0.0 ) ):
+        return True
+    return False
+
+def are_orthogonal( gf1: Line, gf2: Line ) -> bool:
+    if ( not isinstance( gf1, Line ) ):
+        raise TypeError( gf1.__class__.__name__ )
+    if ( not isinstance( gf2, Line ) ):
+        raise TypeError( gf2.__class__.__name__ )
+    
+    # To be orthogonal lines, ( x1 * x2 ) + ( y1 * y2 ) must be zero.
+    op1  = gf1.gform[ 0 ] * gf2.gform[ 0 ]
+    op2 = gf1.gform[ 1 ] * gf2.gform[ 1 ]
+
+    if ( ( op1 + op2  ) == 0.0 ):
+        return True
+    return False
+
+def distance( gf1: Point | Line, gf2: Point | Line ) -> float:
+    if ( not isinstance( gf1, ( Point, Line ) ) ):
+        raise TypeError( gf1.__class__.__name__ )
+    if ( not isinstance( gf2, ( Point, Line ) ) ):
+        raise TypeError( gf2.__class__.__name__ )
+    
+    # There are 4 conditions:
+    # 1) Point x Point returns the distance between them.
+    # 2) Line x Point returns the distance between them.
+    # 3) Point x Line returns the distance between them.
+    # 4) Line x Line returns  the distance between them if they are parallel lines.
+    if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
+        # Condition 1.
+        return LA.norm( gf1.gform - gf2.gform )
+    elif ( ( isinstance( gf1, ( Line ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
+        # Condition 2.
+        l: Line = gf1 * gf2 # line passes through gf2 and it is orthogonal to gf1.
+        p: Point = l * gf1  # point is the intersection point beween l and gf1.
+        return LA.norm( p.gform - gf2.gform )
+    elif ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Line ) ) ) ):
+        # Condition 3.
+        l: Line = gf1 * gf2 # line passes through gf1 and it is orthogonal to gf2.
+        p: Point = l * gf2  # point is the intersection point beween l and gf2.
+        return LA.norm( p.gform - gf1.gform )
+    else:
+        # Condition 4.
+        if ( are_parallel( gf1, gf2 ) == False ): # type: ignore
+            return 0.0
+        n = LA.norm( gf1.gform - gf2.gform )
+        d = np.sqrt( ( gf1.gform[ 0 ] ** 2 ) + ( gf1.gform[ 1 ] ** 2 ) )
+        return n / d
 
 #------------------------------------------------------------------
 # For development and test.
@@ -158,5 +213,46 @@ if __name__ == '__main__':
 
     # Get the inner product from a Line and a Point.
     # l1: y = x + 1 and p4 = ( 0, 1 ) => <p4, l1> = 0.0 
-    print( f'< p4, l1 > = {dot( p4, l1 )}' )
-    print( f'< l1, p4 > = {dot( l1, p4 )}' )
+    print( f'Inner product: < p4, l1 > = {dot( p4, l1 )}' )
+    print( f'Inner product: < l1, p4 > = {dot( l1, p4 )}\n' )
+
+    
+    # Are Lines parallel or orthogonal?
+    l1 = Line( ( 1, -1, 0 ), 'l1' )  # x = y
+    l2 = Line( ( 1, -1, 1 ), 'l2' )  # y = x + 1
+    l3 = Line( ( 1, 1, -2 ), 'l3' )  # y = -x + 2
+    
+    # Are the lines parallel?
+    print( l1, l2, l3, sep = '\n' )
+    print( f'Are l1 and l2 parallel? {are_parallel( l1, l2 )}' )
+    print( f'Are l1 and l3 parallel? {are_parallel( l1, l3 )}' )
+    print( f'Are l2 and l3 parallel? {are_parallel( l2, l3 )}' )
+
+    # Are the lines orthogonal?
+    print( f'Are l1 and l2 orthogonal? {are_orthogonal( l1, l2 )}' )
+    print( f'Are l1 and l3 orthogonal? {are_orthogonal( l1, l3 )}' )
+    print( f'Are l2 and l3 orthogonal? {are_orthogonal( l2, l3 )}\n' )
+
+    # Distance between 2 points.
+    p1 = Point( ( 0, 1 ), 'p1' )
+    p2 = Point( ( 1, 0 ), 'p2' )
+    d12 = distance( p1, p2 )
+    d21 = distance( p2, p1 )
+    print( f'The distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
+    print( f'The distance from {p2}\nto {p1}\nis {d21:.4f}.\n' )
+
+    # Distance between a point and a line.
+    p1 = Point( ( 1, 0 ), 'p1' )
+    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    dlp = distance( l1, p1 )
+    dpl = distance( p1, l1 )
+    print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
+    print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
+
+    # Distance between two lines.
+    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    l2 = Line( ( 1, -1, -1 ), 'l2' )
+    d12 = distance( l1, l2 )
+    d21 = distance( l2, l1 )
+    print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
+    print( f'The distance from {l2}\nto {l1}\nis {d21:.4f}.\n' )
