@@ -13,7 +13,6 @@ __all__ = [ 'AGObj' ]
 #  
 from os.path import basename, splitext
 from abc import ABC, abstractmethod
-from varname import varname
 
 if ( __name__ == '__main__' ) or \
     ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
@@ -34,11 +33,8 @@ class AGObj( ABC ):
     def __init__( self, name: str = '' ) -> None:
         self.name = name
 
-        # The AGObject has a name.
-        if ( len( self.name ) == 0 ):
-            # A name has not given yet.
-            self.name = str( varname( frame = 2 ) )
-            
+        # Set the name of the AGObject.
+        self.name = name
 
         # Create a zero-dimensional array that will represent
         # a geometric form such as point, line and conics.
