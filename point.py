@@ -179,6 +179,11 @@ if __name__ == '__main__':
     l5: Line = p6 * l1         # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
 
+    # Shifting origin.
+    origin.x = 3
+    origin.y = 2
+    print( origin )
+    
     # Distance between 2 points.
     p1 = Point( ( 0, 1 ), 'p1' )
     p2 = Point( ( 1, 0 ), 'p2' )
