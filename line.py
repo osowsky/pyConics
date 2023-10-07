@@ -42,7 +42,7 @@ class Line( AGObj ):
         super().__init__( name )
 
         # Redim the geometric form.
-        self._gform = _validate_point( line )
+        self._gform = _validate_line( line )
 
         # Store this value to be possible restore it to the origin.
         self._from_origin = self._gform
@@ -105,7 +105,7 @@ class Line( AGObj ):
 #------------------------------------------------------------------
 # Internal functions.
 #  
-def _validate_point( line: tuple[ float, float, float ] ) -> np.ndarray:
+def _validate_line( line: tuple[ float, float, float ] ) -> np.ndarray:
     if ( len( line ) == 3 ):
         return np.array( line )
     else:
