@@ -19,10 +19,12 @@ if ( __name__ == '__main__' ) or \
     from agobj import AGObj
     from errors import PointTypeError
     from origin import origin
+    from tolerance import tol
 else:
     from .agobj import AGObj
     from .errors import PointTypeError
     from .origin import origin
+    from tolerance import tol
 
 
 #------------------------------------------------------------------
@@ -43,6 +45,9 @@ class Point( AGObj ):
 
         # Redim the geometric form.
         self._gform = _validate_point( coord )
+
+        # Test for epsilon number condition.
+        self._gform = tol.adjust2relzeros( self._gform )
 
         # Transform the point to an homogeneous coord.
         if ( self._gform[ -1 ] != 0.0 ):
