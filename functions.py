@@ -66,7 +66,7 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
         else:
             ss_gf = skew_symmetric( gf2 )
             res = ss_gf @ to_origin @ gf1.gform
-        return Line( tuple[float, float, float]( res ) )
+        return Line( tuple[float, float, float]( res ), shift_origin = False )
     else:
         # Get the skew-symmetric matrix from gf1.
         ss_gf1 = skew_symmetric( gf1 )
@@ -76,13 +76,13 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
 
         # Condition 1.
         if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
-            return Line( tuple[float, float, float]( res ) )
+            return Line( tuple[float, float, float]( res ), shift_origin = False )
         
         # Condition 2.
         if ( res[ -1 ] != 0.0 ):
-            res = Point( tuple[float, float, float]( res / res[ -1 ] ) )
+            res = Point( tuple[float, float, float]( res / res[ -1 ] ), shift_origin = False )
         else:
-            res = Point( tuple[ float, float, float ]( res ) )
+            res = Point( tuple[ float, float, float ]( res ), shift_origin = False )
         return res
 
 def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
