@@ -118,6 +118,7 @@ if __name__ == '__main__':
     # Keep this imports even there is no test code.
     from line import Line
     from point import Point
+    from tolerance import tol
 
     import os
     os.system( 'cls' )
@@ -219,3 +220,11 @@ if __name__ == '__main__':
     d21 = l2.distance( l1 )
     print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
     print( f'The distance from {l2}\nto {l1}\nis {d21:.4f}.\n' )
+
+    # Test for epsilon number condition.
+    l1 = Line( ( 1, -1, 1 ) )           # y = x + 1
+    l2 = Line( ( 0.99999, -1, -1 ) )    # y = 0.99999x - 1
+    # Are l1 and l2 parallel?
+    p1 = l1 * l2
+    print( f'Intersection point between l1 and l2:\n\t{p1}' )
+    print( f'Are l1 and l2 parallel? {l1 // l2}.\n' )
