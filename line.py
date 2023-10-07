@@ -82,6 +82,26 @@ class Line( AGObj ):
         from functions import distance
         return distance( self, other )
     
+    def are_orthogonal( self, other: Line ) -> bool:
+        from functions import are_orthogonal
+
+        # Returns True if the lines are orthogonal.
+        return are_orthogonal( self, other )
+    
+    def __add__( self, other: Line ) -> bool:
+        # Returns True if the lines are orthogonal.
+        return self.are_orthogonal( other )
+
+    def are_parallel( self, other: Line ) -> bool:
+        from functions import are_parallel
+
+        # Returns True if the lines are parallel.
+        return are_parallel( self, other )
+    
+    def __floordiv__( self, other: Line ) -> bool:
+        # Returns True if the lines are parallel.
+        return self.are_parallel( other )
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -164,9 +184,17 @@ if __name__ == '__main__':
     l5: Line = p6 * l1         # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
 
+    # Shifting origin.
+    origin.x = 3
+    origin.y = 2
+    print( origin )
+    
     # Point is in or is not in a Line.
     # for...
     #  l1: y = x + 1 and p4 = ( 0, 1 ) => p4 in l1
+    l1.update_origin()
+    p4.update_origin()
+    p5.update_origin()
     print( l1 ) 
     print( p4 )
     print( f'Point p4 belongs to Line l1? {p4 in l1}\n' )
@@ -176,10 +204,6 @@ if __name__ == '__main__':
     print( p5 )
     print( f'Point p5 belongs to Line l1? {p5 in l1}\n' )
 
-    origin.x = 3
-    origin.y = 2
-    print( origin )
-    
     # Distance between a point and a line.
     p1 = Point( ( 1, 0 ), 'p1' )
     l1 = Line( ( 1, -1, 1 ), 'l1' )
