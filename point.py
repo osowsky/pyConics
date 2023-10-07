@@ -37,7 +37,8 @@ np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 class Point( AGObj ):
     def __init__( self,
                   coord: tuple[ float, float ] | tuple[ float, float, float ] = ( 0.0, 0.0, 1.0 ),
-                  name: str = '' ) -> None:
+                  name: str = '',
+                  shift_origin: bool = True ) -> None:
         super().__init__( name )
 
         # Redim the geometric form.
@@ -51,7 +52,8 @@ class Point( AGObj ):
         self._from_origin = self._gform
 
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        self.update_origin()
+        if ( shift_origin == True ):
+            self.update_origin()
 
     def __repr__( self ) -> str:
         # return an info messsage for this class.
