@@ -21,10 +21,12 @@ if ( __name__ == '__main__' ) or \
     from errors import TypeError, ArgumentsError
     from point import Point
     from line import Line
+    from tolerance import tol
 else:
     from .errors import TypeError, ArgumentsError
     from .point import Point
     from .line import Line
+    from .tolerance import tol
 
 #------------------------------------------------------------------
 # Import as...
@@ -67,23 +69,24 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
             ss_gf = skew_symmetric( gf2 )
             res = ss_gf @ to_origin @ gf1.gform
         return Line( tuple[float, float, float]( res ), shift_origin = False )
-    else:
+    elif ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
+        # Condition 1.
         # Get the skew-symmetric matrix from gf1.
         ss_gf1 = skew_symmetric( gf1 )
 
-        # Anything else.
-        res = ss_gf1 @ gf2.gform
-
-        # Condition 1.
-        if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
-            return Line( tuple[float, float, float]( res ), shift_origin = False )
-        
+        # Cross product betwwen them.
+        return Line( tuple[float, float, float]( ss_gf1 @ gf2.gform ), shift_origin = False )
+    else:    
         # Condition 2.
-        if ( res[ -1 ] != 0.0 ):
-            res = Point( tuple[float, float, float]( res / res[ -1 ] ), shift_origin = False )
-        else:
-            res = Point( tuple[ float, float, float ]( res ), shift_origin = False )
-        return res
+        # Are they parallel lines? Test for epsilon number condition.
+        if ( are_parallel( gf1, gf2 ) == True ): # type: ignore
+            gf1.gform[ 0 ] = gf2.gform[ 0 ]
+            gf1.gform[ 1 ] = gf2.gform[ 1 ]
+
+        # Get the skew-symmetric matrix from gf1.
+        ss_gf1 = skew_symmetric( gf1 )
+
+        return Point( tuple[ float, float, float ]( ss_gf1 @ gf2.gform ), shift_origin = False )
 
 def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
     if ( not isinstance( gf1, ( Point, Line ) ) ):
@@ -114,7 +117,7 @@ def are_parallel( gf1: Line, gf2: Line ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 1 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 0 ]
 
-    if ( ( op1 - op2  ) == 0.0 ):
+    if ( tol.iszero( op1 - op2  ) == True ):
         return True
     return False
 
@@ -128,7 +131,7 @@ def are_orthogonal( gf1: Line, gf2: Line ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 0 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 1 ]
 
-    if ( ( op1 + op2  ) == 0.0 ):
+    if ( tol.iszero( op1 + op2  ) == True ):
         return True
     return False
 
