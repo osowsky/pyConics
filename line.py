@@ -13,7 +13,6 @@ __all__ = [ 'Line' ]
 # Import from...
 #
 from os.path import basename, splitext
-from varname import varname
 from typing import Any
 
 if ( __name__ == '__main__' ) or \
@@ -38,7 +37,8 @@ np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 class Line( AGObj ):
     def __init__( self,
                   line: tuple[ float, float, float ] = ( 1.0, -1.0, 0.0 ),
-                  name: str = '' ) -> None:
+                  name: str = '',
+                  shift_origin: bool = True  ) -> None:
         super().__init__( name )
 
         # Redim the geometric form.
@@ -48,7 +48,8 @@ class Line( AGObj ):
         self._from_origin = self._gform
 
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        self.update_origin()
+        if ( shift_origin == True ):
+            self.update_origin()
 
     def __repr__( self ) -> str:
         # return an info messsage for this class.
@@ -65,15 +66,11 @@ class Line( AGObj ):
         from functions import cross
 
         # Get the cross product.
-        res = cross( self, other )
-        res.name = str( varname() )
-        return res
+        return cross( self, other )
 
     def __mul__( self, other: Point | Line ) -> Any[ Point | Line ]:
         # Get the cross product.
-        res = self.cross( other )
-        res.name = str( varname() )
-        return res
+        return self.cross( other )
 
     def __contains__( self, other: Point ) -> bool:
         from functions import dot
@@ -81,6 +78,10 @@ class Line( AGObj ):
             return True
         return False
 
+    def distance( self, other: Point | Line ) -> float:
+        from functions import distance
+        return distance( self, other )
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -174,4 +175,23 @@ if __name__ == '__main__':
     print( l1 ) 
     print( p5 )
     print( f'Point p5 belongs to Line l1? {p5 in l1}\n' )
+
+    origin.x = 3
+    origin.y = 2
+    print( origin )
     
+    # Distance between a point and a line.
+    p1 = Point( ( 1, 0 ), 'p1' )
+    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    dlp = l1.distance( p1 )
+    dpl = p1.distance( l1 )
+    print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
+    print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
+
+    # Distance between two lines.
+    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    l2 = Line( ( 1, -1, -1 ), 'l2' )
+    d12 = l1.distance( l2 )
+    d21 = l2.distance( l1 )
+    print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
+    print( f'The distance from {l2}\nto {l1}\nis {d21:.4f}.\n' )
