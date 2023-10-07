@@ -109,9 +109,12 @@ def are_parallel( gf1: Line, gf2: Line ) -> bool:
     if ( not isinstance( gf2, Line ) ):
         raise TypeError( gf2.__class__.__name__ )
     
-    # To be parallel lines, x1 == x2 and y1 == y2 must be the equal.
-    if ( ( ( gf1.gform[ 0 ] - gf2.gform[ 0 ] ) == 0.0 ) and \
-        ( ( gf1.gform[ 1 ] - gf2.gform[ 1 ] ) == 0.0 ) ):
+    # To be parallel lines, x1 == x2 and y1 == y2 must be equals
+    # or ( x1 * y2 ) - ( x2 * y1 ) must be zero.
+    op1  = gf1.gform[ 0 ] * gf2.gform[ 1 ]
+    op2 = gf1.gform[ 1 ] * gf2.gform[ 0 ]
+
+    if ( ( op1 - op2  ) == 0.0 ):
         return True
     return False
 
