@@ -20,10 +20,12 @@ if ( __name__ == '__main__' ) or \
     from agobj import AGObj
     from errors import LineTypeError
     from origin import origin
+    from tolerance import tol
 else:
     from .agobj import AGObj
     from .errors import LineTypeError
     from .origin import origin
+    from .tolerance import tol
 
 #------------------------------------------------------------------
 # Import as...
@@ -43,6 +45,9 @@ class Line( AGObj ):
 
         # Redim the geometric form.
         self._gform = _validate_line( line )
+
+        # Test for epsilon number condition.
+        self._gform = tol.adjust2relzeros( self._gform )
 
         # Store this value to be possible restore it to the origin.
         self._from_origin = self._gform
@@ -118,7 +123,6 @@ if __name__ == '__main__':
     # Keep this imports even there is no test code.
     from line import Line
     from point import Point
-    from tolerance import tol
 
     import os
     os.system( 'cls' )
@@ -205,6 +209,22 @@ if __name__ == '__main__':
     print( p5 )
     print( f'Point p5 belongs to Line l1? {p5 in l1}\n' )
 
+    # Are Lines parallel or orthogonal?
+    l1 = Line( ( 1, -1, 0 ), 'l1' )  # x = y
+    l2 = Line( ( 1, -1, 1 ), 'l2' )  # y = x + 1
+    l3 = Line( ( 1, 1, -2 ), 'l3' )  # y = -x + 2
+    
+    # Are the lines parallel?
+    print( l1, l2, l3, sep = '\n' )
+    print( f'Are l1 and l2 parallel? {l1 // l2}' )
+    print( f'Are l1 and l3 parallel? {l1 // l3}' )
+    print( f'Are l2 and l3 parallel? {l2 // l3}' )
+
+    # Are the lines orthogonal?
+    print( f'Are l1 and l2 orthogonal? {l1 + l2}' )
+    print( f'Are l1 and l3 orthogonal? {l1 + l3}' )
+    print( f'Are l2 and l3 orthogonal? {l2 + l3}\n' )
+
     # Distance between a point and a line.
     p1 = Point( ( 1, 0 ), 'p1' )
     l1 = Line( ( 1, -1, 1 ), 'l1' )
@@ -221,6 +241,7 @@ if __name__ == '__main__':
     print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
     print( f'The distance from {l2}\nto {l1}\nis {d21:.4f}.\n' )
 
+    # 
     # Test for epsilon number condition.
     l1 = Line( ( 1, -1, 1 ) )           # y = x + 1
     l2 = Line( ( 0.99999, -1, -1 ) )    # y = 0.99999x - 1
