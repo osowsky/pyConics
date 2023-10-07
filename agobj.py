@@ -31,8 +31,6 @@ import numpy as np
 class AGObj( ABC ):
     @abstractmethod
     def __init__( self, name: str = '' ) -> None:
-        self.name = name
-
         # Set the name of the AGObject.
         self.name = name
 
