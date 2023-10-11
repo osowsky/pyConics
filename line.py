@@ -108,7 +108,11 @@ class Line( AGObj ):
         return self.are_parallel( other )
     
     def __eq__( self, other: Line ) -> bool:
-        # Return True if p1 == p2.
+        # Are l1 // l2?
+        if ( self.are_parallel( other ) == False ):
+            return False
+
+        # Return True if dist( l1, l2 ) = 0.0.
         if ( self.distance( other ) == 0.0 ):
             return True
         return False
