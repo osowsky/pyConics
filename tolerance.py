@@ -18,7 +18,7 @@ import numpy as np
 #  
 @dataclass
 class Tolerance:
-    eps_iszero: float = 1e-5    # It is used in iszero function.
+    eps_iszero: float = 1e-4    # It is used in iszero function.
     eps_relzero: float = 1e-5   # It is used in adjust2relzeros function.
 
     def iszero( self, num: float ) -> bool:
@@ -31,7 +31,7 @@ class Tolerance:
             return x
         
         # Get the rank of the largest number in x.
-        rk: int = _larger_rank( x )
+        rk: float = _larger_rank( x )
 
         # Return 'x' that was adjusted to relative zeros.
         return np.where( np.abs( x ) > rk * self.eps_relzero, x, 0.0 )
@@ -39,7 +39,7 @@ class Tolerance:
 #------------------------------------------------------------------
 # Internal functions.
 #  
-def _larger_rank( x: np.ndarray ) -> int:
+def _larger_rank( x: np.ndarray ) -> float:
     x_max: float = np.max( np.abs( x ) )
 
     p_rk = 1
@@ -71,6 +71,9 @@ if __name__ == '__main__':
     x = np.array( [ 99, 0.0, 0.0 ] )
     print( _larger_rank( x ) )
 
+    y = np.array( [ 0.05, 0.0, 0.0 ] )
+    print( _larger_rank( y ) )
+
     A = np.array( [ [ 100000, 1 ],[ 1, 1 ] ] )
     A = tol.adjust2relzeros( A )
     print( A )
@@ -78,3 +81,4 @@ if __name__ == '__main__':
     A = np.array( [ [ 1e-1, 1e-6 ],[ 1e-6, 1e-5 ] ] )
     A = tol.adjust2relzeros( A )
     print( A )
+    
