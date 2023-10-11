@@ -41,7 +41,11 @@ class Tolerance:
 #  
 def _larger_rank( x: np.ndarray ) -> float:
     x_max: float = np.max( np.abs( x ) )
+    x_min: float = np.min( np.abs( x ) )
 
+    if ( ( x_max == 0.0 ) and ( x_min == 0.0 ) ):
+        return 0.0
+    
     p_rk = 1
     if ( x_max > 1.0 ): # for values greater than 1.0
         while ( ( x_max // 10.0 ) != 0.0 ):
