@@ -107,6 +107,12 @@ class Line( AGObj ):
         # Returns True if the lines are parallel.
         return self.are_parallel( other )
     
+    def __eq__( self, other: Line ) -> bool:
+        # Return True if p1 == p2.
+        if ( self.distance( other ) == 0.0 ):
+            return True
+        return False
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -244,8 +250,29 @@ if __name__ == '__main__':
     # 
     # Test for epsilon number condition.
     l1 = Line( ( 1, -1, 1 ) )           # y = x + 1
-    l2 = Line( ( 0.99999, -1, -1 ) )    # y = 0.99999x - 1
+    l2 = Line( ( -2 * 0.99999, -2 * -1, -2 * -1 ) )    # y = 0.99999x + 1
     # Are l1 and l2 parallel?
     p1 = l1 * l2
     print( f'Intersection point between l1 and l2:\n\t{p1}' )
     print( f'Are l1 and l2 parallel? {l1 // l2}.\n' )
+
+    # Shifting origin.
+    origin.reset()
+    print( origin )
+
+    # Are these points the same?
+    l1 = Line( ( 1, -1, 1 ), 'l1' )           # y = x + 1
+    l2 = Line( ( -2 * 0.99999, -2 * -1, -2 * 1 ), 'l2' )    # y = 0.99999x + 1
+    l3 = Line( ( 1, -1, -1 ), 'l3' )           # y = x - 1
+    print( l1 )
+    print( l2 )
+    print( l3 )
+    print( f'l1 == l1? {l1 == l1}.' )
+    print( f'l1 == l2? {l1 == l2}.' )
+    print( f'l2 == l1? {l2 == l1}.' )
+    print( f'l2 == l2? {l2 == l2}.' )
+    print( f'l1 == l3? {l1 == l3}.' )
+    print( f'l3 == l1? {l3 == l1}.' )
+    print( f'l2 == l3? {l2 == l3}.' )
+    print( f'l3 == l2? {l3 == l2}.\n' )
+
