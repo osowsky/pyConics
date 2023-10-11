@@ -84,6 +84,12 @@ class Point( AGObj ):
     def distance( self, other: Point | Line ) -> float:
         from functions import distance
         return distance( self, other )
+    
+    def __eq__( self, other: Point ) -> bool:
+        # Return True if p1 == p2.
+        if ( self.distance( other ) == 0.0 ):
+            return True
+        return False
         
 #------------------------------------------------------------------
 # Internal functions.
@@ -204,3 +210,17 @@ if __name__ == '__main__':
     dpl =  p1.distance( l1 )
     print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
     print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
+
+    # Resetting origin.
+    origin.reset()
+    print( origin )
+    
+    # Are these points the same?
+    p1 = Point( ( 0, 1 ), 'p1' )
+    p2 = Point( ( 1, 0 ), 'p2' )
+    print( p1 )
+    print( p2 )
+    print( f'p1 == p1? {p1 == p1}.' )
+    print( f'p1 == p2? {p1 == p2}.' )
+    print( f'p2 == p1? {p2 == p1}.' )
+    print( f'p2 == p2? {p2 == p2}.\n' )
