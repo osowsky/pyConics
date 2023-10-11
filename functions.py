@@ -71,6 +71,10 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
         return Line( tuple[float, float, float]( res ), shift_origin = False )
     elif ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
         # Condition 1.
+        # Points couldn't be the same.
+        if ( gf1 == gf2 ):
+            return Line( ( 0.0, 0.0, 0.0 ), shift_origin = False )
+        
         # Get the skew-symmetric matrix from gf1.
         ss_gf1 = skew_symmetric( gf1 )
 
@@ -78,15 +82,29 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
         return Line( tuple[float, float, float]( ss_gf1 @ gf2.gform ), shift_origin = False )
     else:    
         # Condition 2.
+        # Lines couldn't be the same.
+        if ( gf1 == gf2 ): # type: ignore
+            return Point( ( 0.0, 0.0, 0.0 ), shift_origin = False )
+        
         # Are they parallel lines? Test for epsilon number condition.
+        alpha = 1.0
         if ( are_parallel( gf1, gf2 ) == True ): # type: ignore
-            gf1.gform[ 0 ] = gf2.gform[ 0 ]
-            gf1.gform[ 1 ] = gf2.gform[ 1 ]
+            # If gf1 // gf2 then gf1[ 0 : 1 ] == gf2[ 0 : 1 ] and
+            # a constant alpha must multiply all the vector.
+            if ( gf1.gform[ 1 ] != 0.0 ):
+                alpha = gf2.gform[ 1 ] / gf1.gform[ 1 ]
+            elif ( gf1.gform[ 0 ] != 0.0 ):
+                alpha = gf2.gform[ 0 ] / gf1.gform[ 0 ]
+            else:
+                alpha = 1.0
+            gf1.gform[ 0 ] = alpha * gf1.gform[ 0 ]
+            gf1.gform[ 1 ] = alpha * gf1.gform[ 1 ]
+            gf1.gform[ 2 ] = alpha * gf1.gform[ 2 ]
 
         # Get the skew-symmetric matrix from gf1.
         ss_gf1 = skew_symmetric( gf1 )
 
-        return Point( tuple[ float, float, float ]( ss_gf1 @ gf2.gform ), shift_origin = False )
+        return Point( tuple[ float, float, float ]( ( ss_gf1 @ gf2.gform ) / alpha ), shift_origin = False )
 
 def dot( gf1: Point | Line, gf2: Point | Line ) -> float:
     if ( not isinstance( gf1, ( Point, Line ) ) ):
@@ -146,26 +164,35 @@ def distance( gf1: Point | Line, gf2: Point | Line ) -> float:
     # 2) Line x Point returns the distance between them.
     # 3) Point x Line returns the distance between them.
     # 4) Line x Line returns  the distance between them if they are parallel lines.
+    d = 0.0
     if ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
         # Condition 1.
-        return LA.norm( gf1.gform - gf2.gform )
+        d = float( LA.norm( gf1.gform - gf2.gform ) )
     elif ( ( isinstance( gf1, ( Line ) ) ) and ( isinstance( gf2, ( Point ) ) ) ):
         # Condition 2.
         l: Line = gf1 * gf2 # line passes through gf2 and it is orthogonal to gf1.
         p: Point = l * gf1  # point is the intersection point beween l and gf1.
-        return LA.norm( p.gform - gf2.gform )
+        d = float( LA.norm( p.gform - gf2.gform ) )
     elif ( ( isinstance( gf1, ( Point ) ) ) and ( isinstance( gf2, ( Line ) ) ) ):
         # Condition 3.
         l: Line = gf1 * gf2 # line passes through gf1 and it is orthogonal to gf2.
         p: Point = l * gf2  # point is the intersection point beween l and gf2.
-        return LA.norm( p.gform - gf1.gform )
+        d = float( LA.norm( p.gform - gf1.gform ) )
     else:
         # Condition 4.
         if ( are_parallel( gf1, gf2 ) == False ): # type: ignore
             return 0.0
-        n = LA.norm( gf1.gform - gf2.gform )
-        d = np.sqrt( ( gf1.gform[ 0 ] ** 2 ) + ( gf1.gform[ 1 ] ** 2 ) )
-        return n / d
+        
+        # Create a line that is orthogonal to gf1 and gf2.
+        l_ort = Line( ( gf1.gform[ 1 ], -gf1.gform[ 0 ], gf1.gform[ 2 ] ) )
+        
+        # Get the intersection point between those lines.
+        p1 = l_ort * gf1        
+        p2 = l_ort * gf2
+        
+        # Calc. the distance between these points.
+        d = distance( p1, p2 )
+    return 0.0 if ( tol.iszero( d ) ) else d
 
 #------------------------------------------------------------------
 # For development and test.
@@ -194,9 +221,9 @@ if __name__ == '__main__':
     l1: Line = cross( p1, p2 )  # l1: y = x
     print( l1, '\n' )
     
-    l1 = Line( ( 1, -1, 1 ) )
-    l2 = Line( ( 1, -1, -1 ) )
-    l3 = Line( ( -1, -1, 1 ) )
+    l1 = Line( ( 1, -1, 1 ) )    # y = x + 1
+    l2 = Line( ( 1, -1, -1 ) )   # y = x - 1
+    l3 = Line( ( -1, -1, 1 ) )   # y = -x + 1
     p3: Point = cross( l1, l2 )  # p3 is a point at the infinity.
     print( p3, '\n' )
     p4: Point = cross( l1, l3 )  # p4 = ( 0, 1 )
@@ -244,8 +271,10 @@ if __name__ == '__main__':
     p2 = Point( ( 1, 0 ), 'p2' )
     d12 = distance( p1, p2 )
     d21 = distance( p2, p1 )
+    d11 = distance( p1, p1 )
     print( f'The distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
     print( f'The distance from {p2}\nto {p1}\nis {d21:.4f}.\n' )
+    print( f'The distance from {p1}\nto {p1}\nis {d11:.4f}.\n' )
 
     # Distance between a point and a line.
     p1 = Point( ( 1, 0 ), 'p1' )
@@ -258,7 +287,13 @@ if __name__ == '__main__':
     # Distance between two lines.
     l1 = Line( ( 1, -1, 1 ), 'l1' )
     l2 = Line( ( 1, -1, -1 ), 'l2' )
-    d12 = distance( l1, l2 )
-    d21 = distance( l2, l1 )
-    print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
-    print( f'The distance from {l2}\nto {l1}\nis {d21:.4f}.\n' )
+    l3 = Line( ( -2 * 0.99999, -2 * -1, -2 * -1 ), 'l3' )
+    d13 = distance( l1, l3 )
+    d31 = distance( l3, l1 )
+    d23 = distance( l2, l3 )
+    print( f'The distance from {l1}\nto {l3}\nis {d13:.4f}.\n' )
+    print( f'The distance from {l3}\nto {l1}\nis {d31:.4f}.\n' )
+    print( f'The distance from {l2}\nto {l3}\nis {d23:.4f}.\n' )
+    print( l2 * l1 )
+    print( l1 * l3 )
+    print( l2 * l3 )
