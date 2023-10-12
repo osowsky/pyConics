@@ -91,6 +91,11 @@ class Point( AGObj ):
             return True
         return False
         
+    def at_infinity( self ) -> bool:
+        if ( self.gform[ 2 ] == 0.0 ):
+            return True
+        return False
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -224,3 +229,11 @@ if __name__ == '__main__':
     print( f'p1 == p2? {p1 == p2}.' )
     print( f'p2 == p1? {p2 == p1}.' )
     print( f'p2 == p2? {p2 == p2}.\n' )
+
+    # Point at the infinity?
+    p1 = Point( ( 1, 1, 0 ), 'l1' )
+    p2 = Point( ( 1, -1, 1 ), 'l2' )
+    print( p1 )
+    print( p2 )
+    print( f'p1 is a point at the infinity? {p1.at_infinity()}.' )
+    print( f'p2 is a point at the infinity? {p2.at_infinity()}.\n' )
