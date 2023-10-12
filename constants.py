@@ -21,7 +21,7 @@ else:
 import numpy as np
 
 #------------------------------------------------------------------
-# Data Class Origin.
+# Data Class Constants.
 #  
 @dataclass
 class Constants:
