@@ -22,11 +22,13 @@ if ( __name__ == '__main__' ) or \
     from point import Point
     from line import Line
     from tolerance import tol
+    from constants import const
 else:
     from .errors import TypeError, ArgumentsError
     from .point import Point
     from .line import Line
     from .tolerance import tol
+    from .constants import const
 
 #------------------------------------------------------------------
 # Import as...
@@ -159,6 +161,10 @@ def distance( gf1: Point | Line, gf2: Point | Line ) -> float:
     if ( not isinstance( gf2, ( Point, Line ) ) ):
         raise TypeError( gf2.__class__.__name__ )
     
+    # Test points and lines to check if they are at the infinity.
+    if ( ( gf1.at_infinity() ) or ( gf2.at_infinity() ) ):
+        return const.inf
+
     # There are 4 conditions:
     # 1) Point x Point returns the distance between them.
     # 2) Line x Point returns the distance between them.
@@ -296,4 +302,23 @@ if __name__ == '__main__':
     print( f'The distance from {l2}\nto {l3}\nis {d23:.4f}.\n' )
     print( l2 * l1 )
     print( l1 * l3 )
-    print( l2 * l3 )
+    print( l2 * l3, '\n' )
+
+    # Test points and lines at the infinity.
+    p1 = Point( ( 1, 0, 0 ), 'p1' )
+    print( p1 )
+    p2 = Point( ( 1, 0 ), 'p2' )
+    print( p2 )
+    l1 = Line( ( 0, 0, 1 ), 'l1' )
+    print( l1 )
+    l2 = Line( ( 1, -1, -1 ), 'l2' )
+    print( l2 )
+    if ( distance( p1, p2 ) == const.inf ):
+        print( f'p1 or p2 is a point at the infinity.' )
+    if ( distance( p2, l1 ) == const.inf ):
+        print( f'p2 or l1 is a point/line at the infinity.' )
+    if ( distance( l2, l1 ) == const.inf ):
+        print( f'l2 or l1 is a line at the infinity.' )
+    if ( distance( p2, l2 ) != const.inf ):
+        print( f'p2 and l2 are point and line that are not at the infinity.\n' )
+    
