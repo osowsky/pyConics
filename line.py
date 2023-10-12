@@ -117,6 +117,11 @@ class Line( AGObj ):
             return True
         return False
     
+    def at_infinity( self ) -> bool:
+        if ( ( self.gform[ 0 ] == 0.0 ) and ( self.gform[ 1 ] == 0.0 ) ):
+            return True
+        return False
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -280,3 +285,10 @@ if __name__ == '__main__':
     print( f'l2 == l3? {l2 == l3}.' )
     print( f'l3 == l2? {l3 == l2}.\n' )
 
+    # Lines at the infinity?
+    l1 = Line( ( 0, 0, 2 ), 'l1' )
+    l2 = Line( ( 1, -1, 1 ), 'l2' )
+    print( l1 )
+    print( l2 )
+    print( f'l1 is a line at the infinity? {l1.at_infinity()}.' )
+    print( f'l2 is a line at the infinity? {l2.at_infinity()}.\n' )
