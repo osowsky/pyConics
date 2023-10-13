@@ -8,9 +8,7 @@ Calculate word counts in a text file!
 pip install pycounts
 ```
 
-$
-\alpha * \sum_{i}^{\infty}
-$
+$\alpha * \sum_{i}^{\infty}$
 
 $$
 \alpha * \sum_{i}^{\infty}
