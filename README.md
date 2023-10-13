@@ -1,8 +1,20 @@
-# pycounts
+# pyConics
 
-Calculate word counts in a text file!
+XXXXXCalculate word counts in a text file!
 
 ## Installation
+
+From a local directory clones:
+
+```bash
+git clone https://github.com/osowsky/pyConics.git (by using http)
+```
+
+or
+
+```bash
+git clone git@github.com:osowsky/pyConics.git (by using ssh)
+```
 
 ```bash
 pip install pycounts
