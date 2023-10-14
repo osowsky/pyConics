@@ -24,7 +24,7 @@ else:
     from .agobj import AGObj
     from .errors import PointTypeError
     from .origin import origin
-    from tolerance import tol
+    from .tolerance import tol
 
 
 #------------------------------------------------------------------
