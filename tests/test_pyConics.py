@@ -1,1 +1,3 @@
-from pyConics import pyConics
+from pyConics import Point, Line, origin
+
+
