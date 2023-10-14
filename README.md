@@ -1,24 +1,29 @@
 # pyConics
 
-XXXXXCalculate word counts in a text file!
+Handle points, lines and conics by using algebraic geometry.
 
 ## Installation
 
-From a local directory clones:
+From a local directory clones this project:
 
 ```bash
-git clone https://github.com/osowsky/pyConics.git (by using http)
+$ git clone https://github.com/osowsky/pyConics.git (by using http)
 ```
 
 or
 
 ```bash
-git clone git@github.com:osowsky/pyConics.git (by using ssh)
+$ git clone git@github.com:osowsky/pyConics.git (by using ssh)
 ```
 
+or you can install this package:
+
 ```bash
-pip install pycounts
+$ pip install pyConics
 ```
+
+
+
 
 $\alpha * \sum_{i}^{\infty}$
 
@@ -58,12 +63,10 @@ By contributing to this project, you agree to abide by its terms.
 
 ## License
 
-`pycounts` was created by Tomas Beuzen. It is licensed under the terms
-of the MIT license.
+`pyConics` was created by Jefferson Osowsky.
+It is licensed under the terms of the GNU General Public License v3.0 license.
 
 ## Credits
 
-`pycounts` was created with
-[`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and
-the `py-pkgs-cookiecutter`
-[template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+`pyConics` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/)
+and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
