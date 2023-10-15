@@ -7,23 +7,20 @@ Handle points, lines and conics by using algebraic geometry.
 From a local directory clones this project:
 
 ```bash
-$ git clone https://github.com/osowsky/pyConics.git (by using http)
+git clone https://github.com/osowsky/pyConics.git (by using http)
 ```
 
 or
 
 ```bash
-$ git clone git@github.com:osowsky/pyConics.git (by using ssh)
+git clone git@github.com:osowsky/pyConics.git (by using ssh)
 ```
 
 or you can install this package:
 
 ```bash
-$ pip install pyConics
+pip install pyConics
 ```
-
-
-
 
 $\alpha * \sum_{i}^{\infty}$
 
