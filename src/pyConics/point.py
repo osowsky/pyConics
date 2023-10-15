@@ -72,7 +72,11 @@ class Point( AGObj ):
         self._gform = origin.change_point( self._from_origin )
 
     def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
-        from functions import cross
+        if ( __name__ == '__main__' ) or \
+            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
+            from functions import cross
+        else:
+            from .functions import cross
 
         # Get the cross product.
         return cross( self, other )
@@ -82,7 +86,11 @@ class Point( AGObj ):
         return self.cross( other )
 
     def distance( self, other: Point | Line ) -> float:
-        from functions import distance
+        if ( __name__ == '__main__' ) or \
+            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
+            from functions import distance
+        else:
+            from .functions import distance
         return distance( self, other )
     
     def __eq__( self, other: Point ) -> bool:
@@ -96,6 +104,11 @@ class Point( AGObj ):
             return True
         return False
     
+    def are_coincident( self, other: Point ) -> bool:
+        if ( self == other ):
+            return True
+        return False
+
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -237,3 +250,11 @@ if __name__ == '__main__':
     print( p2 )
     print( f'p1 is a point at the infinity? {p1.at_infinity()}.' )
     print( f'p2 is a point at the infinity? {p2.at_infinity()}.\n' )
+
+    # Points are coindicents?
+    p1 = Point( ( 0, 1 ), 'p1' )
+    p2 = Point( ( 1, 0 ), 'p2' )
+    print( f'p1 and p1 are coincident points? {p1.are_coincident( p1 )}.' )
+    print( f'p1 and p2 are coincident points? {p1.are_coincident( p2 )}.' )
+
+    
