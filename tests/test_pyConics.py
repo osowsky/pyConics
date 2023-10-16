@@ -27,18 +27,15 @@ def test_version():
     ver_git = _get_git_version()
     ver_pypi = con.__version__
 
-    # Test it.
-    res = ver_git == ver_pypi
-
     # Used for internal development and test.
     if __name__ == '__main__':
         # You can see the result.
         print( f'Git version  = {ver_git}' )
         print( f'pyPI version = {ver_pypi}' )
-        print( f'Git version is equal to pyPI version? {res}' )
+        print( f'Git version is equal to pyPI version? {ver_git == ver_pypi}' )
 
     # Used for pytest.
-    assert res
+    assert ver_git == ver_pypi
 
 def test_origin():
     # Points.
@@ -66,5 +63,7 @@ if __name__ == '__main__':
     print()
     test_version()
     print()
+
+    # Test to check if he shift of origin is working well.
     test_origin()
     print()
