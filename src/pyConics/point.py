@@ -11,21 +11,22 @@ __all__ = [ 'Point' ]
 #------------------------------------------------------------------
 # Import from...
 #
-from os.path import basename, splitext
 from typing import Any
 
-if ( __name__ == '__main__' ) or \
-    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from agobj import AGObj
-    from errors import PointTypeError
-    from origin import origin
-    from tolerance import tol
-else:
-    from .agobj import AGObj
-    from .errors import PointTypeError
-    from .origin import origin
-    from .tolerance import tol
+#------------------------------------------------------------------
+# Import from...
+# We use here TYPE_CHECKING constant to avoid circular import  
+# exceptions.
+#
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    ... # Do nothing here, because there are no pyConics modules
+        # here to be imported.
 
+from pyConics.agobj import AGObj
+from pyConics.errors import PointTypeError
+from pyConics.origin import origin
+from pyConics.tolerance import tol
 
 #------------------------------------------------------------------
 # Import as...
@@ -72,11 +73,7 @@ class Point( AGObj ):
         self._gform = origin.change_point( self._from_origin )
 
     def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import cross
-        else:
-            from .functions import cross
+        from pyConics.functions import cross
 
         # Get the cross product.
         return cross( self, other )
@@ -86,11 +83,7 @@ class Point( AGObj ):
         return self.cross( other )
 
     def distance( self, other: Point | Line ) -> float:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import distance
-        else:
-            from .functions import distance
+        from pyConics.functions import distance
         return distance( self, other )
     
     def __eq__( self, other: Point ) -> bool:
@@ -125,8 +118,8 @@ def _validate_point( coord: tuple[ float, float ] | tuple[ float, float, float ]
 #  
 if __name__ == '__main__':
     # Keep this imports even there is no test code.
-    from point import Point
-    from line import Line
+    from pyConics.point import Point
+    from pyConics.line import Line
 
     import os
     os.system( 'cls' )

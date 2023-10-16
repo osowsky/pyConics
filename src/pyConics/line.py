@@ -12,20 +12,22 @@ __all__ = [ 'Line' ]
 #------------------------------------------------------------------
 # Import from...
 #
-from os.path import basename, splitext
 from typing import Any
 
-if ( __name__ == '__main__' ) or \
-    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from agobj import AGObj
-    from errors import LineTypeError
-    from origin import origin
-    from tolerance import tol
-else:
-    from .agobj import AGObj
-    from .errors import LineTypeError
-    from .origin import origin
-    from .tolerance import tol
+#------------------------------------------------------------------
+# Import from...
+# We use here TYPE_CHECKING constant to avoid circular import  
+# exceptions.
+#
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    ... # Do nothing here, because there are no pyConics modules
+        # here to be imported.
+
+from pyConics.agobj import AGObj
+from pyConics.errors import LineTypeError
+from pyConics.origin import origin
+from pyConics.tolerance import tol
 
 #------------------------------------------------------------------
 # Import as...
@@ -68,11 +70,7 @@ class Line( AGObj ):
         self._gform = origin.change_line( self._from_origin )
 
     def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import cross
-        else:
-            from .functions import cross
+        from pyConics.functions import cross
 
         # Get the cross product.
         return cross( self, other )
@@ -82,11 +80,7 @@ class Line( AGObj ):
         return self.cross( other )
 
     def __contains__( self, other: Point ) -> bool:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import dot
-        else:
-            from .functions import dot
+        from pyConics.functions import dot
 
         # Get the dot function.
         if ( dot( self, other ) == 0.0 ):
@@ -94,21 +88,13 @@ class Line( AGObj ):
         return False
 
     def distance( self, other: Point | Line ) -> float:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import distance
-        else:
-            from .functions import distance
+        from pyConics.functions import distance
 
         # Get the distance function.
         return distance( self, other )
     
     def are_orthogonal( self, other: Line ) -> bool:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import are_orthogonal
-        else:
-            from .functions import are_orthogonal
+        from pyConics.functions import are_orthogonal
 
         # Returns True if the lines are orthogonal.
         return are_orthogonal( self, other )
@@ -118,11 +104,7 @@ class Line( AGObj ):
         return self.are_orthogonal( other )
 
     def are_parallel( self, other: Line ) -> bool:
-        if ( __name__ == '__main__' ) or \
-            ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-            from functions import are_parallel
-        else:
-            from .functions import are_parallel
+        from pyConics.functions import are_parallel
 
         # Returns True if the lines are parallel.
         return are_parallel( self, other )
@@ -170,9 +152,9 @@ def _validate_line( line: tuple[ float, float, float ] ) -> np.ndarray:
 #  
 if __name__ == '__main__':
     # Keep this imports even there is no test code.
-    from line import Line
-    from point import Point
-
+    from pyConics.point import Point
+    from pyConics.line import Line
+    
     import os
     os.system( 'cls' )
 

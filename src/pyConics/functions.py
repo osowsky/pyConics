@@ -12,23 +12,24 @@ __all__ = [ 'skew_symmetric', 'cross', 'dot', 'are_orthogonal', \
 #------------------------------------------------------------------
 # Import from...
 #
-from os.path import basename, splitext
 from typing import Any
 from numpy import linalg as LA
 
-if ( __name__ == '__main__' ) or \
-    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from errors import TypeError, ArgumentsError
-    from point import Point
-    from line import Line
-    from tolerance import tol
-    from constants import const
-else:
-    from .errors import TypeError, ArgumentsError
-    from .point import Point
-    from .line import Line
-    from .tolerance import tol
-    from .constants import const
+#------------------------------------------------------------------
+# Import from...
+# We use here TYPE_CHECKING constant to avoid circular import  
+# exceptions.
+#
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    ... # Do nothing here, because there are no pyConics modules
+        # here to be imported.
+        
+from pyConics.errors import TypeError, ArgumentsError
+from pyConics.tolerance import tol
+from pyConics.constants import const
+from pyConics.point import Point
+from pyConics.line import Line
 
 #------------------------------------------------------------------
 # Import as...

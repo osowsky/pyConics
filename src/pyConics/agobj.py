@@ -11,14 +11,19 @@ __all__ = [ 'AGObj' ]
 #------------------------------------------------------------------
 # Import from...
 #  
-from os.path import basename, splitext
 from abc import ABC, abstractmethod
 
-if ( __name__ == '__main__' ) or \
-    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from errors import AttributeError
-else:
-    from .errors import AttributeError
+#------------------------------------------------------------------
+# Import from...
+# We use here TYPE_CHECKING constant to avoid circular import  
+# exceptions.
+#
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+   ... # Do nothing here, because there are no pyConics modules
+       # here to be imported.    
+
+from pyConics.errors import AttributeError
 
 #------------------------------------------------------------------
 # Import as...

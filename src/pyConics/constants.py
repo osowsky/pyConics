@@ -1,4 +1,9 @@
 #------------------------------------------------------------------
+# Import it to be able to pass an object of same class as argument
+# to a member function
+from __future__ import annotations
+
+#------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
 __all__ = [ 'const' ]
@@ -7,13 +12,18 @@ __all__ = [ 'const' ]
 # Import from...
 #  
 from dataclasses import dataclass
-from os.path import basename, splitext
 
-if ( __name__ == '__main__' ) or \
-    ( __name__ == splitext( basename( __file__ ) )[ 0 ] ):
-    from errors import AttributeError
-else:
-    from .errors import AttributeError
+#------------------------------------------------------------------
+# Import from...
+# We use here TYPE_CHECKING constant to avoid circular import  
+# exceptions.
+#
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    ... # Do nothing here, because there are no pyConics modules
+        # here to be imported.
+
+from pyConics.errors import AttributeError
 
 #------------------------------------------------------------------
 # Import as...
