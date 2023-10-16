@@ -22,7 +22,7 @@ or you can install this package:
 pip install pyConics
 ```
 
-$\alpha * \sum_{i}^{\infty}$
+<!-- $\alpha * \sum_{i}^{\infty}$
 
 $$
 \alpha * \sum_{i}^{\infty}
@@ -34,9 +34,9 @@ $$
 1 & 2 & 3 \\
 1 & 2 & 3
 \end{matrix}\right]
-$$
+$$ -->
 
-## Usage
+<!-- ## Usage
 
 `pycounts` can be used to count words in a text file and plot results
 as follows:
@@ -50,7 +50,7 @@ file_path = "test.txt"  # path to your file
 counts = count_words(file_path)
 fig = plot_words(counts, n=10)
 plt.show()
-```
+``` -->
 
 ## Contributing
 
