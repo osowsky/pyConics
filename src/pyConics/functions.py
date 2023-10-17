@@ -100,12 +100,17 @@ def cross( gf1: Point | Line, gf2: Point | Line ) -> Any[ Point | Line ]:
                 alpha = gf2.gform[ 0 ] / gf1.gform[ 0 ]
             else:
                 alpha = 1.0
-            gf1.gform[ 0 ] = alpha * gf1.gform[ 0 ]
-            gf1.gform[ 1 ] = alpha * gf1.gform[ 1 ]
-            gf1.gform[ 2 ] = alpha * gf1.gform[ 2 ]
+            
+            a = alpha * gf1.gform[ 0 ]
+            b = alpha * gf1.gform[ 1 ]
+            c = alpha * gf1.gform[ 2 ]
+            l0 = Line( ( a, b, c ), 'l0' )
 
-        # Get the skew-symmetric matrix from gf1.
-        ss_gf1 = skew_symmetric( gf1 )
+            # Get the skew-symmetric matrix from l0.
+            ss_gf1 = skew_symmetric( l0 )
+        else:
+            # Get the skew-symmetric matrix from gf1.
+            ss_gf1 = skew_symmetric( gf1 )
 
         return Point( tuple[ float, float, float ]( ( ss_gf1 @ gf2.gform ) / alpha ), shift_origin = False )
 
@@ -323,3 +328,11 @@ if __name__ == '__main__':
     if ( distance( p2, l2 ) != const.inf ):
         print( f'p2 and l2 are point and line that are not at the infinity.\n' )
     
+    # Lines are coincident.
+    l1 = Line(( 1, -1, 1 ), 'l1' )
+    l2 = Line(( 2, -2, 5 ), 'l2' )
+    print( l1 )
+    print( l2 )
+    print( cross( l1, l2 ) )
+    print( l1 )
+    print( l2 )
