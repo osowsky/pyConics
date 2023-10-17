@@ -62,7 +62,7 @@ class Line( AGObj ):
         # return an info messsage for this class.
         info = f'{self.name}: ( x, y ) | {self.gform} * [ x y 1 ]\' = 0'
         if ( self.gform[ 0 ] == 0.0 ) and ( self.gform[ 1 ] == 0.0 ):
-            info += f' -> line at the infinity.'
+            info += f' -> line at the infinity'
         return info
 
     def update_origin( self ) -> None:

@@ -65,7 +65,7 @@ class Point( AGObj ):
         # return an info messsage for this class.
         info = f'{self.name}: {self.gform}'
         if ( self.gform[ -1 ] == 0.0 ):
-            info += f' -> point at the infinity.'
+            info += f' -> point at the infinity'
         return info
 
     def update_origin( self ) -> None:
@@ -211,16 +211,16 @@ if __name__ == '__main__':
     p2 = Point( ( 1, 0 ), 'p2' )
     d12 = p1.distance( p2 )
     d21 = p2.distance( p1 )
-    print( f'The distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
-    print( f'The distance from {p2}\nto {p1}\nis {d21:.4f}.\n' )
+    print( f'Distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
+    print( f'Distance from {p2}\nto {p1}\nis {d21:.4f}.\n' )
 
     # Distance between a point and a line.
     p1 = Point( ( 1, 0 ), 'p1' )
     l1 = Line( ( 1, -1, 1 ), 'l1' )
     dlp = l1.distance( p1 )
     dpl =  p1.distance( l1 )
-    print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
-    print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
+    print( f'Distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
+    print( f'Distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
 
     # Resetting origin.
     origin.reset()
@@ -237,17 +237,21 @@ if __name__ == '__main__':
     print( f'p2 == p2? {p2 == p2}.\n' )
 
     # Point at the infinity?
-    p1 = Point( ( 1, 1, 0 ), 'l1' )
-    p2 = Point( ( 1, -1, 1 ), 'l2' )
+    p1 = Point( ( 1, 1, 0 ), 'p1' )
+    p2 = Point( ( 1, -1, 1 ), 'p2' )
     print( p1 )
     print( p2 )
-    print( f'p1 is a point at the infinity? {p1.at_infinity()}.' )
-    print( f'p2 is a point at the infinity? {p2.at_infinity()}.\n' )
+    print( f'Is p1 a point at the infinity? {p1.at_infinity()}.' )
+    print( f'Is p2 a point at the infinity? {p2.at_infinity()}.\n' )
+
+    # Distance between a finite point and a point at the infinity.
+    d12 = p1.distance( p2 )
+    print( f'Distance from {p1}\nto {p2}\nis {d12:.4f}.\n' )
 
     # Points are coindicents?
     p1 = Point( ( 0, 1 ), 'p1' )
     p2 = Point( ( 1, 0 ), 'p2' )
-    print( f'p1 and p1 are coincident points? {p1.are_coincident( p1 )}.' )
-    print( f'p1 and p2 are coincident points? {p1.are_coincident( p2 )}.' )
+    print( f'Are p1 and p1 coincident points? {p1.are_coincident( p1 )}.' )
+    print( f'Are p1 and p2 coincident points? {p1.are_coincident( p2 )}.' )
 
     
