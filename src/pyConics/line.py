@@ -93,15 +93,15 @@ class Line( AGObj ):
         # Get the distance function.
         return distance( self, other )
     
-    def are_orthogonal( self, other: Line ) -> bool:
-        from pyConics.functions import are_orthogonal
+    def are_perpendicular( self, other: Line ) -> bool:
+        from pyConics.functions import are_perpendicular
 
         # Returns True if the lines are orthogonal.
-        return are_orthogonal( self, other )
+        return are_perpendicular( self, other )
     
     def __add__( self, other: Line ) -> bool:
         # Returns True if the lines are orthogonal.
-        return self.are_orthogonal( other )
+        return self.are_perpendicular( other )
 
     def are_parallel( self, other: Line ) -> bool:
         from pyConics.functions import are_parallel
@@ -251,10 +251,10 @@ if __name__ == '__main__':
     print( f'Are l1 and l3 parallel? {l1 // l3}' )
     print( f'Are l2 and l3 parallel? {l2 // l3}' )
 
-    # Are the lines orthogonal?
-    print( f'Are l1 and l2 orthogonal? {l1 + l2}' )
-    print( f'Are l1 and l3 orthogonal? {l1 + l3}' )
-    print( f'Are l2 and l3 orthogonal? {l2 + l3}\n' )
+    # Are the lines perpendicular?
+    print( f'Are l1 and l2 perpendicular? {l1 + l2}' )
+    print( f'Are l1 and l3 perpendicular? {l1 + l3}' )
+    print( f'Are l2 and l3 perpendicular? {l2 + l3}\n' )
 
     # Distance between a point and a line.
     p1 = Point( ( 1, 0 ), 'p1' )

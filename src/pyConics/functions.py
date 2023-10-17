@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'skew_symmetric', 'cross', 'dot', 'are_orthogonal', \
+__all__ = [ 'skew_symmetric', 'cross', 'dot', 'are_perpendicular', \
             'are_parallel', 'distance' ]
 
 #------------------------------------------------------------------
@@ -147,7 +147,7 @@ def are_parallel( gf1: Line, gf2: Line ) -> bool:
         return True
     return False
 
-def are_orthogonal( gf1: Line, gf2: Line ) -> bool:
+def are_perpendicular( gf1: Line, gf2: Line ) -> bool:
     if ( not isinstance( gf1, Line ) ):
         raise TypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, Line ) ):
@@ -273,10 +273,10 @@ if __name__ == '__main__':
     print( f'Are l1 and l3 parallel? {are_parallel( l1, l3 )}' )
     print( f'Are l2 and l3 parallel? {are_parallel( l2, l3 )}' )
 
-    # Are the lines orthogonal?
-    print( f'Are l1 and l2 orthogonal? {are_orthogonal( l1, l2 )}' )
-    print( f'Are l1 and l3 orthogonal? {are_orthogonal( l1, l3 )}' )
-    print( f'Are l2 and l3 orthogonal? {are_orthogonal( l2, l3 )}\n' )
+    # Are the lines perpendicular?
+    print( f'Are l1 and l2 perpendicular? {are_perpendicular( l1, l2 )}' )
+    print( f'Are l1 and l3 perpendicular? {are_perpendicular( l1, l3 )}' )
+    print( f'Are l2 and l3 perpendicular? {are_perpendicular( l2, l3 )}\n' )
 
     # Distance between 2 points.
     p1 = Point( ( 0, 1 ), 'p1' )
