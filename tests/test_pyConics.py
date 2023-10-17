@@ -15,11 +15,21 @@ import subprocess as sp
 
 def _get_git_version() -> str:
     r = sp.run( [ 'git', 'tag' ], capture_output = True, text = True )
-    ver = r.stdout[ ::-1 ]
-    v_end   = ver.find( '-' )
-    v_start = ver.find( 'v' )
-    ver = ver[ v_end + 1 : v_start ]
-    ver = ver[ ::-1 ]
+    ver_list = r.stdout.splitlines()
+    while ( len( ver_list[ -1 ] ) == 0 ):
+        l = len( ver_list[ -1 ] )
+        ver_list = ver_list[ 0 : l - 1 ]
+
+    ver_full = ver_list[ -1 ]
+    ver = ''
+    for dig in ver_full:
+        if ( dig in '01234567890.' ):
+            ver += dig
+            continue
+
+        if ( dig == '-' ):
+            break
+
     return ver
 
 
