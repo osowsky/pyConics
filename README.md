@@ -19,26 +19,33 @@ You can install this package, as well:
 pip install pyConics
 ```
 
-<!-- $\alpha * \sum_{i}^{\infty}$
-
-$$
-\alpha * \sum_{i}^{\infty}
-$$
-
-$$
-\left[\begin{matrix}
-1 & 2 & 3 \\
-1 & 2 & 3 \\
-1 & 2 & 3
-\end{matrix}\right]
-$$ -->
-
 ## Usage
 
 `pyConics` can be used to handle points, lines and conics by using algebraic
 geometry and homogeneous coordinates.
 
 ### Working with points
+
+The representation in homogeneous coordinates of a Cartesian point
+$\,p = (\,\alpha\,,\,\beta\,)$, where $\alpha,\;\beta\;\in\;\mathcal{R}$,
+is given by the following vector in $\mathcal{R}^3$:
+
+$$
+p\,=\left[\begin{array}{cc}
+\alpha & \beta & 1.0
+\end{array}\right]^{T}
+$$
+
+If you wanted to represent a point $p$ at infinity, you would define a
+vector as follows:
+$$
+p\,=\left[\begin{array}{cc}
+\alpha & \beta & 0.0
+\end{array}\right]^{T},
+$$
+where $\alpha,\;\beta\;\in\;\mathcal{R}$
+
+How to work with points in `pyConics`.
 
 ```python
 from pyConics import Point
@@ -50,7 +57,49 @@ print( p1 ) # -> p1: [0.0000e+00 1.0000e+00 1.0000e+00].
 print( p2 ) # -> p2: [1.0000e+00 1.0000e+00 1.0000e+00].
 print()
 
-print( f'Are p1 and p2 the sames? {p1 == p2}\n' ) # -> False.
+print( f'Are p1 and p2 the same? {p1 == p2}\n' ) # -> False.
+
+d12 = p1.distance( p2 )
+print( f'Distance from {p1}\nto {p2} is {d12:.4f}.\n' ) # -> d12 = 1.0.
+
+p3 = Point( ( 1, 1, 0 ), 'p3' ) # Point at the infinity.
+print( p3 ) # -> p3: [1.0000e+00 1.0000e+00 0.0000e+00] -> point at the infinity.
+print()
+
+print( f'Is p3 a point at infinity? {p3.at_infinity()}.\n' ) # -> True.
+
+d13 = p1.distance( p3 )
+print( f'Distance from {p1} to\n{p3} is {d13:.4f}.\n' ) # -> d13 = Inf.
+```
+
+### Working with lines
+
+```python
+from pyConics import Line
+
+l1 = Line( ( 1, -1, 1 ), 'l1' )    # l1: y = x + 1.
+l2 = Line( ( 1, -1, -1 ), 'l2' )   # l2: y = x - 1
+l3 = Line( ( -1, -1, 1 ), 'l3' )   # l3: y = -x + 1
+l4 = Line( ( -2, -2, 2 ), 'l4' )   # l4: 2y = -2x + 2 -> l4 = l3
+
+print( l1 ) # -> l1: ( x, y ) | [1.0000e+00 -1.0000e+00 1.0000e+00] * [ x y 1 ]' = 0.
+print( l2 ) # -> l2: ( x, y ) | [1.0000e+00 -1.0000e+00 -1.0000e+00] * [ x y 1 ]' = 0.
+print( l3 ) # -> l3: ( x, y ) | [-1.0000e+00 -1.0000e+00 1.0000e+00] * [ x y 1 ]' = 0.
+print( l4 ) # -> l4: ( x, y ) | [-2.0000e+00 -2.0000e+00 2.0000e+00] * [ x y 1 ]' = 0.
+print()
+
+
+
+
+
+
+
+
+
+
+
+
+print( f'Are p1 and p2 the same? {p1 == p2}\n' ) # -> False.
 
 d12 = p1.distance( p2 )
 print( f'Distance from {p1}\nto {p2} is {d12:.4f}.\n' ) # -> d12 = 1.0.
