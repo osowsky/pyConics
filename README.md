@@ -78,7 +78,7 @@ print( f'Distance from {p1} to\n{p3} is {d13:.4f}.\n' ) # -> d13 = Inf.
 ### Working with lines
 
 The representation in homogeneous coordinates of a Cartesian line
-$\,l:\enspace\beta y=\alpha x + \gamma$, where
+$l:\enspace\beta y=\alpha x + \gamma$, where
 $\alpha,\enspace\beta,\enspace\gamma\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
