@@ -32,8 +32,8 @@ $\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
 $$
-p\,=\left[\begin{array}{cc}
-\alpha & \beta & 1.0
+p\enspace=\left[\begin{array}{cc}
+\enspace\alpha & \beta & 1.0\enspace
 \end{array}\right]^{T}
 $$
 
@@ -41,8 +41,8 @@ If you wanted to represent a point $p$ at infinity, you would define a
 vector as follows:
 
 $$
-p\,=\left[\begin{array}{cc}
-\alpha & \beta & 0.0
+p\enspace=\left[\begin{array}{cc}
+\enspace\alpha & \beta & 0.0\enspace
 \end{array}\right]^{T},
 $$
 
