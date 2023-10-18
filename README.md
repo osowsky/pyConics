@@ -37,7 +37,7 @@ p=\left[\begin{array}{cc}
 \end{array}\right]^{T}
 $$
 
-If you wanted to represent a point $p$ at infinity, you would define a
+If you want to represent a point $p$ at infinity, you must define a
 vector as follows:
 
 $$
@@ -105,7 +105,7 @@ l:\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
 \}
 $$
 
-If you wanted to represent a line $l$ at infinity, you would define a
+If you want to represent a line $l$ at infinity, you must define a
 vector as follows:
 
 $$
