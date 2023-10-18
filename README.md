@@ -38,11 +38,13 @@ $$
 
 If you wanted to represent a point $p$ at infinity, you would define a
 vector as follows:
+
 $$
 p\,=\left[\begin{array}{cc}
 \alpha & \beta & 0.0
 \end{array}\right]^{T},
 $$
+
 where $\alpha,\;\beta\;\in\;\mathcal{R}$
 
 How to work with points in `pyConics`.
