@@ -27,7 +27,8 @@ geometry and homogeneous coordinates.
 ### Working with points
 
 The representation in homogeneous coordinates of a Cartesian point
-$\,p = (\enspace\alpha\,,\,\beta\,)$, where $\alpha,\;\beta\;\in\;\mathcal{R}$,
+$\,p = (\enspace\alpha,\enspace\beta\enspace)$, where
+$\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
 $$
@@ -45,7 +46,7 @@ p\,=\left[\begin{array}{cc}
 \end{array}\right]^{T},
 $$
 
-where $\alpha,\;\beta\;\in\;\mathcal{R}$
+where $\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
 
 How to work with points in `pyConics`.
 
