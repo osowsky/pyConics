@@ -92,7 +92,7 @@ The vector above satisfies the following homogeneous expression for straight lin
 in projective geometry:
 
 $$
-l:\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
+l:\lbrace\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
 \left[\begin{array}{cc}
 \enspace\alpha & -\beta & \gamma\enspace
 \end{array}\right]\times
@@ -101,8 +101,7 @@ l:\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
 \enspace\ y \enspace\\
 \enspace\ 1 \enspace\\
 \end{array}\right]\enspace=\enspace 0
-\enspace
-\}
+\enspace\rbrace
 $$
 
 If you want to represent a line $l$ at infinity, you must define a
