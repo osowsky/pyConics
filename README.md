@@ -27,7 +27,7 @@ geometry and homogeneous coordinates.
 ### Working with points
 
 The representation in homogeneous coordinates of a Cartesian point
-$\,p = (\,\alpha\,,\,\beta\,)$, where $\alpha,\;\beta\;\in\;\mathcal{R}$,
+$\,p = (\enspace\alpha\,,\,\beta\,)$, where $\alpha,\;\beta\;\in\;\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
 $$
