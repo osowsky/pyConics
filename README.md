@@ -32,7 +32,7 @@ $\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
 $$
-p\enspace=\left[\begin{array}{cc}
+p=\left[\begin{array}{cc}
 \enspace\alpha & \beta & 1.0\enspace
 \end{array}\right]^{T}
 $$
@@ -41,7 +41,7 @@ If you wanted to represent a point $p$ at infinity, you would define a
 vector as follows:
 
 $$
-p\enspace=\left[\begin{array}{cc}
+p=\left[\begin{array}{cc}
 \enspace\alpha & \beta & 0.0\enspace
 \end{array}\right]^{T},
 $$
@@ -83,7 +83,7 @@ $\alpha,\enspace\beta,\enspace\gamma\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
 $$
-l\enspace=\left[\begin{array}{cc}
+l=\left[\begin{array}{cc}
 \enspace\alpha & -\beta & \gamma\enspace
 \end{array}\right]^{T}
 $$
@@ -92,7 +92,7 @@ The vector above satisfies the following homogeneous expression for straight lin
 in projective geometry:
 
 $$
-l:\enspace\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
+l:\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
 \left[\begin{array}{cc}
 \enspace\alpha & -\beta & \gamma\enspace
 \end{array}\right]\times
