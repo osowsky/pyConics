@@ -92,7 +92,7 @@ The vector above satisfies the following homogeneous expression for straight lin
 in projective geometry:
 
 $$
-l:\enspace\left\{ a \right\}
+l:\enspace\{ a \}
 $$
 
 <!-- \enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
