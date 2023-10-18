@@ -27,7 +27,7 @@ geometry and homogeneous coordinates.
 ### Working with points
 
 The representation in homogeneous coordinates of a Cartesian point
-$\,p = (\enspace\alpha,\enspace\beta\enspace)$, where
+$p = (\enspace\alpha,\enspace\beta\enspace)$, where
 $\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$,
 is given by the following vector in $\mathcal{R}^3$:
 
@@ -46,7 +46,7 @@ p\enspace=\left[\begin{array}{cc}
 \end{array}\right]^{T},
 $$
 
-where $\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
+where $\enspace\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
 
 How to work with points in `pyConics`.
 
@@ -76,6 +76,46 @@ print( f'Distance from {p1} to\n{p3} is {d13:.4f}.\n' ) # -> d13 = Inf.
 ```
 
 ### Working with lines
+
+The representation in homogeneous coordinates of a Cartesian line
+$\,l:\enspace\beta y=\alpha x + \gamma$, where
+$\alpha,\enspace\beta,\enspace\gamma\in\enspace\mathcal{R}$,
+is given by the following vector in $\mathcal{R}^3$:
+
+$$
+l\enspace=\left[\begin{array}{cc}
+\enspace\alpha & -\beta & \gamma\enspace
+\end{array}\right]^{T}
+$$
+
+The vector above satisfies the following homogeneous expression for straight lines
+in projective geometry:
+
+$$
+l:\enspace\left\{\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
+\left[\begin{array}{cc}
+\enspace\alpha & -\beta & \gamma\enspace
+\end{array}\right]\times
+\left[\begin{array}{c}
+\enspace\ x \enspace\\
+\enspace\ y \enspace\\
+\enspace\ 1 \enspace\\
+\end{array}\right]\enspace = \enspace 0
+\enspace\right\}
+$$
+
+If you wanted to represent a line $l$ at infinity, you would define a
+vector as follows:
+
+$$
+l\enspace=\left[\begin{array}{cc}
+\enspace 0.0 & 0.0 & \gamma\enspace
+\end{array}\right]^{T},
+$$
+
+where $\enspace\gamma\enspace\in\enspace\mathcal{R}$
+
+How to work with points in `pyConics`.
 
 ```python
 from pyConics import Line
