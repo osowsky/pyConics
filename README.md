@@ -116,7 +116,7 @@ $$
 
 where $\enspace\gamma\enspace\in\enspace\mathcal{R}$
 
-How to work with points in `pyConics`.
+How to work with lines in `pyConics`.
 
 ```python
 from pyConics import Line
