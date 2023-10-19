@@ -177,6 +177,55 @@ How to work with lines in `pyConics`.
 
 ### Working with points and lines
 
+Now that I have introduced you to the concepts of points and lines in projective
+geometry and how you should work with them. The next step is to know how to use
+both geometric shapes together.
+
+However, before we start this step I must answer a question that you may be
+wondering. If points and lines have the same vector representation, i.e., they
+are both vectors in $\mathcal{R}^3$, how will I know if I am using a point
+or a line?
+
+A generic answer would be: The context will tell you whether the vectors in
+$\mathcal{R}^3$ are points or lines.
+For instance, the cross product operation can be used with the following
+operands:
+
+1) two points: The result is a straight line $l$ that passes through both points.
+2) two lines: The result is the point of intersection $p$ between both lines.
+3) a point $p$ and a line $l$: The result is a line that is perpendicular to
+the straight line $l$ and passes through the point $p$.
+
+Finally, the Table below shows six interesting interpretations about vector
+representation of points and lines, four of which are not well-posed in
+two-dimensional Euclidean Geometry, namely point and line at infinity.
+
+$$
+\def\arraystretch{2.5}
+\begin{array}{ccc}
+\text{vector in }\mathcal{R}^3 & \text{point} & \text{line} \\
+\hline\hline
+[\begin{array}{ccc}
+\alpha & \beta & 0.0
+\end{array}]^{T} & \text{point at infinity} & \text{line passing through the origin}\\
+\hline
+[\begin{array}{ccc}
+0.0 & 0.0 & \gamma
+\end{array}]^{T} & \text{point at origin when }\gamma=1.0 & \text{line at infinity}\\
+\hline
+[\begin{array}{ccc}
+0.0 & 0.0 & 0.0
+\end{array}]^{T} & \text{point at infinity} & \text{line at infinity}\\
+\hline
+\end{array}
+$$
+
+How to work with points and lines in `pyConics`.
+
+```python
+from pyConics import Point, Line
+```
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines.
