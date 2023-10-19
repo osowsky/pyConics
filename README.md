@@ -191,9 +191,9 @@ $\mathcal{R}^3$ are points or lines.
 For instance, the cross product operation can be used with the following
 operands:
 
-1) two points: The result is a straight line $l$ that passes through both points.
-2) two lines: The result is the point of intersection $p$ between both lines.
-3) a point $p$ and a line $l$: The result is a line that is perpendicular to
+1. two points: The result is a straight line $l$ that passes through both points.
+2. two lines: The result is the point of intersection $p$ between both lines.
+3. a point $p$ and a line $l$: The result is a line that is perpendicular to
 the straight line $l$ and passes through the point $p$.
 
 Finally, the Table below shows six interesting interpretations about vector
