@@ -201,7 +201,7 @@ representation of points and lines, four of which are not well-posed in
 two-dimensional Euclidean Geometry, namely point and line at infinity.
 
 $$
-\def\arraystretch{2.5}
+% \def\arraystretch{2.5}
 \begin{array}{ccc}
 \text{vector in }\mathcal{R}^3 & \text{point} & \text{line} \\
 \hline\hline
