@@ -324,7 +324,7 @@ It is licensed under the terms of the GNU General Public License v3.0 license.
 `pyConics` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/)
 and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
 
-`pyConics` uses the following Python packages:
+`pyConics` has used the following Python packages since its first release:
 
 - `numpy`
 - `pytest`
