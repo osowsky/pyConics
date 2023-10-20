@@ -326,5 +326,5 @@ and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-coo
 
 `pyConics` uses the following Python packages:
 
-- `numpy`;
-- `pytest`.
+- `numpy`
+- `pytest`
