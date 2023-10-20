@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "pyConics"
-version = "0.2.5"
+version = "0.2.6"
 description = "Handle points, lines and conics by using algebraic geometry."
 authors = ["Jefferson Osowsky"]
 license = "GNU General Public License v3.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
-numpy = {version = "^1.26.0", python = "<3.13,>=3.9"}
+python = "~3.11"
+numpy = {version = "~1.26.1", python = ">=3.11, <3.13"}
 
 [tool.poetry.dev-dependencies]
 
