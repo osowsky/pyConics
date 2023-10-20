@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyConics"
-version = "0.1.1"
+version = "0.2.0"
 description = "Handle points, lines and conics by using algebraic geometry."
 authors = ["Jefferson Osowsky"]
 license = "GNU General Public License v3.0"

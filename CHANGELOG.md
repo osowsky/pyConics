@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (20/10/2023)
+
+- First release of `pyConics`!
+
 ## v0.1.1-beta (16/10/2023)
 
 - Fix circular import exceptions in .py files, by using
