@@ -91,6 +91,91 @@ def test_Lines():
     d56 = l5.distance( l6 )
     print( f'Distance from {l5} to {l6} is {d56}.\n' )
 
+def test_Points_And_Lines():
+    from pyConics import Point, Line
+
+    # Points.
+    p1 = Point( ( 1, 3 ), 'p1' )   # p1 = ( 1, 3 )
+    p2 = Point( ( 0, 4 ), 'p2' )   # p2 = ( 0, 4 )
+    p3 = Point( ( -2, 0 ), 'p3' )  # p3 = ( -2, 0 )
+    p4 = Point( ( 2, 0 ), 'p4' )   # p4 = ( 2, 0 )
+    p5 = Point( ( 0, -4 ), 'p5' )  # p5 = ( 0, -4 )
+
+    # Lines.
+    l1 = Line( ( 2, -1, 4 ), 'l1' )   #l1: y = 2x + 4
+    l2 = Line( ( 2, -1, -4 ), 'l2' )  #l2: y = 2x - 4
+    l3 = Line( ( 2, 1, 0 ), 'l3' )    #l3: y = -2x
+    l4 = Line( ( 1, 0, -2 ), 'l4' )   #l4: x = 2
+    l5 = Line( ( 0, 1, -4 ), 'l5' )   #l5: y = 4
+    l6 = Line( ( 3, -1, 0 ), 'l6' )   #l6: y = 3x
+
+    # Test whether a point is in or is not in a Line.
+    print( l1, p1, p2, p3, sep='\n' )
+    print( f'Is p1 in l1? {p1 in l1}.' )    # p1 belongs to l1: False
+    print( f'Is p2 in l1? {p2 in l1}.' )    # p2 belongs to l1: True
+    print( f'Is p3 in l1? {p3 in l1}.\n' )  # p3 belongs to l1: True
+    print( l6, p1, p4, sep='\n' )
+    print( f'Is p1 in l6? {p1 in l6}.' )    # p1 belongs to l6: True
+    print( f'Is p4 in l6? {p4 in l6}.\n' )  # p4 belongs to l6: False
+    print( l4, p4, sep='\n' )
+    print( f'Is p4 in l4? {p4 in l4}.\n' )  # p4 belongs to l4: True
+    print( l5, p2, sep='\n' )
+    print( f'Is p2 in l5? {p2 in l5}.\n' )  # p2 belongs to l5: True
+
+    # Use the cross product to handle points and lines.
+    # 1) the cross product between two points gives us a line that
+    #    passes through these points.
+    l: Line = p2 * p3
+    l.name = 'l'
+    print( l1, l, sep='\n' )
+    print( f'Are l and l1 coincident? {l==l1}.\n' )
+    l: Line = p4 * p5
+    l.name = 'l'
+    print( l2, l, sep='\n' )
+    print( f'Are l and l2 coincident? {l==l2}.\n' )
+
+    # 2) the cross product between two lines gives us their point
+    #    of intersection.
+    p: Point = l1 * l3
+    p.name = 'p'
+    print( l1, l3, p, sep='\n' )
+    print( f'Is p in l1? {p in l1}.' )
+    print( f'Is p in l3? {p in l3}.\n' )
+    p: Point = l2 * l4
+    p.name = 'p'
+    print( l2, l4, p4, p, sep='\n' )
+    print( f'Is p in l2? {p in l2}.' )
+    print( f'Is p in l4? {p in l4}.' )
+    print( f'Are p and p4 coincident? {p==p4}.\n' )
+
+    # Two parallel lines have their point of intersection at infinity.
+    # So, ...
+    p: Point = l1 * l2
+    p.name = 'p'
+    print( l1, l2, p, sep='\n' )
+    print( f'Is p in l1? {p in l1}.' )
+    print( f'Is p in l2? {p in l2}.' )
+    print( f'Is p in l4? {p in l4}.' )
+    print( f'Is p at infinity? {p.at_infinity()}.\n' )
+
+    # 3) the cross product between a point and a line gives us a
+    #    line which is perpendicular to that line and passes
+    #    through that point.
+    l: Line = l2 * p2
+    l.name = 'l'
+    print( p2, l2, l, sep='\n' )
+    print( f'Is p2 in l? {p2 in l}.' )
+    print( f'Are l2 and l perpendicular? {l2 + l}.\n' )
+    p: Point = l2 * l
+    p.name = 'p'
+    print( l2, l, p, sep='\n' )
+    print( f'Is p in l? {p in l}.' )
+    print( f'Is p in l2? {p in l2}.' )
+
+    # Getting the distance between p2 and l2.
+    print( f'Distance from p2 to l2 = {p2.distance( l2 ):.4f}.' )
+    print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -101,3 +186,6 @@ if __name__ == '__main__':
     print()
     test_Lines()
     print()
+    test_Points_And_Lines()
+    print()
+
