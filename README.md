@@ -203,19 +203,19 @@ two-dimensional Euclidean Geometry, namely point and line at infinity.
 $$
 % \def\arraystretch{2.5}
 \begin{array}{ccc}
-\text{vector in }\mathcal{R}^3 & \text{point} & \text{line} \\
+\text{vector in }\mathcal{R}^3 & \text{point} & \text{line}\newline
 \hline\hline
 [\begin{array}{ccc}
 \alpha & \beta & 0.0
-\end{array}]^{T} & \text{point at infinity} & \text{line passing through the origin}\\
+\end{array}]^{T} & \text{point at infinity} & \text{line passing through the origin}\newline
 \hline
 [\begin{array}{ccc}
 0.0 & 0.0 & \gamma
-\end{array}]^{T} & \text{point at origin with }\gamma=1.0 & \text{line at infinity}\\
+\end{array}]^{T} & \text{point at origin with }\gamma=1.0 & \text{line at infinity}\newline
 \hline
 [\begin{array}{ccc}
 0.0 & 0.0 & 0.0
-\end{array}]^{T} & \text{point at infinity} & \text{line at infinity}\\
+\end{array}]^{T} & \text{point at infinity} & \text{line at infinity}\newline
 \hline
 \end{array}
 $$

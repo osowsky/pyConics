@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.5 (20/10/2023)
+
+- A bug was fixed in README.md.
+
 ## v0.2.0 (20/10/2023)
 
 - First release of `pyConics`!
