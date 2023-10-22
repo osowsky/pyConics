@@ -17,4 +17,3 @@ from .origin import *
 from .tolerance import *
 from .point import *
 from .line import *
-from .functions import *
