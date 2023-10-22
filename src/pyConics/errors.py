@@ -6,7 +6,8 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'AttributeError', 'TypeError', 'PointTypeError', 'LineTypeError', 'ArgumentsError' ]
+__all__ = [ 'ValueError', 'AttributeError', 'TypeError', 'PointTypeError', 'LineTypeError',\
+            'ArgumentsError' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -17,6 +18,16 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
+
+#------------------------------------------------------------------
+# Child Class ValueError.
+#  
+class ValueError( ValueError ):
+    def __init__( self, *args ) -> None:
+        super().__init__( self, args )
+
+        class_name, str_text = args
+        self.args = ( f'{self.__class__.__name__}: Error in {class_name}: {str_text}', )
 
 #------------------------------------------------------------------
 # Child Class AttributeError.
