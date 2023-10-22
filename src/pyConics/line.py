@@ -70,7 +70,7 @@ class Line( AGObj ):
         self._gform = origin.change_line( self._from_origin )
 
     def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
-        from pyConics.functions import cross
+        from pyConics.utils import cross
 
         # Get the cross product.
         return cross( self, other )
@@ -80,7 +80,7 @@ class Line( AGObj ):
         return self.cross( other )
 
     def __contains__( self, other: Point ) -> bool:
-        from pyConics.functions import dot
+        from pyConics.utils import dot
 
         # Get the dot function.
         if ( dot( self, other ) == 0.0 ):
@@ -88,13 +88,13 @@ class Line( AGObj ):
         return False
 
     def distance( self, other: Point | Line ) -> float:
-        from pyConics.functions import distance
+        from pyConics.utils import distance
 
         # Get the distance function.
         return distance( self, other )
     
     def are_perpendicular( self, other: Line ) -> bool:
-        from pyConics.functions import are_perpendicular
+        from pyConics.utils import are_perpendicular
 
         # Returns True if the lines are orthogonal.
         return are_perpendicular( self, other )
@@ -104,7 +104,7 @@ class Line( AGObj ):
         return self.are_perpendicular( other )
 
     def are_parallel( self, other: Line ) -> bool:
-        from pyConics.functions import are_parallel
+        from pyConics.utils import are_parallel
 
         # Returns True if the lines are parallel.
         return are_parallel( self, other )

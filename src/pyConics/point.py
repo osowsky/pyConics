@@ -73,7 +73,7 @@ class Point( AGObj ):
         self._gform = origin.change_point( self._from_origin )
 
     def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
-        from pyConics.functions import cross
+        from pyConics.utils import cross
 
         # Get the cross product.
         return cross( self, other )
@@ -83,7 +83,7 @@ class Point( AGObj ):
         return self.cross( other )
 
     def distance( self, other: Point | Line ) -> float:
-        from pyConics.functions import distance
+        from pyConics.utils import distance
         return distance( self, other )
     
     def __eq__( self, other: Point ) -> bool:
