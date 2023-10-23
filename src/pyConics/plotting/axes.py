@@ -80,7 +80,7 @@ class CAxes:
         return ( self._xres, self._yres )
     
     def plot( self, *args, scalex = True, scaley = True, data = None, **kwargs ) -> None:
-        self._axes.plot( *args, scalex = True, scaley = True, data = None, **kwargs )
+        self._axes.plot( *args, scalex, scaley, data, **kwargs ) # type: ignore
 
 #------------------------------------------------------------------
 # For development and test.
