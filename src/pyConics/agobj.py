@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'AGObj' ]
+__all__ = [ 'CAGObj' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -23,8 +23,6 @@ if TYPE_CHECKING:
    ... # Do nothing here, because there are no pyConics modules
        # here to be imported.    
 
-from pyConics.errors import AttributeError
-
 #------------------------------------------------------------------
 # Import as...
 #  
@@ -33,7 +31,7 @@ import numpy as np
 #------------------------------------------------------------------
 # Abstract Base Class AGObj.
 #  
-class AGObj( ABC ):
+class CAGObj( ABC ):
     @abstractmethod
     def __init__( self, name: str = '' ) -> None:
         # Set the name of the AGObject.
@@ -46,7 +44,7 @@ class AGObj( ABC ):
         
         # Save the original geo form. So, we are able
         # to return its value from origin.
-        self._from_origin =  np.ndarray( shape = ( 0, 0 ) )
+        self._from_origin = np.ndarray( shape = ( 0, 0 ) )
 
     @abstractmethod
     def __repr__( self ) -> str:
@@ -70,14 +68,6 @@ class AGObj( ABC ):
     def gform( self ) -> np.ndarray:
        return self._gform
     
-    @gform.setter
-    def gform( self, gform: np.ndarray ) -> None:
-       raise AttributeError( self.__class__.__name__, AGObj.gform.fset.__name__ )
-
     @property
     def from_origin( self ) -> np.ndarray:
        return self._from_origin
-    
-    @from_origin.setter
-    def from_origin( self, from_origin: np.ndarray ) -> None:
-       raise AttributeError( self.__class__.__name__, AGObj.from_origin.fset.__name__ )
