@@ -7,7 +7,7 @@ from typing import Any
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'Line' ]
+__all__ = [ 'CLine' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -24,8 +24,8 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
-from pyConics.agobj import AGObj
-from pyConics.errors import LineTypeError
+from pyConics.agobj import CAGObj
+from pyConics.errors import CLineTypeError
 from pyConics.origin import origin
 from pyConics.tolerance import tol
 
@@ -36,9 +36,9 @@ import numpy as np
 np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 
 #------------------------------------------------------------------
-# Class Line.
+# Class CLine.
 #  
-class Line( AGObj ):
+class CLine( CAGObj ):
     def __init__( self,
                   line: tuple[ float, float, float ] = ( 1.0, -1.0, 0.0 ),
                   name: str = '',
@@ -69,17 +69,17 @@ class Line( AGObj ):
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         self._gform = origin.change_line( self._from_origin )
 
-    def cross( self, other: Point | Line ) -> Any[ Point | Line ]:
+    def cross( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         from pyConics.utils import cross
 
         # Get the cross product.
         return cross( self, other )
 
-    def __mul__( self, other: Point | Line ) -> Any[ Point | Line ]:
+    def __mul__( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         # Get the cross product.
         return self.cross( other )
 
-    def __contains__( self, other: Point ) -> bool:
+    def __contains__( self, other: CPoint ) -> bool:
         from pyConics.utils import dot
 
         # Get the dot function.
@@ -87,33 +87,33 @@ class Line( AGObj ):
             return True
         return False
 
-    def distance( self, other: Point | Line ) -> float:
+    def distance( self, other: CPoint | CLine ) -> float:
         from pyConics.utils import distance
 
         # Get the distance function.
         return distance( self, other )
     
-    def are_perpendicular( self, other: Line ) -> bool:
+    def are_perpendicular( self, other: CLine ) -> bool:
         from pyConics.utils import are_perpendicular
 
         # Returns True if the lines are orthogonal.
         return are_perpendicular( self, other )
     
-    def __add__( self, other: Line ) -> bool:
+    def __add__( self, other: CLine ) -> bool:
         # Returns True if the lines are orthogonal.
         return self.are_perpendicular( other )
 
-    def are_parallel( self, other: Line ) -> bool:
+    def are_parallel( self, other: CLine ) -> bool:
         from pyConics.utils import are_parallel
 
         # Returns True if the lines are parallel.
         return are_parallel( self, other )
     
-    def __floordiv__( self, other: Line ) -> bool:
+    def __floordiv__( self, other: CLine ) -> bool:
         # Returns True if the lines are parallel.
         return self.are_parallel( other )
     
-    def __eq__( self, other: Line ) -> bool:
+    def __eq__( self, other: CLine ) -> bool:
         # Are l1 // l2?
         if ( self.are_parallel( other ) == False ):
             return False
@@ -128,12 +128,12 @@ class Line( AGObj ):
             return True
         return False
     
-    def are_coincident( self, other: Line ) -> bool:
+    def are_coincident( self, other: CLine ) -> bool:
         if ( self == other ):
             return True
         return False
 
-    def are_concurrent( self, other: Line ) -> bool:
+    def are_concurrent( self, other: CLine ) -> bool:
         if ( self // other ):
             return False
         return True
@@ -145,22 +145,22 @@ def _validate_line( line: tuple[ float, float, float ] ) -> np.ndarray:
     if ( len( line ) == 3 ):
         return np.array( line )
     else:
-        raise LineTypeError( Line.__name__, Line.gform.fset.__name__ )
+        raise CLineTypeError( CLine.__name__, CLine.gform.fget.__name__ )
 
 #------------------------------------------------------------------
 # For development and test.
 #  
 if __name__ == '__main__':
     # Keep this imports even there is no test code.
-    from pyConics.point import Point
-    from pyConics.line import Line
+    from pyConics.point import CPoint
+    from pyConics.line import CLine
     
     import os
     os.system( 'cls' )
 
     # Create the line y = x + 1
     print( origin )
-    l1 = Line( ( 1, -1, 1 ) )
+    l1 = CLine( ( 1, -1, 1 ) )
     print( l1, '\n' )
 
     # Change the origin to ( 0, 1 ), update the origin and back it to the origin.
@@ -186,38 +186,38 @@ if __name__ == '__main__':
     print( l1, '\n' )
  
     # How to use cross product.
-    p1 = Point( ( 1, 1 ) )      # p1 = ( 1, 1 )
-    p2 = Point( ( -1, -1 ) )    # p2 = ( -1, -1 ) 
-    l1: Line = p1.cross( p2 )   # l1: y = x
+    p1 = CPoint( ( 1, 1 ) )      # p1 = ( 1, 1 )
+    p2 = CPoint( ( -1, -1 ) )    # p2 = ( -1, -1 ) 
+    l1: CLine = p1.cross( p2 )   # l1: y = x
     print( l1, '\n' )
-    l1: Line = p1 * p2          # l1: y = x
+    l1: CLine = p1 * p2          # l1: y = x
     print( l1, '\n' )
     
-    l1 = Line( ( 1, -1, 1 ) )   # y = x + 1
-    l2 = Line( ( 1, -1, -1 ) )  # y = x - 1
-    l3 = Line( ( -1, -1, 1 ) )  # y = -x + 1
+    l1 = CLine( ( 1, -1, 1 ) )   # y = x + 1
+    l2 = CLine( ( 1, -1, -1 ) )  # y = x - 1
+    l3 = CLine( ( -1, -1, 1 ) )  # y = -x + 1
 
-    p3: Point = l1.cross( l2 )   # p3 is a point at the infinity.
+    p3: CPoint = l1.cross( l2 )   # p3 is a point at the infinity.
     print( p3, '\n' )
-    p3: Point = l1 * l2          # p3 is a point at the infinity.
+    p3: CPoint = l1 * l2          # p3 is a point at the infinity.
     print( p3, '\n' )
-    p4: Point = l1.cross( l3 )   # p4 = ( 0, 1 )
+    p4: CPoint = l1.cross( l3 )   # p4 = ( 0, 1 )
     print( p4, '\n' )
-    p4: Point = l1 * l3          # p4 = ( 0, 1 )
+    p4: CPoint = l1 * l3          # p4 = ( 0, 1 )
     print( p4, '\n' )
-    p5: Point = l2.cross( l3 )   # p5 = ( 1, 0 )
+    p5: CPoint = l2.cross( l3 )   # p5 = ( 1, 0 )
     print( p5, '\n' )
-    p5: Point = l2 * l3          # p5 = ( 1, 0 )
+    p5: CPoint = l2 * l3          # p5 = ( 1, 0 )
     print( p5, '\n' )
 
-    p6 = Point( ( 1, 0 ) )
-    l4: Line = l1.cross( p6 )  # l4 = ( 1, 1, -1 ) that pass through p6
+    p6 = CPoint( ( 1, 0 ) )
+    l4: CLine = l1.cross( p6 )  # l4 = ( 1, 1, -1 ) that pass through p6
     print( l4, '\n' )
-    l4: Line = l1 * p6         # l4 = ( 1, 1, -1 ) that pass through p6
+    l4: CLine = l1 * p6         # l4 = ( 1, 1, -1 ) that pass through p6
     print( l4, '\n' )
-    l5: Line = p6.cross( l1 )  # l5 = ( 1, 1, -1 ) that pass through p6
+    l5: CLine = p6.cross( l1 )  # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
-    l5: Line = p6 * l1         # l5 = ( 1, 1, -1 ) that pass through p6
+    l5: CLine = p6 * l1         # l5 = ( 1, 1, -1 ) that pass through p6
     print( l5, '\n' )
 
     # Shifting origin.
@@ -241,9 +241,9 @@ if __name__ == '__main__':
     print( f'Point p5 belongs to Line l1? {p5 in l1}\n' )
 
     # Are Lines parallel or orthogonal?
-    l1 = Line( ( 1, -1, 0 ), 'l1' )  # x = y
-    l2 = Line( ( 1, -1, 1 ), 'l2' )  # y = x + 1
-    l3 = Line( ( 1, 1, -2 ), 'l3' )  # y = -x + 2
+    l1 = CLine( ( 1, -1, 0 ), 'l1' )  # x = y
+    l2 = CLine( ( 1, -1, 1 ), 'l2' )  # y = x + 1
+    l3 = CLine( ( 1, 1, -2 ), 'l3' )  # y = -x + 2
     
     # Are the lines parallel?
     print( l1, l2, l3, sep = '\n' )
@@ -257,16 +257,16 @@ if __name__ == '__main__':
     print( f'Are l2 and l3 perpendicular? {l2 + l3}\n' )
 
     # Distance between a point and a line.
-    p1 = Point( ( 1, 0 ), 'p1' )
-    l1 = Line( ( 1, -1, 1 ), 'l1' )
+    p1 = CPoint( ( 1, 0 ), 'p1' )
+    l1 = CLine( ( 1, -1, 1 ), 'l1' )
     dlp = l1.distance( p1 )
     dpl = p1.distance( l1 )
     print( f'The distance from {l1}\nto {p1}\nis {dlp:.4f}.\n' )
     print( f'The distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
 
     # Distance between two lines.
-    l1 = Line( ( 1, -1, 1 ), 'l1' )
-    l2 = Line( ( 1, -1, -1 ), 'l2' )
+    l1 = CLine( ( 1, -1, 1 ), 'l1' )
+    l2 = CLine( ( 1, -1, -1 ), 'l2' )
     d12 = l1.distance( l2 )
     d21 = l2.distance( l1 )
     print( f'The distance from {l1}\nto {l2}\nis {d12:.4f}.\n' )
@@ -274,8 +274,8 @@ if __name__ == '__main__':
 
     # 
     # Test for epsilon number condition.
-    l1 = Line( ( 1, -1, 1 ) )           # y = x + 1
-    l2 = Line( ( -2 * 0.99999, -2 * -1, -2 * -1 ) )    # y = 0.99999x + 1
+    l1 = CLine( ( 1, -1, 1 ) )           # y = x + 1
+    l2 = CLine( ( -2 * 0.99999, -2 * -1, -2 * -1 ) )    # y = 0.99999x + 1
     # Are l1 and l2 parallel?
     p1 = l1 * l2
     print( f'Intersection point between l1 and l2:\n\t{p1}' )
@@ -286,9 +286,9 @@ if __name__ == '__main__':
     print( origin )
 
     # Are these points the same?
-    l1 = Line( ( 1, -1, 1 ), 'l1' )           # y = x + 1
-    l2 = Line( ( -2 * 0.99999, -2 * -1, -2 * 1 ), 'l2' )    # y = 0.99999x + 1
-    l3 = Line( ( 1, -1, -1 ), 'l3' )           # y = x - 1
+    l1 = CLine( ( 1, -1, 1 ), 'l1' )           # y = x + 1
+    l2 = CLine( ( -2 * 0.99999, -2 * -1, -2 * 1 ), 'l2' )    # y = 0.99999x + 1
+    l3 = CLine( ( 1, -1, -1 ), 'l3' )           # y = x - 1
     print( l1 )
     print( l2 )
     print( l3 )
@@ -302,8 +302,8 @@ if __name__ == '__main__':
     print( f'l3 == l2? {l3 == l2}.\n' )
 
     # Lines at the infinity?
-    l1 = Line( ( 0, 0, 2 ), 'l1' )
-    l2 = Line( ( 1, -1, 1 ), 'l2' )
+    l1 = CLine( ( 0, 0, 2 ), 'l1' )
+    l2 = CLine( ( 1, -1, 1 ), 'l2' )
     print( l1 )
     print( l2 )
     print( f'l1 is a line at the infinity? {l1.at_infinity()}.' )
