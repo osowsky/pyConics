@@ -6,8 +6,8 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'ValueError', 'AttributeError', 'TypeError', 'PointTypeError', 'LineTypeError',\
-            'ArgumentsError' ]
+__all__ = [ 'CValueError', 'CAttributeError', 'CTypeError', 'CPointTypeError',\
+            'CLineTypeError', 'CArgumentsError' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -20,9 +20,9 @@ if TYPE_CHECKING:
         # here to be imported.
 
 #------------------------------------------------------------------
-# Child Class ValueError.
+# Child Class CValueError.
 #  
-class ValueError( ValueError ):
+class CValueError( ValueError ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
@@ -30,9 +30,9 @@ class ValueError( ValueError ):
         self.args = ( f'{self.__class__.__name__}: Error in {class_name}: {str_text}', )
 
 #------------------------------------------------------------------
-# Child Class AttributeError.
+# Child Class CAttributeError.
 #  
-class AttributeError( AttributeError ):
+class CAttributeError( AttributeError ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
@@ -40,9 +40,9 @@ class AttributeError( AttributeError ):
         self.args = ( f'{self.__class__.__name__}: You can not assing a value to {class_name}.{attrib_name} attribute.', )
 
 #------------------------------------------------------------------
-# Child Class TypeError.
+# Child Class CTypeError.
 #  
-class TypeError( TypeError ):
+class CTypeError( TypeError ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
@@ -50,9 +50,9 @@ class TypeError( TypeError ):
         self.args = ( f'{self.__class__.__name__}: You can not use a \'{class_name}\' type as argument for this function.', )
 
 #------------------------------------------------------------------
-# Child Class PointTypeError.
+# Child Class CPointTypeError.
 #  
-class PointTypeError( TypeError ):
+class CPointTypeError( TypeError ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
@@ -60,9 +60,9 @@ class PointTypeError( TypeError ):
         self.args = ( f'{self.__class__.__name__}: Size mismatch. {class_name}.{attrib_name} attribute gets a tuple with length of 2 or 3.', )
  
 #------------------------------------------------------------------
-# Child Class LineTypeError.
+# Child Class CLineTypeError.
 #  
-class LineTypeError( TypeError ):
+class CLineTypeError( TypeError ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
@@ -70,9 +70,9 @@ class LineTypeError( TypeError ):
         self.args = ( f'{self.__class__.__name__}: Size mismatch. {class_name}.{attrib_name} attribute gets a tuple with length of 3.', )
  
 #------------------------------------------------------------------
-# Child Class ArgumentsError.
+# Child Class CArgumentsError.
 #  
-class ArgumentsError( Exception ):
+class CArgumentsError( Exception ):
     def __init__( self, *args ) -> None:
         super().__init__( self, args )
 
