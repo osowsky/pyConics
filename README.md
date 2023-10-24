@@ -19,13 +19,10 @@ You can install this package, as well:
 pip install pyConics
 ```
 
-**NOTE**<br>
-Highlights information that users should take into account, even when skimming.
+<span style="color:green">**NOTE:**<br></span>
+ Highlights information that users should take into account, even when skimming.
 
-[!IMPORTANT]
-Crucial information necessary for users to succeed.
-
-[!WARNING]
+<span style="color:red">**WARNING**<br></span>
 Critical content demanding immediate user attention due to potential risks.
 
 ## Usage
