@@ -23,8 +23,6 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
-from pyConics.errors import AttributeError
-
 #------------------------------------------------------------------
 # Import as...
 #  
@@ -58,5 +56,4 @@ const = CConstants()
 if __name__ == '__main__':
     print( f'The value of infinity is {const.inf}' )
     print( f'Is infinity equals to 0.0? {const.inf == 0.0}' )
-
     print( f'The value of pi is {const.pi:.6f}' )
