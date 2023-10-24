@@ -31,10 +31,10 @@ from pyConics.errors import AttributeError
 import numpy as np
 
 #------------------------------------------------------------------
-# Data Class Constants.
+# Data Class CConstants.
 #  
 @dataclass
-class Constants:
+class CConstants:
     _inf: float = np.Inf
     _pi : float = np.pi
 
@@ -42,23 +42,15 @@ class Constants:
     def inf( self ) -> float:
         return self._inf
     
-    @inf.setter
-    def inf( self, inf_number: float ) -> None:
-       raise AttributeError( self.__class__.__name__, Constants.inf.fset.__name__ )
-    
     @property
     def pi( self ) -> float:
         return self._pi
-    
-    @pi.setter
-    def pi( self, pi_number: float ) -> None:
-       raise AttributeError( self.__class__.__name__, Constants.pi.fset.__name__ )
     
 
 #--------------------------------------------------------------
 # Global variable.
 #
-const = Constants()
+const = CConstants()
 
 #------------------------------------------------------------------
 # For development and test.
@@ -66,14 +58,5 @@ const = Constants()
 if __name__ == '__main__':
     print( f'The value of infinity is {const.inf}' )
     print( f'Is infinity equals to 0.0? {const.inf == 0.0}' )
-    try:
-        const.inf = 0.0
-    except AttributeError as e:
-        print( e )
-    
+
     print( f'The value of pi is {const.pi:.6f}' )
-    try:
-        const.pi = 0.0
-    except AttributeError as e:
-        print( e )
-    
