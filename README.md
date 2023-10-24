@@ -20,15 +20,19 @@ pip install pyConics
 ```
 
 <span style="color:green">**NOTE:**<br></span>
- Highlights information that users should take into account, even when skimming.
-
-<span style="color:red">**WARNING**<br></span>
-Critical content demanding immediate user attention due to potential risks.
+*`pyConics` has been tested on Windows 10 and Elementary 6 OSes. If something is
+going wrong with other OS, please reach me out so that I can fix your problem.* 
 
 ## Usage
 
 `pyConics` can be used to handle points, lines and conics by using algebraic
 geometry and homogeneous coordinates.
+
+<span style="color:red">**WARNING:**<br></span>
+*To avoid any conflict name, from the version 1.0.0 onwards, the Point and Line
+classes had their names changed to CPoint and CLine, respectively.
+For this reason, all of the examples in this file, `README.md`, had to be updated,
+renaming these classes with their new names. I apologize for that.*
 
 ### Working with points
 
