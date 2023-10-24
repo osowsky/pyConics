@@ -5,7 +5,7 @@
 #------------------------------------------------------------------
 # Import from...
 #
-from pyConics import Point, Line, origin
+from pyConics import CPoint, CLine, origin
 
 #------------------------------------------------------------------
 # Import as...
@@ -49,19 +49,19 @@ def test_version():
 
 def test_origin():
     # Points.
-    p1 = Point( ( 1, 3 ), 'p1' )
-    p2 = Point( ( 0, 4 ), 'p2' )
-    p3 = Point( ( -2, 0 ), 'p3' )
-    p4 = Point( ( 2, 0 ), 'p4' )
-    p5 = Point( ( 0, -4 ), 'p5' )
+    p1 = CPoint( ( 1, 3 ), 'p1' )
+    p2 = CPoint( ( 0, 4 ), 'p2' )
+    p3 = CPoint( ( -2, 0 ), 'p3' )
+    p4 = CPoint( ( 2, 0 ), 'p4' )
+    p5 = CPoint( ( 0, -4 ), 'p5' )
 
     # Lines.
     l1 = p2 * p3
     l2 = p4 * p5
-    l3 = Line( ( 2, 1, 0 ), 'l3' )
-    l4  = Line( ( 1, 0, -2 ), 'l4' )
-    l5 = Line( ( 0, 1, -4 ), 'l5' )
-    l6 = Line( ( 1, -1, 0 ), 'l6' )
+    l3 = CLine( ( 2, 1, 0 ), 'l3' )
+    l4 = CLine( ( 1, 0, -2 ), 'l4' )
+    l5 = CLine( ( 0, 1, -4 ), 'l5' )
+    l6 = CLine( ( 1, -1, 0 ), 'l6' )
 
     # assert p1 == p2
 
