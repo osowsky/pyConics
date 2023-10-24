@@ -2,13 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.0 (23/10/2023)
+
+- pyConics classes have been renamed by adding a prefix C in
+front of every class name, i.e., Point class has become CPoint
+and Line class has become CLine.
+- CFigure and CAxes classes have been created. Thus, they can
+be used to plot CPoint, CLine and in the future CConic.
+- function.py has been renamed to utils.py.
+
 ## v0.2.6 (20/10/2023)
 
-- A dependency conflict was resolved.
+- A dependency conflict has been resolved.
 
 ## v0.2.5 (20/10/2023)
 
-- A bug was fixed in README.md.
+- A bug has been fixed in README.md.
 
 ## v0.2.0 (20/10/2023)
 
@@ -21,7 +30,7 @@ TYPE_CHECKING constant from typing module.
 
 ## v0.1.0-beta (14/10/2023)
 
-- New methods was added in Point and Line classes.
+- New methods have been added in Point and Line classes.
 Point class: are_coincident() method.
 Line class: are_coincident() and are_concurrent() methods.
 

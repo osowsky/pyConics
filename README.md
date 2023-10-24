@@ -19,6 +19,15 @@ You can install this package, as well:
 pip install pyConics
 ```
 
+**NOTE**<br>
+Highlights information that users should take into account, even when skimming.
+
+[!IMPORTANT]
+Crucial information necessary for users to succeed.
+
+[!WARNING]
+Critical content demanding immediate user attention due to potential risks.
+
 ## Usage
 
 `pyConics` can be used to handle points, lines and conics by using algebraic
@@ -51,10 +60,10 @@ where $\enspace\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
 How to work with points in `pyConics`.
 
 ```python
-    from pyConics import Point
+    from pyConics import CPoint
 
-    p1 = Point( ( 0.0, 1.0 ), 'p1' ) # p1 = ( 0.0, 1.0 ).
-    p2 = Point( ( 1.0, 1.0 ), 'p2' ) # p2 = ( 1.0, 1.0 ).
+    p1 = CPoint( ( 0.0, 1.0 ), 'p1' ) # p1 = ( 0.0, 1.0 ).
+    p2 = CPoint( ( 1.0, 1.0 ), 'p2' ) # p2 = ( 1.0, 1.0 ).
 
     print( p1 ) # -> p1: [0.0000e+00 1.0000e+00 1.0000e+00].
     print( p2 ) # -> p2: [1.0000e+00 1.0000e+00 1.0000e+00].
@@ -65,7 +74,7 @@ How to work with points in `pyConics`.
     d12 = p1.distance( p2 )
     print( f'Distance from {p1}\nto {p2} is {d12:.4f}.\n' ) # -> d12 = 1.0.
 
-    p3 = Point( ( 1, 1, 0 ), 'p3' ) # Point at the infinity.
+    p3 = CPoint( ( 1, 1, 0 ), 'p3' ) # Point at the infinity.
     print( p3 ) # -> p3: [1.0000e+00 1.0000e+00 0.0000e+00] -> point at the infinity.
     print()
 
@@ -118,12 +127,12 @@ where $\enspace\gamma\enspace\in\enspace\mathcal{R}$
 How to work with lines in `pyConics`.
 
 ```python
-    from pyConics import Line
+    from pyConics import CLine
 
-    l1 = Line( ( 1, -1, 1 ), 'l1' )         # l1: y = x + 1
-    l2 = Line( ( 1.5, -1.5, -1.5 ), 'l2' )  # l2: 1.5y = 1.5x - 1.5
-    l3 = Line( ( -1, -1, 1 ), 'l3' )        # l3: y = -x + 1
-    l4 = Line( ( 2, 2, -2 ), 'l4' )         # l4: 2y = -2x + 2
+    l1 = CLine( ( 1, -1, 1 ), 'l1' )         # l1: y = x + 1
+    l2 = CLine( ( 1.5, -1.5, -1.5 ), 'l2' )  # l2: 1.5y = 1.5x - 1.5
+    l3 = CLine( ( -1, -1, 1 ), 'l3' )        # l3: y = -x + 1
+    l4 = CLine( ( 2, 2, -2 ), 'l4' )         # l4: 2y = -2x + 2
 
     print( l1 ) # -> l1: ( x, y ) | [1.0000e+00 -1.0000e+00 1.0000e+00] * [ x y 1 ]' = 0.
     print( l2 ) # -> l2: ( x, y ) | [1.5000e+00 -1.5000e+00 -1.5000e+00] * [ x y 1 ]' = 0.
@@ -163,8 +172,8 @@ How to work with lines in `pyConics`.
     print( f'Distance from l3 to l4 is {l3.distance( l4 ):.4f}.\n' )
 
     # Lines at infinity.
-    l5 = Line( ( 0, 0, 2 ), 'l5' )
-    l6 = Line( ( 1, -1, 1 ), 'l6' )
+    l5 = CLine( ( 0, 0, 2 ), 'l5' )
+    l6 = CLine( ( 1, -1, 1 ), 'l6' )
     print( l5 )
     print( l6 )
     print( f'Is l5 a line at infinity? {l5.at_infinity()}.' )
@@ -223,22 +232,22 @@ $$
 How to work with points and lines in `pyConics`.
 
 ```python
-    from pyConics import Point, Line
+    from pyConics import CPoint, CLine
 
     # Points.
-    p1 = Point( ( 1, 3 ), 'p1' )   # p1 = ( 1, 3 )
-    p2 = Point( ( 0, 4 ), 'p2' )   # p2 = ( 0, 4 )
-    p3 = Point( ( -2, 0 ), 'p3' )  # p3 = ( -2, 0 )
-    p4 = Point( ( 2, 0 ), 'p4' )   # p4 = ( 2, 0 )
-    p5 = Point( ( 0, -4 ), 'p5' )  # p5 = ( 0, -4 )
+    p1 = CPoint( ( 1, 3 ), 'p1' )   # p1 = ( 1, 3 )
+    p2 = CPoint( ( 0, 4 ), 'p2' )   # p2 = ( 0, 4 )
+    p3 = CPoint( ( -2, 0 ), 'p3' )  # p3 = ( -2, 0 )
+    p4 = CPoint( ( 2, 0 ), 'p4' )   # p4 = ( 2, 0 )
+    p5 = CPoint( ( 0, -4 ), 'p5' )  # p5 = ( 0, -4 )
 
     # Lines.
-    l1 = Line( ( 2, -1, 4 ), 'l1' )   #l1: y = 2x + 4
-    l2 = Line( ( 2, -1, -4 ), 'l2' )  #l2: y = 2x - 4
-    l3 = Line( ( 2, 1, 0 ), 'l3' )    #l3: y = -2x
-    l4 = Line( ( 1, 0, -2 ), 'l4' )   #l4: x = 2
-    l5 = Line( ( 0, 1, -4 ), 'l5' )   #l5: y = 4
-    l6 = Line( ( 3, -1, 0 ), 'l6' )   #l6: y = 3x
+    l1 = CLine( ( 2, -1, 4 ), 'l1' )   #l1: y = 2x + 4
+    l2 = CLine( ( 2, -1, -4 ), 'l2' )  #l2: y = 2x - 4
+    l3 = CLine( ( 2, 1, 0 ), 'l3' )    #l3: y = -2x
+    l4 = CLine( ( 1, 0, -2 ), 'l4' )   #l4: x = 2
+    l5 = CLine( ( 0, 1, -4 ), 'l5' )   #l5: y = 4
+    l6 = CLine( ( 3, -1, 0 ), 'l6' )   #l6: y = 3x
 
     # Test whether a point is in or is not in a Line.
     print( l1, p1, p2, p3, sep='\n' )
@@ -256,23 +265,23 @@ How to work with points and lines in `pyConics`.
     # Use the cross product to handle points and lines.
     # 1) the cross product between two points gives us a line that
     #    passes through these points.
-    l: Line = p2 * p3
+    l: CLine = p2 * p3
     l.name = 'l'
     print( l1, l, sep='\n' )
     print( f'Are l and l1 coincident? {l==l1}.\n' )
-    l: Line = p4 * p5
+    l: CLine = p4 * p5
     l.name = 'l'
     print( l2, l, sep='\n' )
     print( f'Are l and l2 coincident? {l==l2}.\n' )
 
     # 2) the cross product between two lines gives us their point
     #    of intersection.
-    p: Point = l1 * l3
+    p: CPoint = l1 * l3
     p.name = 'p'
     print( l1, l3, p, sep='\n' )
     print( f'Is p in l1? {p in l1}.' )
     print( f'Is p in l3? {p in l3}.\n' )
-    p: Point = l2 * l4
+    p: CPoint = l2 * l4
     p.name = 'p'
     print( l2, l4, p4, p, sep='\n' )
     print( f'Is p in l2? {p in l2}.' )
@@ -281,7 +290,7 @@ How to work with points and lines in `pyConics`.
 
     # Two parallel lines have their point of intersection at infinity.
     # So, ...
-    p: Point = l1 * l2
+    p: CPoint = l1 * l2
     p.name = 'p'
     print( l1, l2, p, sep='\n' )
     print( f'Is p in l1? {p in l1}.' )
@@ -292,12 +301,12 @@ How to work with points and lines in `pyConics`.
     # 3) the cross product between a point and a line gives us a
     #    line which is perpendicular to that line and passes
     #    through that point.
-    l: Line = l2 * p2
+    l: CLine = l2 * p2
     l.name = 'l'
     print( p2, l2, l, sep='\n' )
     print( f'Is p2 in l? {p2 in l}.' )
     print( f'Are l2 and l perpendicular? {l2 + l}.\n' )
-    p: Point = l2 * l
+    p: CPoint = l2 * l
     p.name = 'p'
     print( l2, l, p, sep='\n' )
     print( f'Is p in l? {p in l}.' )
