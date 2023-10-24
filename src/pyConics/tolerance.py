@@ -32,7 +32,7 @@ import numpy as np
 # Data Class Origin.
 #  
 @dataclass
-class Tolerance:
+class CTolerance:
     eps_iszero: float = 1e-4    # It is used in iszero function.
     eps_relzero: float = 1e-5   # It is used in adjust2relzeros function.
 
@@ -80,7 +80,7 @@ def _larger_rank( x: np.ndarray ) -> float:
 #--------------------------------------------------------------
 # Global variable.
 #
-tol = Tolerance()
+tol = CTolerance()
 
 #------------------------------------------------------------------
 # For development and test.
