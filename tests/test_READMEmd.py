@@ -176,6 +176,36 @@ def test_Points_And_Lines():
     print( f'Distance from p2 to l2 = {p2.distance( l2 ):.4f}.' )
     print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
 
+def test_Plotting_Points_And_Lines():
+    from pyConics import CPoint, CLine
+    from pyConics import CFigure, CAxes
+
+    # True for blocking CFigure show() method.
+    # Here we are going to work with nonblocking show() method.
+    # Thus, we have to update CFigure after every plotting command.
+    # You can change the blocking/nonblocking mode by setting
+    # blocking = True.
+    blocking = True
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f1: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 2x2 grid of axes from f1.
+    f1.create_axes( ( 2, 2 ) )
+
+    # Get the list of CAxes classes for the 2x2 grid.
+    axes: list[ CAxes ] = f1.axes
+
+    # Display the figure.
+    if ( not blocking ):
+        CFigure.show( False )
+
+    # If the Figure is blocking, then show it.
+    if ( blocking ):
+        f1.show()
+    
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -188,4 +218,6 @@ if __name__ == '__main__':
     print()
     test_Points_And_Lines()
     print()
-
+    test_Plotting_Points_And_Lines()
+    print()
+    

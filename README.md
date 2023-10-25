@@ -318,6 +318,12 @@ How to work with points and lines in `pyConics`.
     print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
 ```
 
+### Plotting points and lines
+
+<p style="text-align:center;">
+<img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
+</p>
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines.

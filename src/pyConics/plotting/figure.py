@@ -112,7 +112,7 @@ class CFigure:
 if ( __name__  == '__main__' ):
     from pyConics import CPoint, CLine
 
-    # True for blocking Figure.
+    # True for blocking CFigure.
     blocking = True
 
     # Create figures.
