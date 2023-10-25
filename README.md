@@ -320,8 +320,8 @@ How to work with points and lines in `pyConics`.
 
 ### Plotting points and lines
 
-<p style="text-align:center;">
-<img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
+<p align="center">
+    <img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
 </p>
 
 ## Contributing
