@@ -13,7 +13,10 @@ __version__ = version( 'pyConics' )
 #------------------------------------------------------------------
 # Modules that belong to pyConics package.
 #
-from .origin import *
-from .tolerance import *
-from .point import *
-from .line import *
+from pyConics.origin import *
+from pyConics.tolerance import *
+from pyConics.point import *
+from pyConics.line import *
+
+from pyConics.plotting import *
+
