@@ -12,6 +12,9 @@ __all__ = [ 'CAxes' ]
 # Import from ...
 #  
 from matplotlib import pyplot as plt
+from pyConics import CPoint, CLine
+from pyConics.plotting.utils import CPoint2CoordXY, CLine2MatrixXY
+from pyConics.plotting.utils import CPointList2MatrixXY, CLineList2MatrixXY
 
 #------------------------------------------------------------------
 # Import from...
@@ -38,7 +41,8 @@ class CAxes:
         self._yres = 1000
 
     def __repr__( self ) -> str:
-        return f'{self.__class__.__name__} class.'
+        _arts = self._axes.findobj( None )
+        return f'{self.__class__.__name__} class with {len( _arts )} objects.'
 
     def get_pyplot_axes( self ) -> plt.Axes: #type: ignore
         return self._axes
@@ -79,8 +83,65 @@ class CAxes:
     def resolution( self ) -> tuple[ int, int ]:
         return ( self._xres, self._yres )
     
-    def plot( self, *args, scalex = True, scaley = True, data = None, **kwargs ) -> None:
-        self._axes.plot( *args, scalex, scaley, data, **kwargs ) # type: ignore
+    def plot( self, *args, clinesamples: int = 11, **kwargs ) -> None:
+        new_args = [] # new arguments to be passed into axes.plot.
+
+        # Search for a CPoint, a CLine, or lists of them.
+        for arg in args:
+            if ( isinstance( arg, CPoint ) ):
+                # Convert a CPoint to a XY-coord.
+                xy = CPoint2CoordXY( arg )
+                new_args.append( xy[ 0 ] )
+                new_args.append( xy[ 1 ] )
+                continue
+
+            if ( isinstance( arg, CLine ) ):
+                # Convert a CLine to a (nx2)-matrix.
+                xy = CLine2MatrixXY( arg, self.xlim, self.ylim, clinesamples )
+                new_args.append( xy[ :, 0 ] )
+                new_args.append( xy[ :, 1 ] )
+                continue
+
+            if ( isinstance( arg, list ) ):
+                # It is a list, but is it a list of CPoint or CLine?
+                if ( not _is_cpoint_list( arg ) ) and ( not _is_cline_list( arg ) ):
+                    new_args.append( arg )
+                    continue
+
+                # Yes. It is a list of CPoint or CLine.
+                if ( _is_cpoint_list( arg ) ):
+                    # convert the list to a (nx2)-matrix.
+                    xy = CPointList2MatrixXY( arg )
+                    new_args.append( xy[ :, 0 ] )
+                    new_args.append( xy[ :, 1 ] )
+                    continue
+
+                if ( _is_cline_list( arg ) ):
+                    # convert the list to a list of (nxm)-matrix.
+                    xy = CLineList2MatrixXY( arg, self.xlim, self.ylim, clinesamples )
+                    new_args.append( xy[ 0 ] )
+                    new_args.append( xy[ 1 ] )
+                    continue
+
+            # It is not a pyConic object.
+            new_args.append( arg )
+
+        self._axes.plot( *tuple( new_args ), **kwargs ) # type: ignore
+
+#------------------------------------------------------------------
+# Internal functions.
+#  
+def _is_cpoint_list( arg: list ) -> bool:
+    for p in arg:
+        if ( not isinstance( p, CPoint ) ):
+            return False
+    return True
+
+def _is_cline_list( arg: list ) -> bool:
+    for l in arg:
+        if ( not isinstance( l, CLine ) ):
+            return False
+    return True
 
 #------------------------------------------------------------------
 # For development and test.

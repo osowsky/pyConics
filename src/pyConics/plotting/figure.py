@@ -11,7 +11,7 @@ __all__ = [ 'CFigure' ]
 #------------------------------------------------------------------
 # Import from ...
 #  
-from pyConics.errors import ValueError
+from pyConics.errors import CValueError
 from matplotlib import pyplot as plt
 from pyConics.plotting.axes import CAxes
 
@@ -50,7 +50,7 @@ class CFigure:
             self._fig = plt.figure( figsize = ( w, h ), layout = 'constrained' )
         elif ( unit == '' ):
             if ( ( abs( w ) > 1.0 ) or ( abs( h ) > 1.0 ) ):
-                raise ValueError( self.__class__.__name__, 'when unit=\'\', size argument must not be greater than 1.' )
+                raise CValueError( self.__class__.__name__, 'when unit=\'\', size argument must not be greater than 1.' )
             if ( w == 0.0 ):
                 w = h
             elif ( h == 0.0 ):
@@ -61,7 +61,7 @@ class CFigure:
             h = round( h * ( height / dpi ), 1 )
             self._fig = plt.figure( figsize = ( w, h ), layout = 'constrained' )
         else:
-            raise ValueError( self.__class__.__name__, 'unit argument must be either an empty string or \'inche\'.' )
+            raise CValueError( self.__class__.__name__, 'unit argument must be either an empty string or \'inche\'.' )
 
     def __repr__( self ) -> str:
         l = len( self._axes )
@@ -110,6 +110,11 @@ class CFigure:
 # For development and test.
 #  
 if ( __name__  == '__main__' ):
+    from pyConics import CPoint, CLine
+
+    # True for blocking Figure.
+    blocking = True
+
     # Create figures.
     # f1 = CFigure( size = ( 6.4, 4.8 ), unit = 'inche' )
     # print( f1 )
@@ -125,22 +130,27 @@ if ( __name__  == '__main__' ):
 
     # Get a list of CAxes class.
     axes = f2.axes
-    print( axes )
+    # print( axes )
     for ax in axes:
         print( ax )
-        print( ax.get_pyplot_axes() )
+        # print( ax.get_pyplot_axes() )
 
     # Get a list of pyPlot's Axes class.
     # print( f2.get_pyplot_axes() )
     # print( pp_fig2.get_axes() )
 
     # Display all Figures.
-    CFigure.show( False )
+    if ( not blocking ):
+        CFigure.show( False )
 
     # Change the x- and y-axis limits of axes[ 0 ].
     axes[ 0 ].xlim = ( 0, 2 )
     axes[ 0 ].ylim = ( -1, 1 )
-    input( 'Press any key to continue...' )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
 
     # Change the x- and y-ticks of axes[ 0 ].
     xtick = np.linspace( 0, 2, 11 )
@@ -149,23 +159,95 @@ if ( __name__  == '__main__' ):
     axes[ 0 ].yticks = ytick
 
     # Redraw all figure to update its canvas.
-    f2.update_canvas()
-    input( 'Press any key to continue...' )
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
 
     # Plot a point and a line on axes[ 0 ].
     x = 1.0
     y = 0.0
     axes[ 0 ].plot( x, y, 'ob', markersize = 12 )
-    f2.update_canvas()
     x = np.linspace( 0, 2, 11 )
     y = -x + 1
     axes[ 0 ].plot( x, y, 'r-', linewidth = 0.5 )
-    f2.update_canvas()
-    input( 'Press any key to continue...' )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
 
     # Plot a line on axes[ 3 ].
     x = np.linspace( 0.0, 1.0, 11 )
     y = x
     axes[ 3 ].plot( x, y, 'sr-', linewidth = 2, markersize = 8 )
-    f2.update_canvas()
-    input( 'Press any key to continue...' )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+    
+    # Plot a line on axes[ 1 ] using a matrix as parameter.
+    x = np.linspace( 0.0, 1.0, 11 )
+    x = x[np.newaxis].T # transform an 1D array into a 2D array and get its transpose.
+    y = 1.2 * x
+    YY = np.block( [ [ x, y ] ] )
+    axes[ 1 ].plot( x, YY, 'b-', linewidth = 1 ) # must use x and y parameters.
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+    
+    # Plot CPoint objects on axes[ 2 ].
+    p1 = CPoint( ( 0.5, 0.6 ), 'p1' )
+    p2 = CPoint( ( 0.5, 0.7 ), 'p2' )
+    axes[ 2 ].plot( p1, '^g', p2, 'om', markersize = 6 )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot CLine object on axes[ 2 ].
+    l1 = CLine( ( -4.0, -4.0, 4.0 ), 'l1' )
+    # p2 = CPoint( ( 0.5, 0.6 ), 'p2' )
+    axes[ 2 ].plot( l1, 'oy-', linewidth = 1, clinesamples = 21, markersize = 4 )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a list of CPoint objects on axes[ 2 ].
+    p1 = CPoint( ( 0.0, 0.8 ), 'p1' )
+    p2 = CPoint( ( 0.2, 0.8 ), 'p2' )
+    p3 = CPoint( ( 0.4, 0.8 ), 'p3' )
+    p4 = CPoint( ( 0.6, 0.8 ), 'p4' )
+    p5 = CPoint( ( 0.8, 0.8 ), 'p5' )
+    p6 = CPoint( ( 1.0, 0.8 ), 'p6' )
+    plist = [ p1, p2, p3, p4, p5, p6 ]
+    axes[ 2 ].plot( plist, 'ob', [ 0.9, 0.9, 0.9 ], [ 0.2, 0.3, 0.4 ], 'or',
+                    markersize = 6 )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a list of CLine objects.
+    l1 = CLine( ( 0.0, 1.0, -0.2 ), 'l1' )
+    l2 = CLine( ( 0.0, 1.0, -0.3 ), 'l2' )
+    l3 = CLine( ( 0.0, 1.0, -0.9 ), 'l3' )
+    l4 = CLine( ( 1.0, 0.0, -0.1 ), 'l4' )
+    llist = [ l1, l2, l3, l4 ]
+    axes[ 2 ].plot( llist, 'sm-', linewidth = 0.5, markersize = 3, clinesamples = 11 )
+
+    # Redraw all figure to update its canvas.
+    if ( not blocking ):
+        f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # If the Figure is blocking, then show it.
+    if ( blocking ):
+        f2.show()
+    
