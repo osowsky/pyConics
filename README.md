@@ -472,7 +472,7 @@ An example code to do this is shown below.
     from pyConics import CFigure, CAxes
 
     # Set interactive mode.
-    # CFigure.ion()
+    CFigure.ion()
 
     # Create an empty figure.
     # Its width and height are relative to the screen size.
@@ -501,16 +501,6 @@ An example code to do this is shown below.
     if ( CFigure.is_interactive() ):
         input( 'Press any key to continue...' )
 ```
-
-
-
-
-
-
-
-
-
-
 
 ### Drawing points (`CPoint`) and lines (`CLine`) on CAxes Class *(v1.0.0 onwards)*
 
