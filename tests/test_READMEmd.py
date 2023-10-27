@@ -311,21 +311,144 @@ def test_Font_Size():
     # If CFigure.ion() is on then you need to press a key to continue.
     if ( CFigure.is_interactive() ):
         input( 'Press any key to continue...' )
-   
+
+def test_Plot_Point():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a point using numpy.
+    p1 = np.array( [ 0.5, 0.6 ] )       # p1 =( 0.5, 0.6 ) 
+
+    # Creating a point using CPoint.
+    p2 = CPoint( ( 0.5, 0.4 ), 'p2' )   # p2 =( 0.5, 0.4 )
+
+    # Plotting both points
+    ax[ 0 ].plot( p1[ 0 ], p1[ 1 ], 'ob', p2, 'om' )
+
+    # Show Figure on screen.
+    # CFigure.show()
+
+def test_Plot_List_Point():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a list of points using numpy.
+    p = np.array( [ [ 0.3, 0.1 ],       # p = ( 0.3, 0.1 )
+                    [ 0.3, 0.2 ],       # p = ( 0.3, 0.2 )
+                    [ 0.3, 0.3 ],       # p = ( 0.3, 0.3 )
+                    [ 0.3, 0.4 ],       # p = ( 0.3, 0.4 )
+                    [ 0.3, 0.5 ] ] )    # p = ( 0.3, 0.5 )
+
+    # Creating a list of points using CPoint.
+    p1 = CPoint( ( 0.7, 0.5 ), 'p1' )
+    p2 = CPoint( ( 0.7, 0.6 ), 'p2' )
+    p3 = CPoint( ( 0.7, 0.7 ), 'p3' )
+    p4 = CPoint( ( 0.7, 0.8 ), 'p4' )
+    p5 = CPoint( ( 0.7, 0.9 ), 'p5' )
+    pl = [ p1, p2, p3, p4, p5 ]
+
+    # Plotting both the lists of points
+    ax[ 0 ].plot( p[ :, 0 ], p[ :, 1 ], 'ob', pl, '^m', markersize = 8 )
+
+    # Show Figure on screen.
+    # CFigure.show()
+
+def test_Plot_Line():
+    from pyConics import CFigure, CAxes
+    from pyConics import CLine
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a line using numpy.
+    x_i, x_f = ax[ 0 ].xlim
+    x = np.linspace( x_i, x_f, 11 )
+    y = 1.05 * x                            #  y = 1.05x
+
+    # Creating a line using CLine.
+    l1 = CLine( ( 1.05, 1.0, -1.0 ), 'l1' ) # y = -1.05x + 1.0 
+
+    # Plotting both lines ( clinesamples = 11 )
+    ax[ 0 ].plot( x, y, 'ob-', l1, 'sm-', linewidth = 0.5, markersize = 6 )
+
+    # Plotting a vertical line with clinesamples = 21
+    l2 = CLine( ( 1.0, 0.0, -0.8 ), 'l2' )  # x = 0.8 for all y.
+    ax[ 0 ].plot( l2, '^y-', clinesamples = 21, linewidth = 0.5, markersize = 6 )
+
+    # Show Figure on screen.
+    # CFigure.show()
+
+def test_Plot_List_Line():
+    from pyConics import CFigure, CAxes
+    from pyConics import CLine
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+
+
+
+
+    # Show Figure on screen.
+    CFigure.show()
+
 #------------------------------------------------------------------
 # For development and test.
 #  
 if __name__ == '__main__':
     # Test point script for README.md usage.
-    print()
     test_Points()
-    print()
     test_Lines()
-    print()
     test_Points_And_Lines()
-    print()
     test_Set_Up()
-    print()
     test_Font_Size()
-    print()
-    
+    test_Plot_Point()
+    test_Plot_List_Point()
+    test_Plot_Line()
+    test_Plot_List_Line()

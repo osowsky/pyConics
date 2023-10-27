@@ -513,6 +513,143 @@ This `plot()` method has been derived from the `pyPlot`'s `plot()` method.
 Therefore, everything you did with `pyPlot`'s `plot()`, you can continue
 to do with `plot()` method that belongs to the `CAxes` class. 
 
+In addition, `CAxes.plot()` method can receive either a point such as `CPoint`, a
+straight line such as `Cline`, a list of points such as `list[CPoint]` or a
+list of straight lines such as `list[CLine]` as argument to be plotted on
+screen (into a `CAxes` class).
+
+Now, let's start.
+
+- Plotting a `CPoint` and a `numpy` point.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a point using numpy.
+    p1 = np.array( [ 0.5, 0.6 ] )       # p1 =( 0.5, 0.6 ) 
+
+    # Creating a point using CPoint.
+    p2 = CPoint( ( 0.5, 0.4 ), 'p2' )   # p2 =( 0.5, 0.4 )
+
+    # Plotting both points
+    ax[ 0 ].plot( p1[ 0 ], p1[ 1 ], 'ob', p2, 'om' )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot/points.jpeg"/>
+</p>
+
+- Plotting a list of `CPoint` and a list of `numpy` points.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a list of points using numpy.
+    p = np.array( [ [ 0.3, 0.1 ],       # p[ 0 ] = ( 0.3, 0.1 )
+                    [ 0.3, 0.2 ],       # p[ 1 ] = ( 0.3, 0.2 )
+                    [ 0.3, 0.3 ],       # p[ 2 ] = ( 0.3, 0.3 )
+                    [ 0.3, 0.4 ],       # p[ 3 ] = ( 0.3, 0.4 )
+                    [ 0.3, 0.5 ] ] )    # p[ 4 ] = ( 0.3, 0.5 )
+
+    # Creating a list of points using CPoint.
+    p1 = CPoint( ( 0.7, 0.5 ), 'p1' )   # p1 = ( 0.7, 0.5 )
+    p2 = CPoint( ( 0.7, 0.6 ), 'p2' )   # p2 = ( 0.7, 0.6 )
+    p3 = CPoint( ( 0.7, 0.7 ), 'p3' )   # p3 = ( 0.7, 0.7 )
+    p4 = CPoint( ( 0.7, 0.8 ), 'p4' )   # p4 = ( 0.7, 0.8 )
+    p5 = CPoint( ( 0.7, 0.9 ), 'p5' )   # p5 = ( 0.7, 0.9 )
+    pl = [ p1, p2, p3, p4, p5 ]
+
+    # Plotting both the list of points
+    ax[ 0 ].plot( p[ :, 0 ], p[ :, 1 ], 'ob', pl, '^m', markersize = 8 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot/point-list.jpeg"/>
+</p>
+
+- Plotting a `CLine` and a `numpy` line.
+
+A `CLine` is drawn with a number of points determined by the *clinesamples*
+parameter, with its default value being 11.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CLine
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Creating a line using numpy.
+    x_i, x_f = ax[ 0 ].xlim
+    x = np.linspace( x_i, x_f, 11 )
+    y = 1.05 * x                            #  y = 1.05x
+
+    # Creating a line using CLine.
+    l1 = CLine( ( 1.05, 1.0, -1.0 ), 'l1' ) # y = -1.05x + 1.0 
+
+    # Plotting both lines ( clinesamples = 11 )
+    ax[ 0 ].plot( x, y, 'ob-', l1, 'sm-', linewidth = 0.5, markersize = 6 )
+
+    # Plotting a vertical line with clinesamples = 21
+    l2 = CLine( ( 1.0, 0.0, -0.8 ), 'l2' )  # x = 0.8 for all y.
+    ax[ 0 ].plot( l2, '^y-', clinesamples = 21, linewidth = 0.5, markersize = 6 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+<p align="center">
+    <img src="./docs/figs/howto-plot/lines.jpeg"/>
+</p>
+
+
+
+
+
+
 
 
 ## Contributing
@@ -531,7 +668,9 @@ It is licensed under the terms of the GNU General Public License v3.0 license.
 `pyConics` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/)
 and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
 
-`pyConics` has used the following Python packages since its first release:
+`pyConics` has used the following Python packages since its creation:
 
-- `numpy`
+- [`numpy`](https://numpy.org/doc/stable/)
+- [`matplotlib (pyPlot)`](https://matplotlib.org/stable/tutorials/pyplot.html)
+- [`PyAutoGUI`](https://pyautogui.readthedocs.io/en/latest/#)
 - `pytest`
