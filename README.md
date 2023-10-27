@@ -645,10 +645,46 @@ parameter, with its default value being 11.
     <img src="./docs/figs/howto-plot/lines.jpeg"/>
 </p>
 
+- Plotting a list of `CLine`.
 
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CLine
+    import numpy as np 
 
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
 
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
 
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f.axes
+
+    # Create some lines and add them to a list.
+    l1 = CLine(( 0.0, 1.0, -0.1 ), 'l1' )   # y = 0.1 for all x
+    l2 = CLine(( 0.0, 1.0, -0.9 ), 'l2' )   # y = 0.9 for all x
+    l3 = CLine(( 1.0, 0.0, -0.1 ), 'l3' )   # x = 0.1 for all y
+    l4 = CLine(( 1.0, 0.0, -0.9 ), 'l4' )   # x = 0.9 for all y
+    l = [ l1, l2, l3, l4 ]
+    ax[ 0 ].plot( l, 'ob-', clinesamples = 11, linewidth = 0.5, markersize = 4 )
+
+    # Create some others lines and add them to a list.
+    l5 = CLine(( 1.0, 1.0, -1.0 ), 'l5' )   # y = -x + 1
+    l6 = CLine(( 1.0, -1.0, 0.0 ), 'l6' )   # y = x
+    l = [ l5, l6 ]
+    ax[ 0 ].plot( l, 'or:', clinesamples = 21, linewidth = 1.0, markersize = 6 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot/line-list.jpeg"/>
+</p>
 
 
 
