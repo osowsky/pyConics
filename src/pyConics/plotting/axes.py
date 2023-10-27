@@ -10,7 +10,8 @@ __all__ = [ 'CAxes' ]
 
 #------------------------------------------------------------------
 # Import from ...
-#  
+#
+from pyConics.constants import const
 from matplotlib import pyplot as plt
 from pyConics import CPoint, CLine
 from pyConics.plotting.utils import CPoint2CoordXY, CLine2MatrixXY
@@ -37,8 +38,6 @@ import numpy as np
 class CAxes:
     def __init__( self, axes: plt.Axes ) -> None: #type: ignore
         self._axes = axes
-        self._xres = 1000
-        self._yres = 1000
 
     def __repr__( self ) -> str:
         _arts = self._axes.findobj( None )
@@ -69,6 +68,7 @@ class CAxes:
     
     @xticks.setter
     def xticks( self, xt: np.ndarray ) -> None:
+        self._axes.tick_params( axis = 'x', labelsize = const.tickssize )
         self._axes.set_xticks( xt )
 
     @property
@@ -77,12 +77,33 @@ class CAxes:
     
     @yticks.setter
     def yticks( self, yt: np.ndarray ) -> None:
+        self._axes.tick_params( axis = 'y', labelsize = const.tickssize )
         self._axes.set_yticks( yt )
 
     @property
-    def resolution( self ) -> tuple[ int, int ]:
-        return ( self._xres, self._yres )
+    def title( self ) -> str:
+        return self._axes.get_title()
     
+    @title.setter
+    def title( self, title: str ) -> None:
+        self._axes.set_title( title, fontsize = const.titlesize )
+
+    @property
+    def xlabel( self ) -> str:
+        return self._axes.get_xlabel()
+    
+    @xlabel.setter
+    def xlabel( self, label: str ) -> None:
+        self._axes.set_xlabel( label, fontsize = const.labelsize )
+
+    @property
+    def ylabel( self ) -> str:
+        return self._axes.get_ylabel()
+    
+    @ylabel.setter
+    def ylabel( self, label: str ) -> None:
+        self._axes.set_ylabel( label, fontsize = const.labelsize )
+
     def plot( self, *args, clinesamples: int = 11, **kwargs ) -> None:
         new_args = [] # new arguments to be passed into axes.plot.
 

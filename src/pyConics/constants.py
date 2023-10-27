@@ -35,6 +35,9 @@ import numpy as np
 class CConstants:
     _inf: float = np.Inf
     _pi : float = np.pi
+    _titlesize: int = 9
+    _labelsize: int = 8
+    _tickssize: int = 8
 
     @property
     def inf( self ) -> float:
@@ -44,6 +47,17 @@ class CConstants:
     def pi( self ) -> float:
         return self._pi
     
+    @property
+    def titlesize( self ) -> int:
+        return self._titlesize
+
+    @property
+    def labelsize( self ) -> int:
+        return self._labelsize
+
+    @property
+    def tickssize( self ) -> int:
+        return self._tickssize
 
 #--------------------------------------------------------------
 # Global variable.

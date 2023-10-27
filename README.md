@@ -29,12 +29,12 @@ going wrong with other OS, please reach me out so that I can fix your problem.*
 geometry and homogeneous coordinates.
 
 <span style="color:red">**WARNING:**<br></span>
-*To avoid any conflict name, from the version 1.0.0 onwards, the Point and Line
-classes had their names changed to CPoint and CLine, respectively.
+*To avoid any conflict name, from the version 1.0.0 onwards, the `Point` and `Line`
+classes had their names changed to `CPoint` and `CLine`, respectively.
 For this reason, all of the examples in this file, `README.md`, had to be updated,
 renaming these classes with their new names. I apologize for that.*
 
-### Working with points
+### Working with points *(v0.2.6 onwards)*
 
 The representation in homogeneous coordinates of a Cartesian point
 $p = (\enspace\alpha,\enspace\beta\enspace)$, where
@@ -85,7 +85,7 @@ How to work with points in `pyConics`.
     print( f'Distance from {p1} to\n{p3} is {d13:.4f}.\n' ) # -> d13 = Inf.
 ```
 
-### Working with lines
+### Working with lines *(v0.2.6 onwards)*
 
 The representation in homogeneous coordinates of a Cartesian line
 $l:\beta y=\alpha x + \gamma$, where
@@ -185,7 +185,7 @@ How to work with lines in `pyConics`.
     print( f'Distance from {l5} to {l6} is {d56}.\n' )
 ```
 
-### Working with points and lines
+### Working with points and lines *(v0.2.6 onwards)*
 
 Now that I have introduced you to the concepts of points and lines in projective
 geometry and how you should work with them. The next step is to know how to use
@@ -318,11 +318,212 @@ How to work with points and lines in `pyConics`.
     print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
 ```
 
-### Plotting points and lines
+### Creating and setting up the CFigure and CAxes Classes *(v1.0.0 onwards)*
+
+Two classes have been developed for this version, namely `CFigure` and `CAxes`,
+so that it is now possible to graph points and lines from the `CPoint` and
+`CLine` classes, respectively.
+Both are derived from pyPlot classes. Therefore, they are very similar to
+those existing in pyPlot. Actually, you can use the `get_pyplot_figure()` and
+`get_pyplot_axes()` methods to obtain an instance of pyPlot's `Figure` and
+`Axes` Classes, respectively, and work directly with them as if you were
+using pyPlot.
+
+In this section, code segments will be used for each sub-section, so if you
+want to get the result shown in our image, the current code segment must be
+inserted below the previous one.
+
+Let's know how to set up these classes.
+
+- Creating an empty figure and then its four axes.
+
+```python
+    from pyConics import CFigure, CAxes
+
+    # Set interactive mode.
+    # Activate this mode so that it is not necessary to call the show() method.
+    # Whether you comment this line or use CFigure.ioff() method, the show()
+    # method must be called.
+    CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f1: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Create a 2x2 grid of axes from f1.
+    f1.create_axes( ( 2, 2 ) )
+
+    # Get the list of CAxes classes for the 2x2 grid.
+    axes: list[ CAxes ] = f1.axes
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+```
 
 <p align="center">
     <img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
 </p>
+
+- Changing the x- and y-axis limits and ticks of an axes.
+
+```python
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 0 ].
+    axes[ 0 ].xlim = ( 0, 2 )
+    axes[ 0 ].ylim = ( -1, 1 )
+    xtick = np.linspace( 0, 2, 11 )
+    ytick = np.linspace( -1, 1, 11 )
+    axes[ 0 ].xticks = xtick
+    axes[ 0 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 1 ].
+    axes[ 1 ].xlim = ( -1, 1 )
+    axes[ 1 ].ylim = ( -1, 1 )
+    xtick = np.linspace( -1, 1, 11 )
+    ytick = np.linspace( -1, 1, 11 )
+    axes[ 1 ].xticks = xtick
+    axes[ 1 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 2 ].
+    axes[ 2 ].xlim = ( -10, 10 )
+    axes[ 2 ].ylim = ( -10, 10 )
+    xtick = np.linspace( -10, 10, 11 )
+    ytick = np.linspace( -10, 10, 11 )
+    axes[ 2 ].xticks = xtick
+    axes[ 2 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 3 ].
+    # Note that the dimension of the plot box has
+    # changed. This is because the aspect ration of
+    # the CAxes class has equal scaling ( x/y-scaling = 1.0).
+    # This makes circles circular, not elliptical.
+    axes[ 3 ].xlim = ( -7, 7 )
+    axes[ 3 ].ylim = ( -10, 10 )
+    xtick = np.linspace( -7, 7, 5 )
+    ytick = np.linspace( -10, 10, 11 )
+    axes[ 3 ].xticks = xtick
+    axes[ 3 ].yticks = ytick
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot/change-lim-and-ticks.jpeg"/>
+</p>
+
+- Changing title, x-label, and y-label of an axes.
+
+```python
+# Changing the title of axes[ 0 ].
+    axes[ 0 ].title = 'The tittle is hello, world!'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Changing the x- and y-label of axes[ 1 ].
+    axes[ 1 ].xlabel = 'this is a physical quantity'
+    axes[ 1 ].ylabel = 'this is another physical quantity'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Using latex language in axes[ 2 ].
+    axes[ 2 ].title = r'alpha is written as $\alpha$'
+    axes[ 2 ].xlabel = r'beta is written as $\beta$'
+    axes[ 2 ].ylabel = r'gamma is written as $\gamma$'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot/add-title-labels.jpeg"/>
+</p>
+
+<span style="color:green">**NOTE:**<br></span>
+The `CAxes` class in `pyConics` has setters for its title, xlabel, ylabel, xticks,
+and yticks that do not allow you to change their font size directly, i.e., the
+`pyConics` fixed the font size of these attributes by default, namely:
+- title: fontsize = 9
+- x- and y-labels: fontsize = 8
+- x- and y-ticks: fontsize = 8
+
+If, for any reason, you need to change one of these default font sizes, you must get
+the `Axes` object that belongs to the `pyPlot` by mean of the `CAxes`'s `get_pyplot_axes()`
+method and then call the method that does this task.
+
+An example code to do this is shown below.
+
+```python
+    from pyConics import CFigure, CAxes
+
+    # Set interactive mode.
+    # CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f1: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f1.
+    # The title font size is 9.
+    f1.create_axes( ( 1, 1 ) )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f1.axes
+
+    # Get the pyPlot's axes.
+    pp_ax = ax[ 0 ].get_pyplot_axes()
+
+    # Changing the font size of the title in pyPlot's Axes.
+    # Now, the title font size is 16.
+    pp_ax.set_title( pp_ax.get_title(), fontsize = 16 ) 
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+```
+
+
+
+
+
+
+
+
+
+
+
+### Drawing points (`CPoint`) and lines (`CLine`) on CAxes Class *(v1.0.0 onwards)*
+
+Once you have already learned how to create and set up the `CFigure` and
+`CAxes` classes, you are able to learn how to use the `plot()` method in
+`CAxes` class for drawing points and lines inside the `CPoint` and
+`CLine` classes, respectively.
+
+This `plot()` method has been derived from the `pyPlot`'s `plot()` method.
+Therefore, everything you did with `pyPlot`'s `plot()`, you can continue
+to do with `plot()` method that belongs to the `CAxes` class. 
+
+
 
 ## Contributing
 

@@ -11,6 +11,7 @@ __all__ = [ 'CFigure' ]
 #------------------------------------------------------------------
 # Import from ...
 #  
+from pyConics.constants import const
 from pyConics.errors import CValueError
 from matplotlib import pyplot as plt
 from pyConics.plotting.axes import CAxes
@@ -81,6 +82,18 @@ class CFigure:
     def axes( self ) -> list[ CAxes ]:
         return self._axes
 
+    @staticmethod
+    def ion() -> None:
+        plt.ion()
+    
+    @staticmethod
+    def ioff() -> None:
+        plt.ioff()
+    
+    @staticmethod
+    def is_interactive() -> bool:
+        return plt.isinteractive()
+
     def create_axes( self, n_axes: tuple[ int, int ] = ( 1, 1 ) ):
         self._fig.subplots( n_axes[ 0 ], n_axes[ 1 ] )
 
@@ -92,11 +105,11 @@ class CFigure:
             ax.set_ylim( ( 0.0, 1.0 ) )
             ax.set_xticks( np.round( np.linspace( 0, 1, 11 ), 1 ) )
             ax.set_yticks( np.round( np.linspace( 0, 1, 11 ), 1 ) )
-            ax.tick_params( axis = 'x', labelsize = 8 )
-            ax.tick_params( axis = 'y', labelsize = 8 )
-            ax.set_xlabel( 'x-axis', fontsize = 8 )
-            ax.set_ylabel( 'y-axis', fontsize = 8 )
-            ax.set_title( 'axes title', fontsize = 9 )
+            ax.tick_params( axis = 'x', labelsize = const.tickssize )
+            ax.tick_params( axis = 'y', labelsize = const.tickssize )
+            ax.set_xlabel( 'x-axis', fontsize = const.labelsize )
+            ax.set_ylabel( 'y-axis', fontsize = const.labelsize )
+            ax.set_title( 'axes title', fontsize = const.titlesize )
 
             # Create a CAxes class for each axes.
             self._axes.append( CAxes( ax ) )
@@ -112,12 +125,10 @@ class CFigure:
 if ( __name__  == '__main__' ):
     from pyConics import CPoint, CLine
 
-    # True for blocking CFigure.
-    blocking = True
+    # Set interative mode.
+    # Activate this mode so that it is not necessary to call the show() function.
+    CFigure.ion()
 
-    # Create figures.
-    # f1 = CFigure( size = ( 6.4, 4.8 ), unit = 'inche' )
-    # print( f1 )
     width = 0.35
     f2 = CFigure( (width, 16.0 / 9.0 * width ) )
 
@@ -135,21 +146,13 @@ if ( __name__  == '__main__' ):
         print( ax )
         # print( ax.get_pyplot_axes() )
 
-    # Get a list of pyPlot's Axes class.
-    # print( f2.get_pyplot_axes() )
-    # print( pp_fig2.get_axes() )
-
-    # Display all Figures.
-    if ( not blocking ):
-        CFigure.show( False )
-
     # Change the x- and y-axis limits of axes[ 0 ].
     axes[ 0 ].xlim = ( 0, 2 )
     axes[ 0 ].ylim = ( -1, 1 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Change the x- and y-ticks of axes[ 0 ].
@@ -159,8 +162,8 @@ if ( __name__  == '__main__' ):
     axes[ 0 ].yticks = ytick
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Plot a point and a line on axes[ 0 ].
@@ -172,8 +175,8 @@ if ( __name__  == '__main__' ):
     axes[ 0 ].plot( x, y, 'r-', linewidth = 0.5 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Plot a line on axes[ 3 ].
@@ -182,8 +185,8 @@ if ( __name__  == '__main__' ):
     axes[ 3 ].plot( x, y, 'sr-', linewidth = 2, markersize = 8 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
     
     # Plot a line on axes[ 1 ] using a matrix as parameter.
@@ -194,8 +197,8 @@ if ( __name__  == '__main__' ):
     axes[ 1 ].plot( x, YY, 'b-', linewidth = 1 ) # must use x and y parameters.
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
     
     # Plot CPoint objects on axes[ 2 ].
@@ -204,8 +207,8 @@ if ( __name__  == '__main__' ):
     axes[ 2 ].plot( p1, '^g', p2, 'om', markersize = 6 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Plot CLine object on axes[ 2 ].
@@ -214,8 +217,8 @@ if ( __name__  == '__main__' ):
     axes[ 2 ].plot( l1, 'oy-', linewidth = 1, clinesamples = 21, markersize = 4 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Plot a list of CPoint objects on axes[ 2 ].
@@ -230,8 +233,8 @@ if ( __name__  == '__main__' ):
                     markersize = 6 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # Plot a list of CLine objects.
@@ -243,11 +246,11 @@ if ( __name__  == '__main__' ):
     axes[ 2 ].plot( llist, 'sm-', linewidth = 0.5, markersize = 3, clinesamples = 11 )
 
     # Redraw all figure to update its canvas.
-    if ( not blocking ):
-        f2.update_canvas()
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
         input( 'Press any key to continue...' )
 
     # If the Figure is blocking, then show it.
-    if ( blocking ):
+    if ( not CFigure.is_interactive() ):
         f2.show()
     

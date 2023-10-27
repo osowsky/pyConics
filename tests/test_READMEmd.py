@@ -9,6 +9,7 @@
 #------------------------------------------------------------------
 # Import as...
 #
+import numpy as np
 
 def test_Points():
     from pyConics import CPoint
@@ -176,21 +177,23 @@ def test_Points_And_Lines():
     print( f'Distance from p2 to l2 = {p2.distance( l2 ):.4f}.' )
     print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
 
-def test_Plotting_Points_And_Lines():
-    from pyConics import CPoint, CLine
+def test_Set_Up():
     from pyConics import CFigure, CAxes
 
-    # True for blocking CFigure show() method.
-    # Here we are going to work with nonblocking show() method.
-    # Thus, we have to update CFigure after every plotting command.
-    # You can change the blocking/nonblocking mode by setting
-    # blocking = True.
-    blocking = True
+    # Set interactive mode.
+    # Activate this mode so that it is not necessary to call the show() method.
+    # Whether you comment this line or use CFigure.ioff() method, the show()
+    # method must be called.
+    # CFigure.ion()
 
     # Create an empty figure.
     # Its width and height are relative to the screen size.
     width = 0.35
     f1: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
 
     # Create a 2x2 grid of axes from f1.
     f1.create_axes( ( 2, 2 ) )
@@ -198,14 +201,117 @@ def test_Plotting_Points_And_Lines():
     # Get the list of CAxes classes for the 2x2 grid.
     axes: list[ CAxes ] = f1.axes
 
-    # Display the figure.
-    if ( not blocking ):
-        CFigure.show( False )
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
 
-    # If the Figure is blocking, then show it.
-    if ( blocking ):
-        f1.show()
+    #----------------------------------------------------------------------------
+    # Next code segment.
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 0 ].
+    axes[ 0 ].xlim = ( 0, 2 )
+    axes[ 0 ].ylim = ( -1, 1 )
+    xtick = np.linspace( 0, 2, 11 )
+    ytick = np.linspace( -1, 1, 11 )
+    axes[ 0 ].xticks = xtick
+    axes[ 0 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 1 ].
+    axes[ 1 ].xlim = ( -1, 1 )
+    axes[ 1 ].ylim = ( -1, 1 )
+    xtick = np.linspace( -1, 1, 11 )
+    ytick = np.linspace( -1, 1, 11 )
+    axes[ 1 ].xticks = xtick
+    axes[ 1 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 2 ].
+    axes[ 2 ].xlim = ( -10, 10 )
+    axes[ 2 ].ylim = ( -10, 10 )
+    xtick = np.linspace( -10, 10, 11 )
+    ytick = np.linspace( -10, 10, 11 )
+    axes[ 2 ].xticks = xtick
+    axes[ 2 ].yticks = ytick
+
+    # Changing the x- and y-axis limits and the
+    # x- and y-ticks of axes[ 3 ].
+    # Note that the dimension of the plot box has
+    # changed. This is because the aspect ration of
+    # the CAxes class has equal scaling ( x/y-scaling = 1.0).
+    # This makes circles circular, not elliptical.
+    axes[ 3 ].xlim = ( -7, 7 )
+    axes[ 3 ].ylim = ( -10, 10 )
+    xtick = np.linspace( -7, 7, 5 )
+    ytick = np.linspace( -10, 10, 11 )
+    axes[ 3 ].xticks = xtick
+    axes[ 3 ].yticks = ytick
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    #----------------------------------------------------------------------------
+    # Next code segment.
     
+    # Changing the title of axes[ 0 ].
+    axes[ 0 ].title = 'The tittle is hello, world!'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Changing the x- and y-label of axes[ 1 ].
+    axes[ 1 ].xlabel = 'this is a physical quantity'
+    axes[ 1 ].ylabel = 'this is another physical quantity'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Using latex language in axes[ 2 ].
+    axes[ 2 ].title = r'alpha is written as $\alpha$'
+    axes[ 2 ].xlabel = r'beta is written as $\beta$'
+    axes[ 2 ].ylabel = r'gamma is written as $\gamma$'
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+def test_Font_Size():
+    from pyConics import CFigure, CAxes
+
+    # Set interactive mode.
+    # CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f1: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f1.
+    # The title font size is 9.
+    f1.create_axes( ( 1, 1 ) )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Get the list of CAxes classes for the 1x1 grid.
+    ax: list[ CAxes ] = f1.axes
+
+    # Get the pyPlot's axes.
+    pp_ax = ax[ 0 ].get_pyplot_axes()
+
+    # Changing the font size of the title in pyPlot's Axes.
+    # Now, the title font size is 16.
+    pp_ax.set_title( pp_ax.get_title(), fontsize = 16 ) 
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+   
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -218,6 +324,8 @@ if __name__ == '__main__':
     print()
     test_Points_And_Lines()
     print()
-    test_Plotting_Points_And_Lines()
+    test_Set_Up()
+    print()
+    test_Font_Size()
     print()
     
