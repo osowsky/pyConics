@@ -38,6 +38,7 @@ class CConstants:
     _titlesize: int = 9
     _labelsize: int = 8
     _tickssize: int = 8
+    _textsize: int = 10
 
     @property
     def inf( self ) -> float:
@@ -58,6 +59,10 @@ class CConstants:
     @property
     def tickssize( self ) -> int:
         return self._tickssize
+    
+    @property
+    def textsize( self ) -> int:
+        return self._textsize
 
 #--------------------------------------------------------------
 # Global variable.
