@@ -68,6 +68,14 @@ class CPoint( CAGObj ):
             info += f' -> point at the infinity'
         return info
 
+    @property
+    def x( self ) -> float:
+        return self._gform[ 0 ]
+    
+    @property
+    def y( self ) -> float:
+        return self._gform[ 1 ]
+    
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         self._gform = origin.change_point( self._from_origin )
