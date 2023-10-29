@@ -10,6 +10,8 @@ and Line class has become CLine.
 - CFigure and CAxes classes have been created. Thus, they can
 be used to plot CPoint, CLine and in the future CConic.
 - function.py has been renamed to utils.py.
+- requirement: python version was downgraded to 2.10.
+- requirement: numpy version was downgraded to 1.25
 
 ## v0.2.6 (20/10/2023)
 
