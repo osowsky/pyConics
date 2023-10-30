@@ -51,7 +51,8 @@ class CFigure:
             self._fig = plt.figure( figsize = ( w, h ), layout = 'constrained' )
         elif ( unit == '' ):
             if ( ( abs( w ) > 1.0 ) or ( abs( h ) > 1.0 ) ):
-                raise CValueError( self.__class__.__name__, 'when unit=\'\', size argument must not be greater than 1.' )
+                raise CValueError( self.__class__.__name__,
+                                  'when unit=\'\', size argument must not be greater than 1.' )
             if ( w == 0.0 ):
                 w = h
             elif ( h == 0.0 ):
@@ -62,7 +63,8 @@ class CFigure:
             h = round( h * ( height / dpi ), 1 )
             self._fig = plt.figure( figsize = ( w, h ), layout = 'constrained' )
         else:
-            raise CValueError( self.__class__.__name__, 'unit argument must be either an empty string or \'inche\'.' )
+            raise CValueError( self.__class__.__name__,
+                              'unit argument must be either an empty string or \'inche\'.' )
 
     def __repr__( self ) -> str:
         l = len( self._axes )
@@ -79,8 +81,8 @@ class CFigure:
         return self._fig.get_axes()
 
     @property
-    def axes( self ) -> list[ CAxes ]:
-        return self._axes
+    def axes( self ) -> tuple[ CAxes, ... ]:
+        return tuple( self._axes )
 
     @staticmethod
     def ion() -> None:
