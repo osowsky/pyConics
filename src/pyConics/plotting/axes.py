@@ -12,6 +12,7 @@ __all__ = [ 'CAxes' ]
 # Import from ...
 #
 from pyConics.constants import const
+from pyConics.errors import CValueError, CTypeError
 from matplotlib import pyplot as plt
 from pyConics import CPoint, CLine
 from pyConics.plotting.utils import CPoint2CoordXY, CLine2MatrixXY
@@ -104,6 +105,13 @@ class CAxes:
     def ylabel( self, label: str ) -> None:
         self._axes.set_ylabel( label, fontsize = const.labelsize )
 
+    def text( self, x: float, y: float, txt: str, **kwargs ) -> None:
+        if( not 'fontsize' in kwargs.keys() ):
+            kwargs[ 'fontsize' ] = const.textsize
+
+        # Call Axes.text() method.
+        self._axes.text( x, y, txt, kwargs )
+        
     def plot( self, *args, clinesamples: int = 11, **kwargs ) -> None:
         new_args = [] # new arguments to be passed into axes.plot.
 
