@@ -24,6 +24,7 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
+from pyConics.constants import const
 from pyConics.agobj import CAGObj
 from pyConics.errors import CLineTypeError
 from pyConics.origin import origin
@@ -138,6 +139,27 @@ class CLine( CAGObj ):
             return False
         return True
 
+    def sequence( self, x: list[ float ] ) -> tuple[ CPoint, ... ]:
+        from pyConics.point import CPoint
+        
+        xy = []
+
+        # Test for lines at infinity.
+        if ( ( self.gform[ 0 ] == 0.0 ) and ( self.gform[ 1 ] == 0.0 ) ):
+            return tuple( [ CPoint( ( 0.0, 0.0, 0.0 ), shift_origin = False ) ] )
+
+        # Test for the other conditions.
+        y = x
+        alp: float = self.gform[ 0 ]
+        bet: float = self.gform[ 1 ]
+        gam: float = self.gform[ 2 ]
+        for i, _x in enumerate( x ):
+            if ( bet == 0.0 ):
+                xy.append( CPoint( ( -gam / alp, y [ i ] ), shift_origin = False ) )
+            else:
+                xy.append( CPoint( ( _x, ( ( -alp * _x ) - gam ) / bet ), shift_origin = False ) )
+        return tuple( xy )
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -308,3 +330,5 @@ if __name__ == '__main__':
     print( l2 )
     print( f'l1 is a line at the infinity? {l1.at_infinity()}.' )
     print( f'l2 is a line at the infinity? {l2.at_infinity()}.\n' )
+
+    ps1 = l2.sequence( [ 0.1, 0.2, 0.3, 0.4 ])
