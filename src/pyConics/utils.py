@@ -38,7 +38,7 @@ import numpy as np
 
 def skew_symmetric( gf: CPoint | CLine ) -> np.ndarray:
     if ( not isinstance( gf, ( CPoint, CLine ) ) ):
-        raise TypeError( gf.__class__.__name__ )
+        raise CTypeError( gf.__class__.__name__ )
 
     # Build a skew-symmetric matrix from a point or a Line.
     l1 = [ 0.0, -gf.gform[ 2 ], gf.gform[ 1 ] ]
@@ -48,9 +48,9 @@ def skew_symmetric( gf: CPoint | CLine ) -> np.ndarray:
 
 def cross( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> Any[ CPoint | CLine ]:
     if ( not isinstance( gf1, ( CPoint, CLine ) ) ):
-        raise TypeError( gf1.__class__.__name__ )
+        raise CTypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, ( CPoint, CLine ) ) ):
-        raise TypeError( gf2.__class__.__name__ )
+        raise CTypeError( gf2.__class__.__name__ )
     
     # There are 3 conditions:
     # 1) Point x Point returns a Line that passes
@@ -116,9 +116,9 @@ def cross( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> Any[ CPoint | CLine ]:
 
 def dot( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     if ( not isinstance( gf1, ( CPoint, CLine ) ) ):
-        raise TypeError( gf1.__class__.__name__ )
+        raise CTypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, ( CPoint, CLine ) ) ):
-        raise TypeError( gf2.__class__.__name__ )
+        raise CTypeError( gf2.__class__.__name__ )
     
     # There are 2 conditions:
     # 1) Point x Line returns their inner product.
@@ -149,9 +149,9 @@ def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
 
 def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):
-        raise TypeError( gf1.__class__.__name__ )
+        raise CTypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, CLine ) ):
-        raise TypeError( gf2.__class__.__name__ )
+        raise CTypeError( gf2.__class__.__name__ )
     
     # To be orthogonal lines, ( x1 * x2 ) + ( y1 * y2 ) must be zero.
     op1  = gf1.gform[ 0 ] * gf2.gform[ 0 ]
@@ -163,9 +163,9 @@ def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
 
 def distance( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     if ( not isinstance( gf1, ( CPoint, CLine ) ) ):
-        raise TypeError( gf1.__class__.__name__ )
+        raise CTypeError( gf1.__class__.__name__ )
     if ( not isinstance( gf2, ( CPoint, CLine ) ) ):
-        raise TypeError( gf2.__class__.__name__ )
+        raise CTypeError( gf2.__class__.__name__ )
     
     # Test points and lines to check if they are at the infinity.
     if ( ( gf1.at_infinity() ) or ( gf2.at_infinity() ) ):
