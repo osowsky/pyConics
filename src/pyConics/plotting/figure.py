@@ -120,6 +120,8 @@ class CFigure:
         self._fig.canvas.draw()
         self._fig.canvas.flush_events()
 
+    def save( self, fname: str ):
+        self._fig.savefig( fname )
 
 #------------------------------------------------------------------
 # For development and test.
