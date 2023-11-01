@@ -125,12 +125,16 @@ def dot( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     # 2) Line x Point returns their inner product.
     if ( ( isinstance( gf1, ( CPoint ) ) ) and ( isinstance( gf2, ( CLine ) ) ) ):
         # Condition 1.
-        return np.inner( gf1.gform, gf2.gform )
+        res = np.inner( gf1.gform, gf2.gform )
     elif ( ( isinstance( gf1, ( CLine ) ) ) and ( isinstance( gf2, ( CPoint ) ) ) ):
         # Condition 2.
-        return np.inner( gf1.gform, gf2.gform )
+        res = np.inner( gf1.gform, gf2.gform )
     else:
         raise CArgumentsError( dot.__name__, gf1.__class__.__name__, gf2.__class__.__name__ )
+    if ( tol.iszero( res ) ):
+        return 0.0
+    else:
+        return res
 
 def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):
