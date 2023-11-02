@@ -198,8 +198,8 @@ def test_Set_Up():
     # Create a 2x2 grid of axes from f1.
     f1.create_axes( ( 2, 2 ) )
 
-    # Get the list of CAxes classes for the 2x2 grid.
-    axes: list[ CAxes ] = f1.axes
+    # Get the tuple of CAxes classes for the 2x2 grid.
+    axes = f1.axes
 
     # If CFigure.ion() is on then you need to press a key to continue.
     if ( CFigure.is_interactive() ):
@@ -271,9 +271,9 @@ def test_Set_Up():
         input( 'Press any key to continue...' )
 
     # Using latex language in axes[ 2 ].
-    axes[ 2 ].title = r'alpha is written as $\alpha$'
-    axes[ 2 ].xlabel = r'beta is written as $\beta$'
-    axes[ 2 ].ylabel = r'gamma is written as $\gamma$'
+    axes[ 2 ].title = f'alpha is written as $\\alpha$'
+    axes[ 2 ].xlabel = f'beta is written as $\\beta$'
+    axes[ 2 ].ylabel = f'gamma is written as $\\gamma$'
 
     # If CFigure.ion() is on then you need to press a key to continue.
     if ( CFigure.is_interactive() ):
@@ -298,8 +298,8 @@ def test_Font_Size():
     if ( CFigure.is_interactive() ):
         input( 'Press any key to continue...' )
 
-    # Get the list of CAxes classes for the 1x1 grid.
-    ax: list[ CAxes ] = f1.axes
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f1.axes
 
     # Get the pyPlot's axes.
     pp_ax = ax[ 0 ].get_pyplot_axes()
@@ -326,8 +326,8 @@ def test_Plot_Point():
     # The title font size is 9.
     f.create_axes( ( 1, 1 ) )
 
-    # Get the list of CAxes classes for the 1x1 grid.
-    ax: list[ CAxes ] = f.axes
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
 
     # Creating a point using numpy.
     p1 = np.array( [ 0.5, 0.6 ] )       # p1 =( 0.5, 0.6 ) 
@@ -355,8 +355,8 @@ def test_Plot_List_Point():
     # The title font size is 9.
     f.create_axes( ( 1, 1 ) )
 
-    # Get the list of CAxes classes for the 1x1 grid.
-    ax: list[ CAxes ] = f.axes
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
 
     # Creating a list of points using numpy.
     p = np.array( [ [ 0.3, 0.1 ],       # p = ( 0.3, 0.1 )
@@ -393,8 +393,8 @@ def test_Plot_Line():
     # The title font size is 9.
     f.create_axes( ( 1, 1 ) )
 
-    # Get the list of CAxes classes for the 1x1 grid.
-    ax: list[ CAxes ] = f.axes
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
 
     # Creating a line using numpy.
     x_i, x_f = ax[ 0 ].xlim
@@ -428,8 +428,8 @@ def test_Plot_List_Line():
     # The title font size is 9.
     f.create_axes( ( 1, 1 ) )
 
-    # Get the list of CAxes classes for the 1x1 grid.
-    ax: list[ CAxes ] = f.axes
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
 
     # Create some lines and add them to a list.
     l1 = CLine(( 0.0, 1.0, -0.1 ), 'l1' )   # y = 0.1 for all x
@@ -448,17 +448,138 @@ def test_Plot_List_Line():
     # Show Figure on screen.
     # CFigure.show()
 
+def test_Plot_Line_Segment():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Create some lines.
+    l1 = CLine(( 0.0, 1.0, -0.1 ), 'l1' )   # y = 0.1 for all x
+    l2 = CLine(( 1.0, 0.0, -0.1 ), 'l2' )   # x = 0.1 for all y
+    l3 = CLine(( 1.0, -1.0, 0.0 ), 'l3' )   # y = x
+
+    # Plot that lines.
+    ax[ 0 ].plot( l1, 'b-', linewidth = 1.5 )
+    ax[ 0 ].plot( l2, 'b-', linewidth = 1.5 )
+    ax[ 0 ].plot( l3, 'b-', linewidth = 1.5 )
+
+    # Create a range from 0.3 to 0.8 with step = 0.5.
+    x = np.linspace( 0.3, 0.8, 11 )
+
+    # Get a sequence of points form these lines.
+    ps1 = list( l1.sequence( list( x ) ) )
+    ps2 = list( l2.sequence( list( x ) ) )
+    ps3 = list( l3.sequence( list( x ) ) )
+
+    # Plot these line segments as a sequence of points.
+    ax[ 0 ].plot( ps1, 'ro', markersize = 6 )
+    ax[ 0 ].plot( ps2, 'ro', markersize = 6 )
+    ax[ 0 ].plot( ps3, 'ro', markersize = 6 )
+
+    # Show Figure on screen.
+    # CFigure.show()
+
+def test_Solve_A_Simple_Problem_Of_Geometry():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    import numpy as np 
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'A Simple Problem of Geometry with Points and Lines'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -1, 1 )
+    ax[ 0 ].xticks = np.linspace( -1, 1, 11 )
+    ax[ 0 ].ylim = ( -1, 1 )
+    ax[ 0 ].yticks = np.linspace( -1, 1, 11 )
+
+    # Create and plot the geometric forms of the problem.
+    p1 = CPoint( ( -0.4, 0.6 ), 'p_1' )
+    p2 = CPoint( ( 0.0, -0.8 ), 'p_2' )
+    l1 = CLine( ( 0.9, -1.0, 0.1 ), 'l_1' ) # y = 0.9x + 0.1
+    ax[ 0 ].plot( p1, 'or', p2, 'or', l1, 'b-', clinesamples = 21 )
+    ax[ 0 ].text( p1.x, p1.y, f'${p1.name}$', ha = 'left', va = 'bottom' )
+    ax[ 0 ].text( p2.x, p2.y, f'${p2.name}$', ha = 'left', va = 'bottom' )
+    ls = l1.sequence( [ 0.6 ] )[ 0 ]
+    ax[ 0 ].text( ls.x, ls.y, f'${l1.name}$', ha = 'right', va = 'bottom' )
+
+    # Solving the problem (1):
+    l2: CLine = p1 * p2
+    l2.name = 'l_2'
+    print( l2 )
+    ax[ 0 ].plot( l2, 'y-', clinesamples = 21 )
+    ls = l2.sequence( [ -0.1 ] )[ 0 ]
+    ax[ 0 ].text( ls.x, ls.y, f'${l2.name}$', ha = 'left', va = 'bottom' )
+    print( 'Evaluating the result for the problem (1):' )
+    print( f'Does p1 lie in l2? {p1 in l2}' ) # True
+    print( f'Does p2 lie in l2? {p2 in l2}' ) # True
+    print()
+
+    # Solving the problem (2):
+    p3: CPoint = l1 * l2
+    p3.name = 'p_3'
+    print( p3 )
+    ax[ 0 ].plot( p3, 'om' )
+    ax[ 0 ].text( p3.x, p3.y, f'${p3.name}$', ha = 'right', va = 'bottom' )
+    print( 'Evaluating the result for the problem (2):' )
+    print( f'Does p3 lie in l1? {p3 in l1}' ) # True
+    print( f'Does p3 lie in l2? {p3 in l2}' ) # True
+    print()
+
+    # Solving the problem (3):
+    l3: CLine = p1 * l1
+    l3.name = 'l_3'
+    print( l3 )
+    ax[ 0 ].plot( l3, 'g-' )
+    ls = l3.sequence( [ 0.4 ] )[ 0 ]
+    ax[ 0 ].text( ls.x, ls.y, f'${l3.name}$', ha = 'left', va = 'bottom' )
+    print( 'Evaluating the result for the problem (3):' )
+    print( f'Does p1 lie in l3? {p1 in l3}' )           # True
+    print( f'Are l1 and l3 perpendicular? {l1 + l3}' )  # True
+    print()
+
+    # Show Figure on screen.
+    # CFigure.show()
+
 #------------------------------------------------------------------
 # For development and test.
 #  
 if __name__ == '__main__':
     # Test point script for README.md usage.
-    test_Points()
-    test_Lines()
-    test_Points_And_Lines()
-    test_Set_Up()
-    test_Font_Size()
-    test_Plot_Point()
-    test_Plot_List_Point()
-    test_Plot_Line()
-    test_Plot_List_Line()
+    # test_Points()
+    # test_Lines()
+    # test_Points_And_Lines()
+    # test_Set_Up()
+    # test_Font_Size()
+    # test_Plot_Point()
+    # test_Plot_List_Point()
+    # test_Plot_Line()
+    # test_Plot_List_Line()
+    # test_Plot_Line_Segment()
+    # test_Solve_A_Simple_Problem_Of_Geometry()
+    ...
+    
