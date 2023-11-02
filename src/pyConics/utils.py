@@ -144,9 +144,7 @@ def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 1 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 0 ]
 
-    if ( tol.iszero( op1 - op2  ) == True ):
-        return True
-    return False
+    return True if ( tol.iszero( op1 - op2  ) ) else False
 
 def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):
@@ -158,9 +156,7 @@ def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 0 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 1 ]
 
-    if ( tol.iszero( op1 + op2  ) == True ):
-        return True
-    return False
+    return True if ( tol.iszero( op1 + op2  ) ) else False
 
 def distance( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     if ( not isinstance( gf1, ( CPoint, CLine ) ) ):
