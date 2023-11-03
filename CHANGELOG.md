@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.1 (02/11/2023)
+
+- The dot() function in utils.py had a bug that was fixed.
+- The images in README.md had unresolved links. This bug
+was fixed.
+
 ## v1.0.0 (23/10/2023)
 
 - pyConics classes have been renamed by adding a prefix C in

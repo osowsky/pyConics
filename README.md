@@ -396,7 +396,8 @@ Let's know how to set up these classes.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
 </p>
 
 - **Changing the x- and y-axis limits and ticks of an axes.**
@@ -448,7 +449,8 @@ Let's know how to set up these classes.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/change-lim-and-ticks.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/change-lim-and-ticks.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/change-lim-and-ticks.jpeg"/>
 </p>
 
 - **Changing title, x-label, and y-label of an axes.**
@@ -480,7 +482,8 @@ Let's know how to set up these classes.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/add-title-labels.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/add-title-labels.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/add-title-labels.jpeg"/>
 </p>
 
 <span style="color:green">**NOTE:**<br></span>
@@ -582,7 +585,8 @@ Now, let's start.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/points.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/points.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/points.jpeg"/>
 </p>
 
 - **Plotting a list of `CPoint` and a list of `numpy` points.**
@@ -627,7 +631,8 @@ Now, let's start.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/point-list.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/point-list.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/point-list.jpeg"/>
 </p>
 
 - **Plotting a `CLine` and a `numpy` line.**
@@ -671,7 +676,8 @@ parameter, with its default value being 11.
     CFigure.show()
 ```
 <p align="center">
-    <img src="./docs/figs/howto-plot/lines.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/lines.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/lines.jpeg"/>
 </p>
 
 - **Plotting a list of `CLine`.**
@@ -712,7 +718,8 @@ parameter, with its default value being 11.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/line-list.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/line-list.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/line-list.jpeg"/>
 </p>
 
 - **Plotting line segments through a sequence of points.**
@@ -780,7 +787,8 @@ $$
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/line-segment.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/line-segment.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/line-segment.jpeg"/>
 </p>
 
 <span style="color:red">**WARNING:**<br></span>
@@ -811,7 +819,8 @@ Graph $l_2$, $p_3$, and $l_3$ on the same canvas and also evaluate the results
 with the `in` operator and the `are_perpendicular()` method.
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/geometry-problem-q.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/geometry-problem-q.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/geometry-problem-q.jpeg"/>
 </p>
 
 *Problem resolution:*
@@ -892,7 +901,8 @@ with the `in` operator and the `are_perpendicular()` method.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot/geometry-problem-a.jpeg"/>
+    <!-- <img src="./docs/figs/howto-plot/geometry-problem-a.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/geometry-problem-a.jpeg"/>
 </p>
 
 ## Contributing
