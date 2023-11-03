@@ -49,8 +49,22 @@ pip install pyConics
 ```
 
 <span style="color:green">**NOTE:**<br></span>
-*`pyConics` has been tested on Windows 10 and Elementary 6 OSes. If something is
+*`pyConics` has been tested on Windows 10 and Ubuntu 22.04 OSes. If something is
 going wrong with other OS, please reach me out so that I can fix your problem.* 
+
+<span style="color:red">**WARNING:**<br></span>
+*If you, like me, enjoy working with Linux OSes without a GUI (Graphical User Interface)
+such as Ubuntu OS on WSL2 (Windows Subsystem for Linux) and intend to install the
+`pyConics` package on it, then you will need to run the procedure below so that
+`pyConics` can work correctly.*
+
+```bash
+sudo apt-get install x11-xserver-utils
+sudo apt-get install python3-tk python3-dev
+xhost +
+touch ~/.Xauthority
+pip install pyConics
+```
 
 ## Usage
 
@@ -58,10 +72,10 @@ going wrong with other OS, please reach me out so that I can fix your problem.*
 geometry and homogeneous coordinates.
 
 <span style="color:red">**WARNING:**<br></span>
-*To avoid any conflict name, from the version 1.0.0 onwards, the `Point` and `Line`
-classes had their names changed to `CPoint` and `CLine`, respectively.
-For this reason, all of the examples in this file, `README.md`, had to be updated,
-renaming these classes with their new names. I apologize for that.*
+*To avoid any class name conflicts from other packages, from the version 1.0.0
+onwards, the `Point` and `Line` classes had their names changed to `CPoint` and
+`CLine`, respectively. For this reason, all of the examples in this file,
+`README.md`, had to be rewritten. I apologize for that.*
 
 ### Working with points *(v0.2.6 onwards)*
 
@@ -364,10 +378,11 @@ inserted below the previous one.
 
 Let's know how to set up these classes.
 
-- **Creating an empty figure and then its four axes.**
+- **Creating an empty figure and its four axes.**
 
 ```python
     from pyConics import CFigure, CAxes
+    import numpy as np
 
     # Set interactive mode.
     # Activate this mode so that it is not necessary to call the show() method.
@@ -791,11 +806,11 @@ $$
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/line-segment.jpeg"/>
 </p>
 
-<span style="color:red">**WARNING:**<br></span>
+<span style="color:green">**NOTE:**<br></span>
 *It is worth mentioning that, when you have a line $l$ that is parallel to the
 $y$-axis, the input sequence $x$ will be assigned to a variable $y$ that will
 sweep the $y$-axis instead of the $x$-axis. For a better understanding, pay
-attention to the variable `l2` in the code segment above.*
+attention to the variable `l2` in the code segment as above.*
 
 - **Solving a simple problem of geometry with points and lines.**
 

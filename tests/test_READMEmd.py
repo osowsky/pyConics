@@ -9,7 +9,6 @@
 #------------------------------------------------------------------
 # Import as...
 #
-import numpy as np
 
 def test_Points():
     from pyConics import CPoint
@@ -179,6 +178,7 @@ def test_Points_And_Lines():
 
 def test_Set_Up():
     from pyConics import CFigure, CAxes
+    import numpy as np
 
     # Set interactive mode.
     # Activate this mode so that it is not necessary to call the show() method.
