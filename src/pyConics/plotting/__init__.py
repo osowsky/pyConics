@@ -7,5 +7,5 @@
 #------------------------------------------------------------------
 # Modules that belong to pyConics package.
 #
-from .figure import *
-from .axes import *
+from pyConics.plotting.figure import *
+from pyConics.plotting.axes import *
