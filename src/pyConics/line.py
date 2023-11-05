@@ -2,7 +2,6 @@
 # Import it to be able to pass an object of same class as argument
 # to a member function
 from __future__ import annotations
-from typing import Any
 
 #------------------------------------------------------------------
 # Everything that can be visible to the world.

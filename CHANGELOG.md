@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.0 (XX/XX/2023)
+
+- `CConic` class has been incorporated into `pyConics`. 
+
 ## v1.0.2 (03/11/2023)
 
 - import `numpy` as np was added to the example
