@@ -56,6 +56,11 @@ class CAGObj( ABC ):
         # Each child class will implement this method.
         pass # Do nothing.
 
+    @abstractmethod
+    def copy( self ) -> CAGObj:
+        # Each child class will implement this method.
+        pass # Do nothing.
+
     @property
     def name( self ) -> str:
        return self._name

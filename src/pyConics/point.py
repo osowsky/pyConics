@@ -40,7 +40,9 @@ np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 class CPoint( CAGObj ):
     def __init__( self,
                   coord: tuple[ float, float ] | tuple[ float, float, float ] = ( 0.0, 0.0, 1.0 ),
+                  /,
                   name: str = '',
+                  *,
                   shift_origin: bool = True ) -> None:
         super().__init__( name )
 
@@ -55,7 +57,7 @@ class CPoint( CAGObj ):
             self._gform = self._gform / self._gform[ -1 ]
 
         # Store this value to be possible restore it to the origin.
-        self._from_origin = self._gform
+        self._from_origin = self._gform.copy()
 
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         if ( shift_origin == True ):
@@ -75,6 +77,10 @@ class CPoint( CAGObj ):
     @property
     def y( self ) -> float:
         return self._gform[ 1 ]
+
+    def copy( self ) -> CPoint:
+        xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 2 ] )
+        return CPoint( xy, self.name )
     
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
@@ -140,7 +146,7 @@ if __name__ == '__main__':
 
     # Try to create a point with only one dimension.
     try:
-        p0 = Point( ( 0, ) ) # type: ignore
+        p0 = CPoint( ( 0, ) ) # type: ignore
     except CPointTypeError as e:
         print( e )
     print()

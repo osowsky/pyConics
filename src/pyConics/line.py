@@ -41,7 +41,9 @@ np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 class CLine( CAGObj ):
     def __init__( self,
                   line: tuple[ float, float, float ] = ( 1.0, -1.0, 0.0 ),
+                  /,
                   name: str = '',
+                  *,
                   shift_origin: bool = True  ) -> None:
         super().__init__( name )
 
@@ -52,7 +54,7 @@ class CLine( CAGObj ):
         self._gform = tol.adjust2relzeros( self._gform )
 
         # Store this value to be possible restore it to the origin.
-        self._from_origin = self._gform
+        self._from_origin = self._gform.copy()
 
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         if ( shift_origin == True ):
@@ -68,6 +70,10 @@ class CLine( CAGObj ):
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         self._gform = origin.change_line( self._from_origin )
+
+    def copy( self ) -> CLine:
+        xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 1 ] )
+        return CLine( xy, self.name )
 
     def cross( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         from pyConics.utils import cross
