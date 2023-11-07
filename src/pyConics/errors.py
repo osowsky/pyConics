@@ -83,6 +83,8 @@ class CConicTypeError( TypeError ):
             self.args = ( f'{self.__class__.__name__}: Invalid points. Parameter {param_name} must not have points at infinity.', )
         elif ( param_name == 'center' ):
             self.args = ( f'{self.__class__.__name__}: Invalid point. Parameter {param_name} must not have points at infinity.', )
+        elif ( param_name == 'a or c' ):
+            self.args = ( f'{self.__class__.__name__}: Invalid values for {param_name}. Parameters {param_name} must not be negative numbers.', )
  
 #------------------------------------------------------------------
 # Child Class CArgumentsError.
