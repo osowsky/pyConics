@@ -72,7 +72,7 @@ class CLine( CAGObj ):
         self._gform = origin.change_line( self._from_origin )
 
     def copy( self ) -> CLine:
-        xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 1 ] )
+        xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 2 ] )
         return CLine( xy, self.name )
 
     def cross( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
