@@ -78,7 +78,11 @@ class CConicTypeError( TypeError ):
 
         class_name, param_name = args
         if ( param_name == 'degenerate' ):
-            self.args = ( f'{self.__class__.__name__}: Invalid lines. {param_name} parameter does not have lines at infinity.', )
+            self.args = ( f'{self.__class__.__name__}: Invalid lines. Parameter {param_name} must not have lines at infinity.', )
+        elif ( param_name == 'foci' ):
+            self.args = ( f'{self.__class__.__name__}: Invalid points. Parameter {param_name} must not have points at infinity.', )
+        elif ( param_name == 'center' ):
+            self.args = ( f'{self.__class__.__name__}: Invalid point. Parameter {param_name} must not have points at infinity.', )
  
 #------------------------------------------------------------------
 # Child Class CArgumentsError.
