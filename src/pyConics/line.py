@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 from pyConics.constants import const
 from pyConics.agobj import CAGObj
-from pyConics.errors import CLineTypeError
+from pyConics.errors import CLineTypeError, CValueError
 from pyConics.origin import origin
 from pyConics.tolerance import tol
 
@@ -165,6 +165,30 @@ class CLine( CAGObj ):
                 xy.append( CPoint( ( _x, ( ( -alp * _x ) - gam ) / bet ), shift_origin = False ) )
         return tuple( xy )
     
+    def coef_angular( self, returnangle = False ) -> float:
+        # The line can not be at infinity.
+        if ( self.at_infinity() ):
+            raise CValueError( CLine.__name__, 'A line at infinity has improper coeficients.' )
+        
+        if ( self._gform[ 1 ] == 0.0 ): # perpendicular line to the y-axis.
+            coef = const.inf if ( self._gform[ 0 ] > 0 ) else -const.inf
+        else:
+            coef = self._gform[ 0 ] / self._gform[ 1 ]
+
+        # Return an angle in radians.
+        return np.arctan( coef ) if ( returnangle ) else coef
+
+    def coef_linear( self ) -> float:
+        # The line can not be at infinity.
+        if ( self.at_infinity() ):
+            raise CValueError( CLine.__name__, 'A line at infinity has improper coeficients.' )
+        
+        if ( self._gform[ 1 ] == 0.0 ): # perpendicular line to the y-axis.
+            return const.inf
+
+        # Return the coef.
+        return self._gform[ 2 ] / self._gform[ 1 ]
+
 #------------------------------------------------------------------
 # Internal functions.
 #  
