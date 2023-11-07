@@ -7,7 +7,7 @@ from __future__ import annotations
 # Everything that can be visible to the world.
 #  
 __all__ = [ 'CValueError', 'CAttributeError', 'CTypeError', 'CPointTypeError',\
-            'CLineTypeError', 'CArgumentsError' ]
+            'CLineTypeError', 'CArgumentsError', 'CConicTypeError' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -58,7 +58,7 @@ class CPointTypeError( TypeError ):
 
         class_name, attrib_name = args
         self.args = ( f'{self.__class__.__name__}: Size mismatch. {class_name}.{attrib_name} attribute gets a tuple with length of 2 or 3.', )
- 
+
 #------------------------------------------------------------------
 # Child Class CLineTypeError.
 #  
@@ -68,6 +68,17 @@ class CLineTypeError( TypeError ):
 
         class_name, attrib_name = args
         self.args = ( f'{self.__class__.__name__}: Size mismatch. {class_name}.{attrib_name} attribute gets a tuple with length of 3.', )
+
+#------------------------------------------------------------------
+# Child Class CConicTypeError.
+#  
+class CConicTypeError( TypeError ):
+    def __init__( self, *args ) -> None:
+        super().__init__( self, args )
+
+        class_name, param_name = args
+        if ( param_name == 'degenerate' ):
+            self.args = ( f'{self.__class__.__name__}: Invalid lines. {param_name} parameter does not have lines at infinity.', )
  
 #------------------------------------------------------------------
 # Child Class CArgumentsError.
