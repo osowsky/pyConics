@@ -28,7 +28,7 @@ from pyConics.agobj import CAGObj
 from pyConics.errors import CConicTypeError
 from pyConics.origin import origin
 from pyConics.tolerance import tol
-from pyConics.conics.utils import create_conic_from_lines
+from pyConics.conics.utils import create_conic_from_lines, create_conic
 
 #------------------------------------------------------------------
 # Import as...
@@ -53,6 +53,8 @@ class CConic( CAGObj ):
                   *,
                   foci: tuple[ CPoint, CPoint ] | None = None,
                   degenerate: tuple[ CLine, CLine ] | None = None ) -> None:
+        from pyConics.point import CPoint
+
         # Precedence for creating the conic:
         # 1) First: the parameter degenerate was defined.
         # 2) Second: the parameter foci, and a were defined.
@@ -81,10 +83,12 @@ class CConic( CAGObj ):
         elif ( foci is not None ):
             if ( foci[ 0 ].at_infinity() ) or ( foci[ 1 ].at_infinity() ):
                 raise CConicTypeError( CConic.__name__, 'foci' )
+            if ( a <= 0.0 ):
+                raise CConicTypeError( CConic.__name__, 'a or c' )
             else:
                 # Get center, c, and angle.
-                f1 = foci[ 0 ]
-                f2 = foci[ 1 ]
+                f1: CPoint = foci[ 0 ]
+                f2: CPoint = foci[ 1 ]
                 xm = ( f1.x + f2.x ) / 2
                 ym = ( f1.y + f2.y ) / 2
                 center = CPoint( ( xm, ym ) )
@@ -102,13 +106,17 @@ class CConic( CAGObj ):
         else:
             if ( center.at_infinity() ):
                 raise CConicTypeError( CConic.__name__, 'center' )
+            if ( ( a <= 0.0 ) or ( c < 0.0 ) ):
+                raise CConicTypeError( CConic.__name__, 'a or c' )
         
         # Create the nondegenerate conic.
+        if ( not self._isdeg ):
+            self._gform = create_conic( a, c, center, angle )
 
 
     def __repr__( self ) -> str:
         # # return an info messsage for this class.
-        info = f'{self.name}: ( x, y ) | [ x y 1 ] *\n{self.gform} * [ x y 1 ]\' = 0'
+        info = f'{self.name}: ( x, y ) | [ x y 1 ] *\n{self.gform} * [ x y 1 ].T = 0'
         return info
 
     @property

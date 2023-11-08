@@ -6,7 +6,7 @@ from __future__ import annotations
 # #------------------------------------------------------------------
 # # Everything that can be visible to the world.
  
-__all__ = [ 'create_conic_from_lines' ]
+__all__ = [ 'create_conic_from_lines', 'create_conic' ]
 
 # #------------------------------------------------------------------
 # # Import from...
@@ -25,9 +25,9 @@ __all__ = [ 'create_conic_from_lines' ]
 #         # here to be imported.
         
 # from pyConics.errors import CTypeError, CArgumentsError
-# from pyConics.tolerance import tol
-# from pyConics.constants import const
-# from pyConics.point import CPoint
+from pyConics.tolerance import tol
+from pyConics.constants import const
+from pyConics.point import CPoint
 from pyConics.line import CLine
 
 # #------------------------------------------------------------------
@@ -40,6 +40,36 @@ def create_conic_from_lines( lines: tuple[ CLine, CLine ] ) -> np.ndarray:
     l2 = lines[ 1 ].gform[np.newaxis].T
     M = ( l2 @ l1 )
     return M + M.T
+
+def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarray:
+    # Get the minor axis.
+    a2 = a * a
+    c2 = c * c
+    if ( a >= c ): # it is an ellipse.
+        b2 = a2 - c2
+    else: # it is a hyperbole.
+        b2 = c2 - a2
+
+    # Build a quadratic form for the conic with centered on ( 0, 0 )
+    # and without rotation.
+    if ( a >= c ): # it is an ellipse.
+        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / b2 ] ] )
+    else:
+        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / -b2 ] ] )
+
+    # Build the rotating matrix.
+    R = np.array( [ [ np.cos( angle ), np.sin( angle ) ], [ -np.sin( angle ), np.cos( angle ) ] ] )
+
+    # Get the center vector.
+    xy_o = center.gform[ 0 : 2 ][np.newaxis].T
+
+    # Create the matrices ABC, DE, and F.
+    ABC = tol.adjust2relzeros( R.T @ C @ R )
+    DE = ( -1 * ABC ) @ xy_o
+    F = ( xy_o.T @ ABC @ xy_o ) - 1
+
+    # Build the matrix representation of a conic.
+    return tol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
 #------------------------------------------------------------------
 # For development and test.
@@ -77,3 +107,17 @@ if __name__ == '__main__':
     print( C3 )
     print( f'Is {C3.name} degenerate? {C3.is_degenerate}.\n' )
 
+    # Default nondegenerate conic.
+    C4 = CConic( name = 'C4' )
+    print( C4 )
+    print( f'Is {C4.name} degenerate? {C4.is_degenerate}.\n' )
+
+    # Nondegenerate conic with a, c, center, and angle.
+    C5 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C5' )
+    print( C5 )
+    print( f'Is {C5.name} degenerate? {C5.is_degenerate}.\n' )
+
+    # Nondegenerate conic with a, and foci.
+    C6 = CConic( 2.0, name = 'C6', foci = ( CPoint( ( 0, 1 ) ), CPoint( ( 0, -1 ) ) ) )
+    print( C6 )
+    print( f'Is {C6.name} degenerate? {C6.is_degenerate}.\n' )

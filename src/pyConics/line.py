@@ -62,7 +62,7 @@ class CLine( CAGObj ):
 
     def __repr__( self ) -> str:
         # return an info messsage for this class.
-        info = f'{self.name}: ( x, y ) | {self.gform} * [ x y 1 ]\' = 0'
+        info = f'{self.name}: ( x, y ) | {self.gform} * [ x y 1 ].T = 0'
         if ( self.gform[ 0 ] == 0.0 ) and ( self.gform[ 1 ] == 0.0 ):
             info += f' -> line at the infinity'
         return info
