@@ -12,6 +12,8 @@ __all__ = [ 'origin' ]
 # Import from...
 #  
 from dataclasses import dataclass
+from numpy import linalg as LA
+from pyConics.tolerance import tol
 
 #------------------------------------------------------------------
 # Import from...
@@ -42,6 +44,28 @@ class Origin:
     def change_line( self, line: np.ndarray ) -> np.ndarray:
         c = ( line[ 0 ] * self.x ) + ( line[ 1 ] * self.y )
         return line + np.array( ( 0.0, 0.0, c ) )
+
+    def change_conic( self, conic: np.ndarray ) -> np.ndarray:
+        from pyConics.point import CPoint
+
+        # Get the matrices and vectors.
+        ABC = conic[ 0 : 2, 0 : 2 ]
+        DE = conic[ 2 : 3, 0 : 2 ].T
+        
+        # Get the center of the conic.
+        xy_o = ( -1 * LA.inv( ABC ) ) @ DE
+
+        # Create a point to shift origin.
+        o = CPoint( ( xy_o[ 0 ] [ 0 ], xy_o[ 1 ][ 0 ] ) )
+        o.update_origin()
+
+        # Rebuild the matrix.
+        o = np.array( [ o.x, o.y ] )[np.newaxis].T
+        DE = ( -1 * ABC ) @ o
+        F = ( o.T @ ABC @ o ) - 1
+
+        # Build the matrix representation of a conic.
+        return tol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
     def reset( self ) -> None:
         self.x = 0.0
