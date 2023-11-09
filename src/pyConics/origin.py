@@ -71,7 +71,28 @@ class Origin:
         self.x = 0.0
         self.y = 0.0
 
+    @property
+    def coord( self ) -> tuple[ float, float ]:
+        return ( self.x, self.y )
+
+    @coord.setter
+    def coord( self, coord: tuple[ float, float ] ) -> None:
+        self.x = coord[ 0 ]
+        self.y = coord[ 1 ]
+
 #--------------------------------------------------------------
 # Global variable.
 #
 origin = Origin()
+
+#------------------------------------------------------------------
+# For development and test.
+#  
+if __name__ == '__main__':
+    o = Origin()
+    print( o.coord )
+    o.x = 1.0
+    o.y = 2.0
+    print( o.coord )
+    o.coord = ( 0.0, 0.0 )
+    print( o.coord )
