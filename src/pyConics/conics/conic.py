@@ -29,6 +29,7 @@ from pyConics.errors import CConicTypeError
 from pyConics.origin import origin
 from pyConics.tolerance import tol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
+from pyConics.conics.utils import rank
 
 #------------------------------------------------------------------
 # Import as...
@@ -76,7 +77,6 @@ class CConic( CAGObj ):
                 self._lines4deg = ( degenerate[ 0 ].copy(), degenerate[ 1 ].copy() )
                 self._gform = create_conic_from_lines( self._lines4deg )
                 self._isdeg = True
-                return
         # 2) the parameter foci, and a were defined.
         #    the parameters c, center, and angle will be find out through foci.
         #    the parameter degenerate is not used.
@@ -113,6 +113,8 @@ class CConic( CAGObj ):
         if ( not self._isdeg ):
             self._gform = create_conic( a, c, center, angle )
 
+        # Get the matrix rank.
+        self._rank = rank( self._gform )
 
     def __repr__( self ) -> str:
         # # return an info messsage for this class.
@@ -123,10 +125,22 @@ class CConic( CAGObj ):
     def is_degenerate( self ) -> bool:
         return self._isdeg
     
+    @property
+    def rank( self ) -> int:
+        return self._rank
+    
+    def is_fullrank( self ) -> bool:
+        nrow, *_ = self._gform.shape
+        return True if ( nrow == self._rank ) else False
+
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        # self._gform = origin.change_line( self._from_origin )
-        ...
+        if ( self._isdeg ):
+            self._lines4deg[ 0 ].update_origin()
+            self._lines4deg[ 1 ].update_origin()
+            self._gform = create_conic_from_lines( self._lines4deg )
+        else:
+            self._gform = origin.change_conic( self._gform )
 
     def copy( self ) -> CConic:
         ...
@@ -135,11 +149,6 @@ class CConic( CAGObj ):
 #------------------------------------------------------------------
 # Internal functions.
 #  
-# def _validate_line( line: tuple[ float, float, float ] ) -> np.ndarray:
-#     if ( len( line ) == 3 ):
-#         return np.array( line )
-#     else:
-#         raise CLineTypeError( CLine.__name__, CLine.gform.fget.__name__ )
 
 #------------------------------------------------------------------
 # For development and test.
@@ -155,8 +164,17 @@ if __name__ == '__main__':
     # Create some conics.
     # WARN: angles must be in radians.
     C0 = CConic( name = 'C0' )
-    C1 = CConic( 2.0, 0.5, CPoint( ( 0, 0 ) ), 30.0 / 180 * const.pi, 'C1' )
+    print( C0, '\n' )
+
+    C1 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C1' )
+    print( C1, '\n' )
+
     C2 = CConic( 2.0, name = 'C2', foci = ( CPoint( ( 0, 1 ) ), CPoint( ( 0, -1 ) ) ) )
+    print( C2, '\n' )
+
     C3 = CConic( degenerate = ( CLine( ( 1.0, -1.0, 0.0 ) ), CLine( ( 1.0, 1.0, 0.0 ) ) ),
                  name = 'C3' )
-    print( C3 )
+    print( C3, '\n' )
+
+    C1.update_origin()
+    print( C1, '\n' )
