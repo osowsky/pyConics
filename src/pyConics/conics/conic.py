@@ -68,15 +68,13 @@ class CConic( CAGObj ):
         # Each precedence will be analyzed.
         # 1) the parameter degenerate was defined.
         #    the parameters a, c, center, angle and foci are not used.
-        self._lines4deg : tuple[ CLine, CLine ]
-        self._isdeg = False
+        self._lines4deg: tuple[ CLine, CLine ] | None = None
         if ( degenerate is not None ):
             if ( degenerate[ 0 ].at_infinity() ) or ( degenerate[ 1 ].at_infinity() ):
                 raise CConicTypeError( CConic.__name__, 'degenerate' )
             else:
                 self._lines4deg = ( degenerate[ 0 ].copy(), degenerate[ 1 ].copy() )
                 self._gform = create_conic_from_lines( self._lines4deg )
-                self._isdeg = True
         # 2) the parameter foci, and a were defined.
         #    the parameters c, center, and angle will be find out through foci.
         #    the parameter degenerate is not used.
@@ -110,7 +108,7 @@ class CConic( CAGObj ):
                 raise CConicTypeError( CConic.__name__, 'a or c' )
         
         # Create the nondegenerate conic.
-        if ( not self._isdeg ):
+        if ( self._lines4deg is None ):
             self._gform = create_conic( a, c, center, angle )
 
         # Get the matrix rank.
@@ -123,7 +121,7 @@ class CConic( CAGObj ):
 
     @property
     def is_degenerate( self ) -> bool:
-        return self._isdeg
+        return False if ( self._lines4deg is None ) else True
     
     @property
     def rank( self ) -> int:
@@ -135,7 +133,7 @@ class CConic( CAGObj ):
 
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        if ( self._isdeg ):
+        if ( self._lines4deg is not None ):
             self._lines4deg[ 0 ].update_origin()
             self._lines4deg[ 1 ].update_origin()
             self._gform = create_conic_from_lines( self._lines4deg )
@@ -143,8 +141,16 @@ class CConic( CAGObj ):
             self._gform = origin.change_conic( self._gform )
 
     def copy( self ) -> CConic:
-        ...
-        return CConic()
+        C = CConic()
+        C._rank = self._rank
+
+        if ( self._lines4deg is not None ):
+            C._lines4deg = self._lines4deg
+            C._gform = create_conic_from_lines( C._lines4deg )
+        else:
+            C._gform = self._gform.copy()
+        
+        return C
 
 #------------------------------------------------------------------
 # Internal functions.
@@ -178,3 +184,11 @@ if __name__ == '__main__':
 
     C1.update_origin()
     print( C1, '\n' )
+
+    C4 = C3.copy()
+    C4.name = 'C3.cp'
+    print( C4, '\n' )
+
+    C5 = C1.copy()
+    C5.name = 'C1.cp'
+    print( C5, '\n' )
