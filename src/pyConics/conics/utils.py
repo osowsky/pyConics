@@ -6,13 +6,13 @@ from __future__ import annotations
 # #------------------------------------------------------------------
 # # Everything that can be visible to the world.
  
-__all__ = [ 'create_conic_from_lines', 'create_conic' ]
+__all__ = [ 'create_conic_from_lines', 'create_conic', 'rank' ]
 
 # #------------------------------------------------------------------
 # # Import from...
 # #
 # from typing import Any
-# from numpy import linalg as LA
+from numpy import linalg as LA
 
 # #------------------------------------------------------------------
 # # Import from...
@@ -39,7 +39,7 @@ def create_conic_from_lines( lines: tuple[ CLine, CLine ] ) -> np.ndarray:
     l1 = lines[ 0 ].gform[np.newaxis]
     l2 = lines[ 1 ].gform[np.newaxis].T
     M = ( l2 @ l1 )
-    return M + M.T
+    return tol.adjust2relzeros( M + M.T )
 
 def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarray:
     # Get the minor axis.
@@ -71,6 +71,54 @@ def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarr
     # Build the matrix representation of a conic.
     return tol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
+def rank( M: np.ndarray ) -> int:
+    rk, N = _test4zerorank( M )
+    if ( ( rk == 0 ) or ( rk == 1 ) ):
+        return rk
+    
+    nrows, *_ = N.shape
+    for i in range( 0, nrows ):
+        l1 = CLine( ( N[ i ][ 0 ], N[ i ][ 1 ], N[ i ][ 2 ] ) )
+        p1 = CPoint( ( N[ i ][ 0 ], N[ i ][ 1 ], N[ i ][ 2 ] ) )
+
+        for j in range( i + 1, nrows ):
+            l2 = CLine( ( N[ j ][ 0 ], N[ j ][ 1 ], N[ j ][ 2 ] ) )
+            p2 = CPoint( ( N[ j ][ 0 ], N[ j ][ 1 ], N[ j ][ 2 ] ) )
+
+            if ( ( l1.at_infinity() ) and ( l2.at_infinity() ) ):
+                rk -= 1
+                break
+
+            if ( ( p1.at_infinity() ) and ( p2.at_infinity() ) ):
+                if ( l1 // l2 ):
+                    rk -= 1
+                    break
+
+            if ( ( l1.at_infinity() ) or ( l2.at_infinity() ) ):
+                if ( p1 == p2 ):
+                    rk -= 1
+            elif ( ( p1.at_infinity() ) or ( p2.at_infinity() ) ):
+                if ( l1 // l2 ):
+                    rk -= 1
+            elif ( p1 == p2 ):
+                rk -= 1
+
+    return rk
+
+#------------------------------------------------------------------
+# Internal functions.
+#  
+def _test4zerorank( M: np.ndarray ) -> tuple[ int, np.ndarray ]:
+    nrows, *_ = M.shape
+    res = []
+    rk: int = nrows
+    for i in range( 0, nrows ):
+        if  ( tol.iszero( LA.norm( M[ i ] ) ) ):
+            rk -= 1
+            continue
+        res.append( M[ i ] )
+    return ( rk, np.array( res ) )
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -85,6 +133,8 @@ if __name__ == '__main__':
     g = CLine( ( 1, 0, -1 ) )
     C0 = CConic( degenerate = ( f, g ), name = 'C0' )
     print( C0 )
+    print( f'Rank of {C0.name}: {C0.rank}.' )
+    print( f'Is {C0.name} full rank? {C0.is_fullrank()}' )
     print( f'Is {C0.name} degenerate? {C0.is_degenerate}.\n' )
 
     # Degenerate conic.
@@ -92,6 +142,8 @@ if __name__ == '__main__':
     g = CLine( ( 1, 0, -3 ) )
     C1 = CConic( degenerate = ( f, g ), name = 'C1' )
     print( C1 )
+    print( f'Rank of {C1.name}: {C1.rank}.' )
+    print( f'Is {C1.name} full rank? {C1.is_fullrank()}' )
     print( f'Is {C1.name} degenerate? {C1.is_degenerate}.\n' )
 
     # Degenerate conic.
@@ -99,25 +151,63 @@ if __name__ == '__main__':
     g = CLine( ( -1, -1, 2 ) )
     C2 = CConic( degenerate = ( f, g ), name = 'C2' )
     print( C2 )
+    print( f'Rank of {C2.name}: {C2.rank}.' )
+    print( f'Is {C2.name} full rank? {C2.is_fullrank()}' )
     print( f'Is {C2.name} degenerate? {C2.is_degenerate}.\n' )
 
     # Degenerate conic.
     f = CLine( ( 1, 0, -2 ) )    
     C3 = CConic( degenerate = ( f, f ), name = 'C3' )
     print( C3 )
+    print( f'Rank of {C3.name}: {C3.rank}.' )
+    print( f'Is {C3.name} full rank? {C3.is_fullrank()}' )
     print( f'Is {C3.name} degenerate? {C3.is_degenerate}.\n' )
 
     # Default nondegenerate conic.
     C4 = CConic( name = 'C4' )
     print( C4 )
+    print( f'Rank of {C4.name}: {C4.rank}.' )
+    print( f'Is {C4.name} full rank? {C4.is_fullrank()}' )
     print( f'Is {C4.name} degenerate? {C4.is_degenerate}.\n' )
 
     # Nondegenerate conic with a, c, center, and angle.
     C5 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C5' )
     print( C5 )
+    print( f'Rank of {C5.name}: {C5.rank}.' )
+    print( f'Is {C5.name} full rank? {C5.is_fullrank()}' )
     print( f'Is {C5.name} degenerate? {C5.is_degenerate}.\n' )
 
     # Nondegenerate conic with a, and foci.
     C6 = CConic( 2.0, name = 'C6', foci = ( CPoint( ( 0, 1 ) ), CPoint( ( 0, -1 ) ) ) )
     print( C6 )
+    print( f'Rank of {C6.name}: {C6.rank}.' )
+    print( f'Is {C6.name} full rank? {C6.is_fullrank()}' )
     print( f'Is {C6.name} degenerate? {C6.is_degenerate}.\n' )
+
+    # Testing rank function.
+    A = np.array( [ [ 0, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 0, 0 ], [ 2, 0, 0 ], [ 0, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 0, 0 ], [ 1, 0, 0 ], [ 1, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 0, 0 ], [ 2, 0, 0 ], [ 3, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 0, 0, 1 ], [ 0, 0, 2 ], [ 0, 0, 3 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 0, 0 ], [ 0, 2, 0 ], [ 0, 0, 3 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 0, 0, 1 ], [ 2, 0, 0 ], [ 3, 0, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 2, 0 ], [ 2, 4, 0 ], [ 3, 6, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 2, 0 ], [ 2, 4, 0 ], [ 0, 0, 5 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 2, 0 ], [ 1, 3, 0 ], [ 0, 0, 5 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 0, 0, 1 ], [ 0, 0, 2 ], [ 4, 4, 0 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
+    A = np.array( [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ] )
+    print( f'Rank of Matrix A: {rank( A )}' )
