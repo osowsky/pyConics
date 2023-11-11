@@ -4,7 +4,12 @@
 
 ## v1.1.0 (XX/XX/2023)
 
-- `CConic` class has been incorporated into `pyConics`. 
+- The file `README.md` has been updated to show examples of how to
+work with conics.
+- `plot()` method in `CAxes` class can now show conics on screen.  
+- `CConic` class has been incorporated into `pyConics`.
+- `coef_angular()` and `coef_linear()` methods in `CLine` have been
+created.
 
 ## v1.0.2 (03/11/2023)
 
