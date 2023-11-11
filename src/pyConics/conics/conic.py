@@ -12,6 +12,7 @@ __all__ = [ 'CConic' ]
 # Import from...
 #
 from typing import Any
+from matplotlib import pyplot as plt
 
 #------------------------------------------------------------------
 # Import from...
@@ -152,6 +153,45 @@ class CConic( CAGObj ):
         
         return C
 
+    def sequence( self, x: list[ float ], /,
+                  y: list[ float ] | None = None
+                ) -> tuple[ tuple[ CPoint, ... ], ... ]:
+        from pyConics.point import CPoint
+        
+        # Degenerate conic.
+        if ( self._lines4deg is not None ):
+            lop1 = self._lines4deg[ 0 ].sequence( x )
+            lop2 = self._lines4deg[ 1 ].sequence( x )
+            return ( lop1, lop2 )
+
+        # Nondegenerate conic.
+        if ( y is None ):
+            y = x
+
+        nrows = len( y )
+        ncols = len( x )
+        Vx = np.empty( shape = ( nrows, ncols ) )
+        for i in range( 0, nrows):
+            for j in range( 0, ncols ):
+                _x = np.array( [ y[ i ], x[ j ], 1.0 ] )[np.newaxis].T
+                Vx[ i ][ j ] = np.squeeze( _x.T @ self._gform @ _x )
+
+        X, Y = np.meshgrid( x, y )
+
+        _fig = plt.figure( figsize = ( 0, 0 ) )
+        _ax = _fig.add_subplot( 111 )
+        cs = _ax.contour( X, Y, Vx, levels = [ 0.0 ] )
+        # plt.show()
+        plt.close( _fig )
+
+        p = cs.get_paths()[ 0 ]
+        v = np.array( p.vertices )
+        
+        xy = []
+        for _x, _y in v:
+            xy.append( CPoint( ( _x, _y ) ) )
+        return ( tuple( xy ), )
+
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -175,7 +215,7 @@ if __name__ == '__main__':
     C1 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C1' )
     print( C1, '\n' )
 
-    C2 = CConic( 2.0, name = 'C2', foci = ( CPoint( ( 0, 1 ) ), CPoint( ( 0, -1 ) ) ) )
+    C2 = CConic( 0.2, name = 'C2', foci = ( CPoint( ( 0, 0.4 ) ), CPoint( ( 0, -0.4 ) ) ) )
     print( C2, '\n' )
 
     C3 = CConic( degenerate = ( CLine( ( 1.0, -1.0, 0.0 ) ), CLine( ( 1.0, 1.0, 0.0 ) ) ),
@@ -192,3 +232,6 @@ if __name__ == '__main__':
     C5 = C1.copy()
     C5.name = 'C1.cp'
     print( C5, '\n' )
+
+    # x = np.linspace( -1.2, 1.2, 101 )
+    # print( C2.sequence( list( x ) ) )
