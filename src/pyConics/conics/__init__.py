@@ -7,4 +7,4 @@
 #------------------------------------------------------------------
 # Modules that belong to pyConics.conics package.
 #
-from pyConics.conics import *
+from pyConics.conics.conic import *
