@@ -127,11 +127,11 @@ class CFigure:
 # For development and test.
 #  
 if ( __name__  == '__main__' ):
-    from pyConics import CPoint, CLine
+    from pyConics import CPoint, CLine, CConic
 
     # Set interative mode.
     # Activate this mode so that it is not necessary to call the show() function.
-    CFigure.ion()
+    # CFigure.ion()
 
     width = 0.35
     f2 = CFigure( (width, 16.0 / 9.0 * width ) )
@@ -248,6 +248,43 @@ if ( __name__  == '__main__' ):
     l4 = CLine( ( 1.0, 0.0, -0.1 ), 'l4' )
     llist = [ l1, l2, l3, l4 ]
     axes[ 2 ].plot( llist, 'sm-', linewidth = 0.5, markersize = 3, clinesamples = 11 )
+
+    # Redraw all figure to update its canvas.
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a nondegenerate conic. (circle)
+    C1 = CConic( 0.45, center = CPoint( ( 0.5, 0.5 ) ), name = 'C1' )
+    axes[ 1 ].plot( C1, 'or-', linewidth = 0.5, markersize = 3, cconicsamples = ( 11, 11 ) )
+
+    # Redraw all figure to update its canvas.
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a nondegenerate conic. (hyperbole)
+    C2 = CConic( 0.1, 0.15, 30.0 / 180.0 * const.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C2' )
+    axes[ 1 ].plot( C2, 'og-', linewidth = 0.5, markersize = 3, cconicsamples = ( 15, 15 ) )
+
+    # Redraw all figure to update its canvas.
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a nondegenerate conic. (ellipse)
+    C3 = CConic( 0.35, 0.30, -60.0 / 180.0 * const.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C3' )
+    axes[ 1 ].plot( C3, 'ok-', linewidth = 0.5, markersize = 3, cconicsamples = ( 17, 17 ) )
+
+    # Redraw all figure to update its canvas.
+    if ( CFigure.is_interactive() ):
+        # f2.update_canvas()
+        input( 'Press any key to continue...' )
+
+    # Plot a degenerate conic. (two concurrent lines)
+    C4 = CConic( degenerate = ( CLine( ( 1.0, -1.0, -0.1 ) ), CLine( ( 1.0, 1.0, -1.0 ) ) ),
+                 name = 'C4' )
+    axes[ 1 ].plot( C4, 'oy-', linewidth = 0.5, markersize = 3, cconicsamples = ( 11, 11 ) )
 
     # Redraw all figure to update its canvas.
     if ( CFigure.is_interactive() ):

@@ -13,6 +13,7 @@ __all__ = [ 'CConic' ]
 #
 from typing import Any
 from matplotlib import pyplot as plt
+from matplotlib.path import Path
 
 #------------------------------------------------------------------
 # Import from...
@@ -48,9 +49,9 @@ class CConic( CAGObj ):
     def __init__( self,
                   a: float = 1.0, # by default, it is created a circle with
                   c: float = 0.0, # radius equal to 1 and its center at ( 0, 0 ).
-                  center: CPoint = CPoint( ( 0, 0 ), 'o' ),
                   angle: float = 0.0, # angle in radians.
                   /,
+                  center: CPoint = CPoint( ( 0, 0 ), 'o' ),
                   name: str = '',
                   *,
                   foci: tuple[ CPoint, CPoint ] | None = None,
@@ -173,7 +174,7 @@ class CConic( CAGObj ):
         Vx = np.empty( shape = ( nrows, ncols ) )
         for i in range( 0, nrows):
             for j in range( 0, ncols ):
-                _x = np.array( [ y[ i ], x[ j ], 1.0 ] )[np.newaxis].T
+                _x = np.array( [ x[ j ], y[ i ], 1.0 ] )[np.newaxis].T
                 Vx[ i ][ j ] = np.squeeze( _x.T @ self._gform @ _x )
 
         X, Y = np.meshgrid( x, y )
@@ -181,16 +182,35 @@ class CConic( CAGObj ):
         _fig = plt.figure( figsize = ( 0, 0 ) )
         _ax = _fig.add_subplot( 111 )
         cs = _ax.contour( X, Y, Vx, levels = [ 0.0 ] )
-        # plt.show()
         plt.close( _fig )
 
+        # Get vertices and codes of the path.
         p = cs.get_paths()[ 0 ]
         v = np.array( p.vertices )
-        
-        xy = []
-        for _x, _y in v:
-            xy.append( CPoint( ( _x, _y ) ) )
-        return ( tuple( xy ), )
+        c = np.array( p.codes )
+
+        # Get the codes equal to Path.MOVETO.
+        idx = np.where( c == Path.MOVETO )
+        idx = idx[ 0 ]
+        if ( idx.size == 0 ):
+            return ( tuple( [] ), tuple( [] ) )
+
+        # Build the lists.
+        xy1 = []
+        xy2 = []
+        if ( idx.size == 1 ):
+            for _xy in v:
+                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                xy1.append( p )
+        elif ( idx.size == 2 ):
+            for _xy in v[ idx[ 0 ] : idx[ 1 ] ]:
+                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                xy1.append( p )
+            for _xy in v[ idx[ 1 ] : ]:
+                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                xy2.append( p )
+    
+        return ( tuple( xy1 ), tuple( xy2 ) )
 
 #------------------------------------------------------------------
 # Internal functions.
@@ -212,7 +232,7 @@ if __name__ == '__main__':
     C0 = CConic( name = 'C0' )
     print( C0, '\n' )
 
-    C1 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C1' )
+    C1 = CConic( 0.3, 0.5, 30.0 / 180 * const.pi, CPoint( ( 0, 0 ) ), 'C1' )
     print( C1, '\n' )
 
     C2 = CConic( 0.2, name = 'C2', foci = ( CPoint( ( 0, 0.4 ) ), CPoint( ( 0, -0.4 ) ) ) )
@@ -233,5 +253,34 @@ if __name__ == '__main__':
     C5.name = 'C1.cp'
     print( C5, '\n' )
 
-    # x = np.linspace( -1.2, 1.2, 101 )
-    # print( C2.sequence( list( x ) ) )
+    x = np.linspace( -1.2, 1.2, 7 )
+    lp1, lp2 = C3.sequence( list( x ) )
+    for p in lp1:
+        print( p.gform )
+    print()
+    for p in lp2:
+        print( p.gform )
+    print()
+
+    print( 'Path codes:' )
+    print( f'Path.MOVETO: {Path.MOVETO}' )
+    print( f'Path.LINETO: {Path.LINETO}' )
+    print( f'Path.CLOSEPOLY: {Path.CLOSEPOLY}' )
+    print( f'Path.STOP: {Path.STOP}' )
+    print()
+
+    lp1, lp2 = C0.sequence( list( x ) )
+    for p in lp1:
+        print( p.gform )
+    print()
+    for p in lp2:
+        print( p.gform )
+    print()
+
+    lp1, lp2 = C1.sequence( list( x ) )
+    for p in lp1:
+        print( p.gform )
+    print()
+    for p in lp2:
+        print( p.gform )
+    print()

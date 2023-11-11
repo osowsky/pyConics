@@ -15,6 +15,7 @@ from pyConics.constants import const
 from pyConics.errors import CValueError, CTypeError
 from matplotlib import pyplot as plt
 from pyConics import CPoint, CLine
+from pyConics.conics import CConic
 from pyConics.plotting.utils import CPoint2CoordXY, CLine2MatrixXY
 from pyConics.plotting.utils import CPointList2MatrixXY, CLineList2MatrixXY
 
@@ -112,10 +113,13 @@ class CAxes:
         # Call Axes.text() method.
         self._axes.text( x, y, txt, kwargs )
         
-    def plot( self, *args, clinesamples: int = 11, **kwargs ) -> None:
+    def plot( self, *args,
+              clinesamples: int = 11,
+              cconicsamples: tuple[ int, int ] = ( 51, 51 ),
+              **kwargs ) -> None:
         new_args = [] # new arguments to be passed into axes.plot.
 
-        # Search for a CPoint, a CLine, or lists of them.
+        # Search for a CPoint, a CLine, a lists of them, or a CConic.
         for arg in args:
             if ( isinstance( arg, CPoint ) ):
                 # Convert a CPoint to a XY-coord.
@@ -150,6 +154,59 @@ class CAxes:
                     xy = CLineList2MatrixXY( arg, self.xlim, self.ylim, clinesamples )
                     new_args.append( xy[ 0 ] )
                     new_args.append( xy[ 1 ] )
+                    continue
+
+            if ( isinstance( arg, CConic ) ):
+                # Convert a CConic to a tuple of tuples.
+                C: CConic = arg
+                x = np.linspace( self.xlim[ 0 ], self.xlim[ 1 ], cconicsamples[ 0 ] )
+                y = np.linspace( self.ylim[ 0 ], self.ylim[ 1 ], cconicsamples[ 1 ] )
+
+                if ( C.is_degenerate ):
+                    # Degenerate conic.
+                    lp1, lp2 = C.sequence( list( x ) )
+
+                    # Get the first list of points.
+                    xy1 = CPointList2MatrixXY( list( lp1 ) )
+
+                    # Get the second list of points.
+                    xy2 = CPointList2MatrixXY( list( lp2 ) )
+
+                    # Build the list of x and y.
+                    X = list( np.block( [ xy1[ :, 0 ][np.newaxis].T,
+                                          xy2[ :, 0 ][np.newaxis].T ] ) )
+                    Y = list( np.block( [ xy1[ :, 1 ][np.newaxis].T,
+                                          xy2[ :, 1 ][np.newaxis].T ] ) )
+                    new_args.append( X )
+                    new_args.append( Y )
+                    continue
+                else:
+                    # Nondegenerate conic.
+                    # Get the list of points.
+                    lp1, lp2 = C.sequence( list( x ), list( y ) )
+                    
+                    # Get the first list of points.
+                    xy1 = CPointList2MatrixXY( list( lp1 ) )
+
+                    # Get the second list of points.
+                    xy2 = CPointList2MatrixXY( list( lp2 ) )
+
+                    # List of points must exist.
+                    if ( ( xy1.size == 0 ) and ( xy2.size == 0 ) ):
+                        continue
+
+                    # Build the list of x and y.
+                    if ( xy2.size == 0 ):
+                        X = list( xy1[ :, 0 ][np.newaxis].T )
+                        Y = list( xy1[ :, 1 ][np.newaxis].T )
+                    else:
+                        X = list( np.block( [ xy1[ :, 0 ][np.newaxis].T,
+                                              xy2[ :, 0 ][np.newaxis].T ] ) )
+                        Y = list( np.block( [ xy1[ :, 1 ][np.newaxis].T,
+                                              xy2[ :, 1 ][np.newaxis].T ] ) )
+                        
+                    new_args.append( X )
+                    new_args.append( Y )
                     continue
 
             # It is not a pyConic object.
