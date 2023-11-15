@@ -80,7 +80,7 @@ class CPoint( CAGObj ):
 
     def copy( self ) -> CPoint:
         xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 2 ] )
-        return CPoint( xy, self.name )
+        return CPoint( xy, self.name, shift_origin = False )
     
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.

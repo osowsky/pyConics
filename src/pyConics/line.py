@@ -73,7 +73,7 @@ class CLine( CAGObj ):
 
     def copy( self ) -> CLine:
         xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 2 ] )
-        return CLine( xy, self.name )
+        return CLine( xy, self.name, shift_origin = False )
 
     def cross( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         from pyConics.utils import cross

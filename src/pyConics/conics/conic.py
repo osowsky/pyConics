@@ -145,6 +145,7 @@ class CConic( CAGObj ):
     def copy( self ) -> CConic:
         C = CConic()
         C._rank = self._rank
+        C.name = self.name
 
         if ( self._lines4deg is not None ):
             C._lines4deg = self._lines4deg
@@ -200,14 +201,14 @@ class CConic( CAGObj ):
         xy2 = []
         if ( idx.size == 1 ):
             for _xy in v:
-                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ), shift_origin = False )
                 xy1.append( p )
         elif ( idx.size == 2 ):
             for _xy in v[ idx[ 0 ] : idx[ 1 ] ]:
-                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ), shift_origin = False )
                 xy1.append( p )
             for _xy in v[ idx[ 1 ] : ]:
-                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ) )
+                p = CPoint((_xy[0], _xy[1]), shift_origin=False)
                 xy2.append( p )
     
         return ( tuple( xy1 ), tuple( xy2 ) )
