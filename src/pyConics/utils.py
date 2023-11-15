@@ -27,7 +27,7 @@ if TYPE_CHECKING:
         
 from pyConics.errors import CTypeError, CArgumentsError
 from pyConics.tolerance import tol
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
 
@@ -166,7 +166,7 @@ def distance( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     
     # Test points and lines to check if they are at the infinity.
     if ( ( gf1.at_infinity() ) or ( gf2.at_infinity() ) ):
-        return const.inf
+        return cconst.inf
 
     # There are 4 conditions:
     # 1) Point x Point returns the distance between them.
@@ -316,13 +316,13 @@ if __name__ == '__main__':
     print( l1 )
     l2 = CLine( ( 1, -1, -1 ), 'l2' )
     print( l2 )
-    if ( distance( p1, p2 ) == const.inf ):
+    if ( distance( p1, p2 ) == cconst.inf ):
         print( f'p1 or p2 is a point at the infinity.' )
-    if ( distance( p2, l1 ) == const.inf ):
+    if ( distance( p2, l1 ) == cconst.inf ):
         print( f'p2 or l1 is a point/line at the infinity.' )
-    if ( distance( l2, l1 ) == const.inf ):
+    if ( distance( l2, l1 ) == cconst.inf ):
         print( f'l2 or l1 is a line at the infinity.' )
-    if ( distance( p2, l2 ) != const.inf ):
+    if ( distance( p2, l2 ) != cconst.inf ):
         print( f'p2 and l2 are point and line that are not at the infinity.\n' )
     
     # Lines are coincident.

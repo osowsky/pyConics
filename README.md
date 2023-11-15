@@ -502,12 +502,13 @@ Let's know how to set up these classes.
 </p>
 
 <span style="color:green">**NOTE:**<br></span>
-The `CAxes` class in `pyConics` has setters for its title, xlabel, ylabel, xticks,
+*The `CAxes` class in `pyConics` has setters for its title, xlabel, ylabel, xticks,
 and yticks that do not allow you to change their font size directly, i.e., the
-`pyConics` fixed the font size of these attributes by default, namely:
-- title: fontsize = 9
-- x- and y-labels: fontsize = 8
-- x- and y-ticks: fontsize = 8
+`pyConics` fixed the font size of these attributes by default, namely:*
+
+- *title: fontsize = 9.*
+- *x- and y-labels: fontsize = 8.*
+- *x- and y-ticks: fontsize = 8.*
 
 If, for any reason, you need to change one of these default font sizes, you must get
 the `Axes` object that belongs to the `pyPlot` by mean of the `CAxes`'s `get_pyplot_axes()`
@@ -919,6 +920,75 @@ with the `in` operator and the `are_perpendicular()` method.
     <!-- <img src="./docs/figs/howto-plot/geometry-problem-a.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/geometry-problem-a.jpeg"/>
 </p>
+
+### Working with conics *(v1.1.0 onwards)*
+
+Finally, in this version, the main goal of `pyConics` has been achieved, in which you
+will be able to plot conics on the screen and perform simple operations with them.
+
+However, before introducing its use through code segments, the basic theory about conics
+in a two-dimensional space will be explained next.
+
+A quadric surface in a two-dimensional space over the real field, also known as conic
+sections (ellipses, parabolas, and hyperboles), is defined by the following algebraic equation:
+
+$$
+\begin{array}{cccccccccccc}
+A \cdot x^{2} & + & B \cdot y^{2} & + & C \cdot x \cdot y & D \cdot x & + & E \cdot y & + & F & = & 0
+\end{array}
+$$
+
+where $A,\enspace B,\enspace C,\enspace D,\enspace E,\enspace F\enspace\in\enspace\mathcal{R}$
+
+The representation in homogeneous coordinates of the above polynomial equation can be rewritten
+in its matricial quadratic form, as follows:
+
+$$
+C:\left\lbrace\enspace (\enspace x,\enspace y\enspace)\enspace|\enspace
+\left[\begin{array}{ccc}
+\enspace\ x \enspace\\
+\enspace\ y \enspace\\
+\enspace\ 1 \enspace\\
+\end{array}\right]^{T}\times\enspace
+\left[\begin{array}{ccc}
+\enspace A & C / 2 & D / 2 \enspace \\
+\enspace C / 2 & B & E / 2 \enspace \\
+\enspace D / 2 & E / 2 & F\enspace \\
+\end{array}\right]\times
+\left[\begin{array}{c}
+\enspace\ x \enspace\\
+\enspace\ y \enspace\\
+\enspace\ 1 \enspace\\
+\end{array}\right]\enspace=\enspace 0
+\enspace\right\rbrace
+$$
+
+The latter equation will be used to represent ellipses and hyperboles in `pyConics`'s
+`CConic` class, which can be either non-degenerate or
+[degenerate](https://en.wikipedia.org/wiki/Degenerate_conic).
+
+<span style="color:green">**NOTE:**<br></span>
+*A conic is said to be non-degenerate if it is represented by a non-singular matrix,
+whereas a degenerate conic is represented by a singular matrix. Over the real field,
+there are only three types of degenerate conics, namely:*
+
+- *two concurrent lines, where the rank of its matrix is equal to two.*
+- *two parallel lines that are distinct, where the rank of its matrix is equal to two.*
+- *two parallel lines that are coincident, where the rank of its matrix is equal to one.*
+
+- **Plotting non-degenerate ellipses with `CConic`.**
+
+Some non-degenerate ellipses will be drawn on the screen. You can see from the code
+below that this task is really simple when `pyConics` is used.
+​
+
+
+
+
+
+
+
+
 
 ## Contributing
 

@@ -565,6 +565,56 @@ def test_Solve_A_Simple_Problem_Of_Geometry():
     # Show Figure on screen.
     # CFigure.show()
 
+def test_Conics_Ellipses():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Plotting non-degenerate ellipses.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot a circle with radius = 1, and center at ( 0, 0 )
+    C0 = CConic( name = 'C0' )
+    xy = CPoint( ( 0.0, 0.0 ) )
+    ax[ 0 ].plot( xy, 'ob', C0, '-b',
+                  cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot a circle with radius = 3.5, and center at( 5.5, 4.5 )
+    xy = CPoint( ( 5.5, 4.5 ) )
+    C1 = CConic( 3.5, center = xy, name = 'C1' )
+    ax[ 0 ].plot( xy, 'or', C1, '-r',
+                  cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot an ellipse with vertex = 4, focal distance = 3.5,
+    # center at( 0.0, 0.0 ), and angle = +30 degrees ( counterclockwise ).
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C2 = CConic( 4.0, 3.5, 30 / 180 * cconst.pi, center = xy, name = 'C2' )
+    ax[ 0 ].plot( C2, '-g', cconicsamples = ( 101, 101 ) )
+
+    # Show Figure on screen.
+    CFigure.show()
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -581,5 +631,6 @@ if __name__ == '__main__':
     # test_Plot_List_Line()
     # test_Plot_Line_Segment()
     # test_Solve_A_Simple_Problem_Of_Geometry()
-    ...
-    
+    test_Conics_Ellipses()
+
+

@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CLineTypeError, CValueError
 from pyConics.origin import origin
@@ -171,7 +171,7 @@ class CLine( CAGObj ):
             raise CValueError( CLine.__name__, 'A line at infinity has improper coeficients.' )
         
         if ( self._gform[ 1 ] == 0.0 ): # perpendicular line to the y-axis.
-            coef = const.inf if ( self._gform[ 0 ] > 0 ) else -const.inf
+            coef = cconst.inf if ( self._gform[ 0 ] > 0 ) else -cconst.inf
         else:
             coef = self._gform[ 0 ] / self._gform[ 1 ]
 
@@ -184,7 +184,7 @@ class CLine( CAGObj ):
             raise CValueError( CLine.__name__, 'A line at infinity has improper coeficients.' )
         
         if ( self._gform[ 1 ] == 0.0 ): # perpendicular line to the y-axis.
-            return const.inf
+            return cconst.inf
 
         # Return the coef.
         return self._gform[ 2 ] / self._gform[ 1 ]

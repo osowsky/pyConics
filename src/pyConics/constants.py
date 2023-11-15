@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'const' ]
+__all__ = [ 'cconst' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -67,12 +67,12 @@ class CConstants:
 #--------------------------------------------------------------
 # Global variable.
 #
-const = CConstants()
+cconst = CConstants()
 
 #------------------------------------------------------------------
 # For development and test.
 #  
 if __name__ == '__main__':
-    print( f'The value of infinity is {const.inf}' )
-    print( f'Is infinity equals to 0.0? {const.inf == 0.0}' )
-    print( f'The value of pi is {const.pi:.6f}' )
+    print( f'The value of infinity is {cconst.inf}' )
+    print( f'Is infinity equals to 0.0? {cconst.inf == 0.0}' )
+    print( f'The value of pi is {cconst.pi:.6f}' )

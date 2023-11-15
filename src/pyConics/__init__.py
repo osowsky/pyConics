@@ -15,6 +15,7 @@ __version__ = version( 'pyConics' )
 #
 from pyConics.origin import *
 from pyConics.tolerance import *
+from pyConics.constants import *
 from pyConics.point import *
 from pyConics.line import *
 

@@ -11,7 +11,7 @@ __all__ = [ 'CAxes' ]
 #------------------------------------------------------------------
 # Import from ...
 #
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.errors import CValueError, CTypeError
 from matplotlib import pyplot as plt
 from pyConics import CPoint, CLine
@@ -70,7 +70,7 @@ class CAxes:
     
     @xticks.setter
     def xticks( self, xt: np.ndarray ) -> None:
-        self._axes.tick_params( axis = 'x', labelsize = const.tickssize )
+        self._axes.tick_params( axis = 'x', labelsize = cconst.tickssize )
         self._axes.set_xticks( xt )
 
     @property
@@ -79,7 +79,7 @@ class CAxes:
     
     @yticks.setter
     def yticks( self, yt: np.ndarray ) -> None:
-        self._axes.tick_params( axis = 'y', labelsize = const.tickssize )
+        self._axes.tick_params( axis = 'y', labelsize = cconst.tickssize )
         self._axes.set_yticks( yt )
 
     @property
@@ -88,7 +88,7 @@ class CAxes:
     
     @title.setter
     def title( self, title: str ) -> None:
-        self._axes.set_title( title, fontsize = const.titlesize )
+        self._axes.set_title( title, fontsize = cconst.titlesize )
 
     @property
     def xlabel( self ) -> str:
@@ -96,7 +96,7 @@ class CAxes:
     
     @xlabel.setter
     def xlabel( self, label: str ) -> None:
-        self._axes.set_xlabel( label, fontsize = const.labelsize )
+        self._axes.set_xlabel( label, fontsize = cconst.labelsize )
 
     @property
     def ylabel( self ) -> str:
@@ -104,11 +104,11 @@ class CAxes:
     
     @ylabel.setter
     def ylabel( self, label: str ) -> None:
-        self._axes.set_ylabel( label, fontsize = const.labelsize )
+        self._axes.set_ylabel( label, fontsize = cconst.labelsize )
 
     def text( self, x: float, y: float, txt: str, **kwargs ) -> None:
         if( not 'fontsize' in kwargs.keys() ):
-            kwargs[ 'fontsize' ] = const.textsize
+            kwargs[ 'fontsize' ] = cconst.textsize
 
         # Call Axes.text() method.
         self._axes.text( x, y, txt, kwargs )
