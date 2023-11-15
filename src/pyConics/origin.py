@@ -13,7 +13,7 @@ __all__ = [ 'origin' ]
 #  
 from dataclasses import dataclass
 from numpy import linalg as LA
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 
 #------------------------------------------------------------------
 # Import from...
@@ -65,7 +65,7 @@ class Origin:
         F = ( o.T @ ABC @ o ) - 1
 
         # Build the matrix representation of a conic.
-        return tol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
+        return ctol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
     def reset( self ) -> None:
         self.x = 0.0

@@ -26,7 +26,7 @@ if TYPE_CHECKING:
         # here to be imported.
         
 from pyConics.errors import CTypeError, CArgumentsError
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
@@ -131,7 +131,7 @@ def dot( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
         res = np.inner( gf1.gform, gf2.gform )
     else:
         raise CArgumentsError( dot.__name__, gf1.__class__.__name__, gf2.__class__.__name__ )
-    return 0.0 if ( tol.iszero( res ) ) else res
+    return 0.0 if ( ctol.iszero( res ) ) else res
 
 def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):
@@ -144,7 +144,7 @@ def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 1 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 0 ]
 
-    return True if ( tol.iszero( op1 - op2  ) ) else False
+    return True if ( ctol.iszero( op1 - op2  ) ) else False
 
 def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):
@@ -156,7 +156,7 @@ def are_perpendicular( gf1: CLine, gf2: CLine ) -> bool:
     op1  = gf1.gform[ 0 ] * gf2.gform[ 0 ]
     op2 = gf1.gform[ 1 ] * gf2.gform[ 1 ]
 
-    return True if ( tol.iszero( op1 + op2  ) ) else False
+    return True if ( ctol.iszero( op1 + op2  ) ) else False
 
 def distance( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
     if ( not isinstance( gf1, ( CPoint, CLine ) ) ):
@@ -201,7 +201,7 @@ def distance( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
         
         # Calc. the distance between these points.
         d = distance( p1, p2 )
-    return 0.0 if ( tol.iszero( d ) ) else d
+    return 0.0 if ( ctol.iszero( d ) ) else d
 
 #------------------------------------------------------------------
 # For development and test.

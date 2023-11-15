@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'tol' ]
+__all__ = [ 'ctol' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -80,7 +80,7 @@ def _larger_rank( x: np.ndarray ) -> float:
 #--------------------------------------------------------------
 # Global variable.
 #
-tol = CTolerance()
+ctol = CTolerance()
 
 #------------------------------------------------------------------
 # For development and test.
@@ -94,10 +94,10 @@ if __name__ == '__main__':
     print( _larger_rank( y ) )
 
     A = np.array( [ [ 100000, 1 ],[ 1, 1 ] ] )
-    A = tol.adjust2relzeros( A )
+    A = ctol.adjust2relzeros( A )
     print( A )
 
     A = np.array( [ [ 1e-1, 1e-6 ],[ 1e-6, 1e-5 ] ] )
-    A = tol.adjust2relzeros( A )
+    A = ctol.adjust2relzeros( A )
     print( A )
     

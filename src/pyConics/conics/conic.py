@@ -29,7 +29,7 @@ from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CConicTypeError
 from pyConics.origin import origin
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
 from pyConics.conics.utils import rank
 

@@ -25,7 +25,7 @@ from numpy import linalg as LA
 #         # here to be imported.
         
 # from pyConics.errors import CTypeError, CArgumentsError
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
@@ -39,7 +39,7 @@ def create_conic_from_lines( lines: tuple[ CLine, CLine ] ) -> np.ndarray:
     l1 = lines[ 0 ].gform[np.newaxis]
     l2 = lines[ 1 ].gform[np.newaxis].T
     M = ( l2 @ l1 )
-    return tol.adjust2relzeros( M + M.T )
+    return ctol.adjust2relzeros( M + M.T )
 
 def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarray:
     # Get the minor axis.
@@ -64,12 +64,12 @@ def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarr
     xy_o = center.gform[ 0 : 2 ][np.newaxis].T
 
     # Create the matrices ABC, DE, and F.
-    ABC = tol.adjust2relzeros( R.T @ C @ R )
+    ABC = ctol.adjust2relzeros( R.T @ C @ R )
     DE = ( -1 * ABC ) @ xy_o
     F = ( xy_o.T @ ABC @ xy_o ) - 1
 
     # Build the matrix representation of a conic.
-    return tol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
+    return ctol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
 def rank( M: np.ndarray ) -> int:
     rk, N = _test4zerorank( M )
@@ -113,7 +113,7 @@ def _test4zerorank( M: np.ndarray ) -> tuple[ int, np.ndarray ]:
     res = []
     rk: int = nrows
     for i in range( 0, nrows ):
-        if  ( tol.iszero( LA.norm( M[ i ] ) ) ):
+        if  ( ctol.iszero( LA.norm( M[ i ] ) ) ):
             rk -= 1
             continue
         res.append( M[ i ] )

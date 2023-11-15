@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 from pyConics.agobj import CAGObj
 from pyConics.errors import CPointTypeError
 from pyConics.origin import origin
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 
 #------------------------------------------------------------------
 # Import as...
@@ -50,7 +50,7 @@ class CPoint( CAGObj ):
         self._gform = _validate_point( coord )
 
         # Test for epsilon number condition.
-        self._gform = tol.adjust2relzeros( self._gform )
+        self._gform = ctol.adjust2relzeros( self._gform )
 
         # Transform the point to an homogeneous coord.
         if ( self._gform[ -1 ] != 0.0 ):

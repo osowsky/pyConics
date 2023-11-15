@@ -27,7 +27,7 @@ from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CLineTypeError, CValueError
 from pyConics.origin import origin
-from pyConics.tolerance import tol
+from pyConics.tolerance import ctol
 
 #------------------------------------------------------------------
 # Import as...
@@ -51,7 +51,7 @@ class CLine( CAGObj ):
         self._gform = _validate_line( line )
 
         # Test for epsilon number condition.
-        self._gform = tol.adjust2relzeros( self._gform )
+        self._gform = ctol.adjust2relzeros( self._gform )
 
         # Store this value to be possible restore it to the origin.
         self._from_origin = self._gform.copy()
