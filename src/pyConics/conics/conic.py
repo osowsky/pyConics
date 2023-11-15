@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CConicTypeError
 from pyConics.origin import origin
@@ -232,7 +232,7 @@ if __name__ == '__main__':
     C0 = CConic( name = 'C0' )
     print( C0, '\n' )
 
-    C1 = CConic( 0.3, 0.5, 30.0 / 180 * const.pi, CPoint( ( 0, 0 ) ), 'C1' )
+    C1 = CConic( 0.3, 0.5, 30.0 / 180 * cconst.pi, CPoint( ( 0, 0 ) ), 'C1' )
     print( C1, '\n' )
 
     C2 = CConic( 0.2, name = 'C2', foci = ( CPoint( ( 0, 0.4 ) ), CPoint( ( 0, -0.4 ) ) ) )

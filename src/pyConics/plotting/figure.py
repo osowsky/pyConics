@@ -11,7 +11,7 @@ __all__ = [ 'CFigure' ]
 #------------------------------------------------------------------
 # Import from ...
 #  
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.errors import CValueError
 from matplotlib import pyplot as plt
 from pyConics.plotting.axes import CAxes
@@ -107,11 +107,11 @@ class CFigure:
             ax.set_ylim( ( 0.0, 1.0 ) )
             ax.set_xticks( np.round( np.linspace( 0, 1, 11 ), 1 ) )
             ax.set_yticks( np.round( np.linspace( 0, 1, 11 ), 1 ) )
-            ax.tick_params( axis = 'x', labelsize = const.tickssize )
-            ax.tick_params( axis = 'y', labelsize = const.tickssize )
-            ax.set_xlabel( 'x-axis', fontsize = const.labelsize )
-            ax.set_ylabel( 'y-axis', fontsize = const.labelsize )
-            ax.set_title( 'axes title', fontsize = const.titlesize )
+            ax.tick_params( axis = 'x', labelsize = cconst.tickssize )
+            ax.tick_params( axis = 'y', labelsize = cconst.tickssize )
+            ax.set_xlabel( 'x-axis', fontsize = cconst.labelsize )
+            ax.set_ylabel( 'y-axis', fontsize = cconst.labelsize )
+            ax.set_title( 'axes title', fontsize = cconst.titlesize )
 
             # Create a CAxes class for each axes.
             self._axes.append( CAxes( ax ) )
@@ -264,7 +264,7 @@ if ( __name__  == '__main__' ):
         input( 'Press any key to continue...' )
 
     # Plot a nondegenerate conic. (hyperbole)
-    C2 = CConic( 0.1, 0.15, 30.0 / 180.0 * const.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C2' )
+    C2 = CConic( 0.1, 0.15, 30.0 / 180.0 * cconst.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C2' )
     axes[ 1 ].plot( C2, 'og-', linewidth = 0.5, markersize = 3, cconicsamples = ( 15, 15 ) )
 
     # Redraw all figure to update its canvas.
@@ -273,7 +273,7 @@ if ( __name__  == '__main__' ):
         input( 'Press any key to continue...' )
 
     # Plot a nondegenerate conic. (ellipse)
-    C3 = CConic( 0.35, 0.30, -60.0 / 180.0 * const.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C3' )
+    C3 = CConic( 0.35, 0.30, -60.0 / 180.0 * cconst.pi, center = CPoint( ( 0.5, 0.5 ) ), name = 'C3' )
     axes[ 1 ].plot( C3, 'ok-', linewidth = 0.5, markersize = 3, cconicsamples = ( 17, 17 ) )
 
     # Redraw all figure to update its canvas.

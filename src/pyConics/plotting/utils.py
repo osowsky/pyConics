@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
         
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
 
@@ -35,14 +35,14 @@ import numpy as np
 def CPoint2CoordXY( p: CPoint ) -> np.ndarray:
     # Test for points at infinity.
     if ( p.gform[ 2 ] == 0.0 ):
-        return np.array( [ const.inf, const.inf ] )
+        return np.array( [ cconst.inf, cconst.inf ] )
     return np.array( [ p.gform[ 0 ], p.gform[ 1 ] ] )
 
 def CLine2MatrixXY( l: CLine, xlim: tuple[ float, float ],
                     ylim: tuple[ float, float ], samples: int ) -> np.ndarray:
     # Test for lines at infinity.
     if ( ( l.gform[ 0 ] == 0.0 ) and ( l.gform[ 1 ] == 0.0 ) ):
-        return np.array( [ const.inf, const.inf ] )[np.newaxis]
+        return np.array( [ cconst.inf, cconst.inf ] )[np.newaxis]
 
     # Test for the other conditions.
     x = np.linspace( *xlim, samples )[np.newaxis].T

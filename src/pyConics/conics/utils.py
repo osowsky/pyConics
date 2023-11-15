@@ -26,7 +26,7 @@ from numpy import linalg as LA
         
 # from pyConics.errors import CTypeError, CArgumentsError
 from pyConics.tolerance import tol
-from pyConics.constants import const
+from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
 
@@ -171,7 +171,7 @@ if __name__ == '__main__':
     print( f'Is {C4.name} degenerate? {C4.is_degenerate}.\n' )
 
     # Nondegenerate conic with a, c, center, and angle.
-    C5 = CConic( 2.0, 0.5, CPoint( ( 2, 1 ) ), 30.0 / 180 * const.pi, 'C5' )
+    C5 = CConic( 2.0, 0.5, 30.0 / 180 * cconst.pi, CPoint( ( 2, 1 ) ), 'C5' )
     print( C5 )
     print( f'Rank of {C5.name}: {C5.rank}.' )
     print( f'Is {C5.name} full rank? {C5.is_fullrank()}' )
