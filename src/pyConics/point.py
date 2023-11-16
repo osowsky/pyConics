@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 from pyConics.agobj import CAGObj
 from pyConics.errors import CPointTypeError
-from pyConics.origin import origin
+from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 
 #------------------------------------------------------------------
@@ -84,7 +84,7 @@ class CPoint( CAGObj ):
     
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        self._gform = origin.change_point( self._from_origin )
+        self._gform = corigin.change_point( self._from_origin )
 
     def cross( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         from pyConics.utils import cross
@@ -152,22 +152,22 @@ if __name__ == '__main__':
     print()
 
     # Change the origin.
-    print( origin )
+    print( corigin )
     p1 = CPoint( ( 1.0, 1.0 ) )
     print( p1 )
-    origin.x = 2.0
-    origin.y = 2.0
+    corigin.x = 2.0
+    corigin.y = 2.0
     p1.update_origin()
-    print( origin )
+    print( corigin )
     print( p1 )
-    origin.reset()
+    corigin.reset()
     p1.update_origin()
-    print( origin )
+    print( corigin )
     print( p1 )
     print()
 
     # Points in HC.
-    origin.reset()
+    corigin.reset()
     p2 = CPoint( ( 1, 2, 0 ) )
     p3 = CPoint( ( 0.001, 2, 3 ) )
     print( p2 )
@@ -209,9 +209,9 @@ if __name__ == '__main__':
     print( l5, '\n' )
 
     # Shifting origin.
-    origin.x = 3
-    origin.y = 2
-    print( origin )
+    corigin.x = 3
+    corigin.y = 2
+    print( corigin )
     
     # Distance between 2 points.
     p1 = CPoint( ( 0, 1 ), 'p1' )
@@ -230,8 +230,8 @@ if __name__ == '__main__':
     print( f'Distance from {p1}\nto {l1}\nis {dpl:.4f}.\n' )
 
     # Resetting origin.
-    origin.reset()
-    print( origin )
+    corigin.reset()
+    print( corigin )
     
     # Are these points the same?
     p1 = CPoint( ( 0, 1 ), 'p1' )

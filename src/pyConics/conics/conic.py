@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CConicTypeError
-from pyConics.origin import origin
+from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
 from pyConics.conics.utils import rank
@@ -140,7 +140,7 @@ class CConic( CAGObj ):
             self._lines4deg[ 1 ].update_origin()
             self._gform = create_conic_from_lines( self._lines4deg )
         else:
-            self._gform = origin.change_conic( self._gform )
+            self._gform = corigin.change_conic( self._gform )
 
     def copy( self ) -> CConic:
         C = CConic()

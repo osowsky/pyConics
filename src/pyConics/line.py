@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
 from pyConics.errors import CLineTypeError, CValueError
-from pyConics.origin import origin
+from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 
 #------------------------------------------------------------------
@@ -69,7 +69,7 @@ class CLine( CAGObj ):
 
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
-        self._gform = origin.change_line( self._from_origin )
+        self._gform = corigin.change_line( self._from_origin )
 
     def copy( self ) -> CLine:
         xy  = ( self._gform[ 0 ], self._gform[ 1 ], self._gform[ 2 ] )
@@ -210,29 +210,29 @@ if __name__ == '__main__':
     os.system( 'cls' )
 
     # Create the line y = x + 1
-    print( origin )
+    print( corigin )
     l1 = CLine( ( 1, -1, 1 ) )
     print( l1, '\n' )
 
     # Change the origin to ( 0, 1 ), update the origin and back it to the origin.
-    origin.x = 0
-    origin.y = 1
-    print( origin )
+    corigin.x = 0
+    corigin.y = 1
+    print( corigin )
     l1.update_origin()
     print( l1, '\n' )
-    origin.reset()
-    print( origin )
+    corigin.reset()
+    print( corigin )
     l1.update_origin()
     print( l1, '\n' )
 
     # Change the origin to ( 1, 0 ), update the origin and back it to the origin.
-    origin.x = 1
-    origin.y = 0
-    print( origin )
+    corigin.x = 1
+    corigin.y = 0
+    print( corigin )
     l1.update_origin()
     print( l1, '\n' )
-    origin.reset()
-    print( origin )
+    corigin.reset()
+    print( corigin )
     l1.update_origin()
     print( l1, '\n' )
  
@@ -272,9 +272,9 @@ if __name__ == '__main__':
     print( l5, '\n' )
 
     # Shifting origin.
-    origin.x = 3
-    origin.y = 2
-    print( origin )
+    corigin.x = 3
+    corigin.y = 2
+    print( corigin )
     
     # Point is in or is not in a Line.
     # for...
@@ -333,8 +333,8 @@ if __name__ == '__main__':
     print( f'Are l1 and l2 parallel? {l1 // l2}.\n' )
 
     # Shifting origin.
-    origin.reset()
-    print( origin )
+    corigin.reset()
+    print( corigin )
 
     # Are these points the same?
     l1 = CLine( ( 1, -1, 1 ), 'l1' )           # y = x + 1

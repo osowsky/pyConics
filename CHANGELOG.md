@@ -4,6 +4,7 @@
 
 ## v1.1.0 (XX/XX/2023)
 
+- The global variable `origin` has been renamed to `corigin`.
 - The global variable `tol` has been renamed to `ctol`.
 - The global variable `const` has been renamed to `cconst`.
 - The file `README.md` has been updated to show examples of how to

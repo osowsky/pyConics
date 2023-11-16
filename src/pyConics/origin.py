@@ -6,7 +6,7 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'origin' ]
+__all__ = [ 'corigin' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -83,7 +83,7 @@ class Origin:
 #--------------------------------------------------------------
 # Global variable.
 #
-origin = Origin()
+corigin = Origin()
 
 #------------------------------------------------------------------
 # For development and test.
