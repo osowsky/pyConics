@@ -12,6 +12,7 @@ from pyConics import CPoint, CLine, origin
 #
 import pyConics as con
 import subprocess as sp
+import numpy as np
 
 def _get_git_version() -> str:
     r = sp.run( [ 'git', 'tag' ], capture_output = True, text = True )
@@ -47,6 +48,24 @@ def test_version():
     # Used for pytest.
     assert ver_git == ver_pypi
 
+def test_cconst():
+    from pyConics import cconst
+
+    assert cconst.inf == np.Inf
+    assert cconst.pi == np.pi
+    assert cconst.titlesize == 9
+    assert cconst.labelsize == 8
+    assert cconst.tickssize == 8
+    assert cconst.textsize  == 10
+    print( 'Global variable cconst is ok.' )
+
+def test_ctol():
+    from pyConics import ctol
+
+    assert ctol.eps_iszero == 1e-4
+    assert ctol.eps_relzero == 1e-5
+    print( 'Global variable ctol is ok.' )
+
 def test_origin():
     # Points.
     p1 = CPoint( ( 1, 3 ), 'p1' )
@@ -72,6 +91,14 @@ if __name__ == '__main__':
     # Test to check if git version is equal to pyPI version.
     print()
     test_version()
+    print()
+
+    # Test to check if global variable cconst is ok.
+    test_cconst()
+    print()
+
+    # Test to check if global variable ctol is ok.
+    test_ctol()
     print()
 
     # Test to check if he shift of origin is working well.
