@@ -165,7 +165,7 @@ class CLine( CAGObj ):
                 xy.append( CPoint( ( _x, ( ( -alp * _x ) - gam ) / bet ), shift_origin = False ) )
         return tuple( xy )
     
-    def coef_angular( self, returnangle = False ) -> float:
+    def coef_angular( self, return_angle = False ) -> float:
         # The line can not be at infinity.
         if ( self.at_infinity() ):
             raise CValueError( CLine.__name__, 'A line at infinity has improper coeficients.' )
@@ -173,10 +173,10 @@ class CLine( CAGObj ):
         if ( self._gform[ 1 ] == 0.0 ): # perpendicular line to the y-axis.
             coef = cconst.inf if ( self._gform[ 0 ] > 0 ) else -cconst.inf
         else:
-            coef = self._gform[ 0 ] / self._gform[ 1 ]
+            coef = -self._gform[ 0 ] / self._gform[ 1 ]
 
         # Return an angle in radians.
-        return np.arctan( coef ) if ( returnangle ) else coef
+        return np.arctan( coef ) if ( return_angle ) else coef
 
     def coef_linear( self ) -> float:
         # The line can not be at infinity.
@@ -187,7 +187,7 @@ class CLine( CAGObj ):
             return cconst.inf
 
         # Return the coef.
-        return self._gform[ 2 ] / self._gform[ 1 ]
+        return -self._gform[ 2 ] / self._gform[ 1 ]
 
 #------------------------------------------------------------------
 # Internal functions.
