@@ -173,10 +173,22 @@ class CAxes:
                     xy2 = CPointList2MatrixXY( list( lp2 ) )
 
                     # Build the list of x and y.
-                    X = list( np.block( [ xy1[ :, 0 ][np.newaxis].T,
-                                          xy2[ :, 0 ][np.newaxis].T ] ) )
-                    Y = list( np.block( [ xy1[ :, 1 ][np.newaxis].T,
-                                          xy2[ :, 1 ][np.newaxis].T ] ) )
+                    x1 = xy1[ :, 0 ][np.newaxis].T
+                    y1 = xy1[ :, 1 ][np.newaxis].T
+                    x2 = xy2[ :, 0 ][np.newaxis].T
+                    y2 = xy2[ :, 1 ][np.newaxis].T
+                    dsize = np.abs( x1.size - x2.size )
+                    dx = np.full( shape = ( dsize, 1 ), fill_value = cconst.inf )
+                    if ( x1.size <= x2.size):
+                        x1 = np.block( [ [ x1 ], [ dx ] ] )
+                        y1 = np.block( [ [ y1 ], [ dx ] ] )
+                    else:
+                        x2 = np.block( [ [ x2 ], [ dx ] ] )
+                        y2 = np.block( [ [ y2 ], [ dx ] ] )
+
+                    X = list( np.block( [ x1, x2 ] ) )
+                    Y = list( np.block( [ y1, y2 ] ) )
+
                     new_args.append( X )
                     new_args.append( Y )
                     continue
@@ -200,10 +212,21 @@ class CAxes:
                         X = list( xy1[ :, 0 ][np.newaxis].T )
                         Y = list( xy1[ :, 1 ][np.newaxis].T )
                     else:
-                        X = list( np.block( [ xy1[ :, 0 ][np.newaxis].T,
-                                              xy2[ :, 0 ][np.newaxis].T ] ) )
-                        Y = list( np.block( [ xy1[ :, 1 ][np.newaxis].T,
-                                              xy2[ :, 1 ][np.newaxis].T ] ) )
+                        x1 = xy1[ :, 0 ][np.newaxis].T
+                        y1 = xy1[ :, 1 ][np.newaxis].T
+                        x2 = xy2[ :, 0 ][np.newaxis].T
+                        y2 = xy2[ :, 1 ][np.newaxis].T
+                        dsize = np.abs( x1.size - x2.size )
+                        dx = np.full( shape = ( dsize, 1 ), fill_value = cconst.inf )
+                        if ( x1.size <= x2.size):
+                            x1 = np.block( [ [ x1 ], [ dx ] ] )
+                            y1 = np.block( [ [ y1 ], [ dx ] ] )
+                        else:
+                            x2 = np.block( [ [ x2 ], [ dx ] ] )
+                            y2 = np.block( [ [ y2 ], [ dx ] ] )
+
+                        X = list( np.block( [ x1, x2 ] ) )
+                        Y = list( np.block( [ y1, y2 ] ) )
                         
                     new_args.append( X )
                     new_args.append( Y )
