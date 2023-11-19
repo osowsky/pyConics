@@ -80,44 +80,6 @@ def rank( M: np.ndarray ) -> int:
     if ( not ctol.iszero( LA.det( M ) ) ):
         return nrows
 
-    # Test for zero matrix.
-    rk, N = _test4zerorank( M )
-    if ( ( rk == 0 ) or ( rk == 1 ) ):
-        return rk
-    
-    # Calc rank using my algorithm.
-    nrows, *_ = N.shape
-    for i in range( 0, nrows ):
-        l1 = CLine( ( N[ i ][ 0 ], N[ i ][ 1 ], N[ i ][ 2 ] ) )
-        p1 = CPoint( ( N[ i ][ 0 ], N[ i ][ 1 ], N[ i ][ 2 ] ) )
-
-        for j in range( i + 1, nrows ):
-            l2 = CLine( ( N[ j ][ 0 ], N[ j ][ 1 ], N[ j ][ 2 ] ) )
-            p2 = CPoint( ( N[ j ][ 0 ], N[ j ][ 1 ], N[ j ][ 2 ] ) )
-
-            if ( ( l1.at_infinity() ) and ( l2.at_infinity() ) ):
-                rk -= 1
-                break
-
-            if ( ( p1.at_infinity() ) and ( p2.at_infinity() ) ):
-                if ( l1 // l2 ):
-                    rk -= 1
-                    break
-
-            if ( ( l1.at_infinity() ) or ( l2.at_infinity() ) ):
-                if ( p1 == p2 ):
-                    rk -= 1
-            elif ( ( p1.at_infinity() ) or ( p2.at_infinity() ) ):
-                if ( l1 // l2 ):
-                    rk -= 1
-            elif ( p1 == p2 ):
-                rk -= 1
-
-    # Rank must not be full.
-    nrows, *_ = M.shape
-    if ( rk != nrows ):
-        return rk
-
     # Calc rank by using the eigenvalues.
     eigs = LA.eigvalsh( M )
     eigs = ctol.adjust2relzeros( eigs )
