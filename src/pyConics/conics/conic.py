@@ -14,6 +14,7 @@ __all__ = [ 'CConic' ]
 from typing import Any
 from matplotlib import pyplot as plt
 from matplotlib.path import Path
+from numpy import linalg as LA
 
 #------------------------------------------------------------------
 # Import from...
@@ -27,7 +28,7 @@ if TYPE_CHECKING:
 
 from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
-from pyConics.errors import CConicTypeError
+from pyConics.errors import CTypeError, CConicTypeError
 from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
@@ -121,6 +122,34 @@ class CConic( CAGObj ):
         info = f'{self.name}: ( x, y ) | [ x y 1 ] *\n{self.gform} * [ x y 1 ].T = 0'
         return info
 
+    def __contains__( self, other: CPoint ) -> bool:
+        if ( not isinstance( other, CPoint ) ):
+            raise CTypeError( other.__class__.__name__ )
+    
+        # Get the line that is tangent to other.
+        l: CLine = self * other
+
+        # The point lies in the line.
+        return other in l
+
+    def __mul__( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
+        if ( not isinstance( other, ( CPoint, CLine ) ) ):
+            raise CTypeError( other.__class__.__name__ )
+    
+        # Multiply the Conic by the point. A line is returned.
+        if ( isinstance( other, CPoint ) ):
+            v = self._gform @ other._gform
+            l = CLine( ( v[ 0 ], v[ 1 ], v[ 2 ] ), shift_origin = False )
+            return l
+
+        # Multiply the Conic by the line. A point is returned.
+        if ( self.is_fullrank() == False ):
+            return CPoint(( 0.0, 0.0, 0.0 ), shift_origin = False )
+
+        v = LA.inv( self._gform ) @ other._gform
+        p = CPoint( ( v[ 0 ], v[ 1 ], v[ 2 ] ), shift_origin = False )
+        return p
+    
     @property
     def is_degenerate( self ) -> bool:
         return False if ( self._lines4deg is None ) else True
@@ -158,7 +187,7 @@ class CConic( CAGObj ):
     def sequence( self, x: list[ float ], /,
                   y: list[ float ] | None = None
                 ) -> tuple[ tuple[ CPoint, ... ], ... ]:
-        from pyConics.point import CPoint
+        # from pyConics.point import CPoint
         
         # Degenerate conic.
         if ( self._lines4deg is not None ):
@@ -212,6 +241,14 @@ class CConic( CAGObj ):
                 xy2.append( p )
     
         return ( tuple( xy1 ), tuple( xy2 ) )
+
+    def pole( self, l: CLine ) -> CPoint:
+        p: CPoint = self * l
+        return p
+    
+    def polar( self, p: CPoint ) -> CLine:
+        l: CLine = self * p
+        return l
 
 #------------------------------------------------------------------
 # Internal functions.
@@ -285,3 +322,32 @@ if __name__ == '__main__':
     for p in lp2:
         print( p.gform )
     print()
+
+    C6 = CConic( name = 'C6' )
+    print( C6.is_fullrank() )
+
+    p1 = CPoint( ( 1, 0 ), name = 'p1' )
+    l1: CLine = C6 * p1
+    p: CPoint = C6 * l1
+    print( p1, l1, p, sep = '\n' )
+    print()
+
+    p2 = CPoint( ( 0, 1 ), name = 'p2' )
+    l2: CLine = C6 * p2
+    p: CPoint = C6 * l2
+    print( p2, l2, p, sep = '\n' )
+    print()
+
+    p3 = CPoint( ( np.sqrt(2) / 2, np.sqrt(2) / 2 ), name='p3' )
+    l3: CLine = C6 * p3
+    p: CPoint = C6 * l3
+    print( p3, l3, p, sep = '\n' )
+    print()
+
+    print( CPoint( ( 0, 0 ) ) in C6 )
+    print( CPoint( ( 1, 1 ) ) in C6 )
+    print( p1 in C6 )
+    print( p2 in C6 )
+    print( p3 in C6 )
+    print()
+

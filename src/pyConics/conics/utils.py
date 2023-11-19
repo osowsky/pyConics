@@ -24,7 +24,7 @@ from numpy import linalg as LA
 #     ... # Do nothing here, because there are no pyConics modules
 #         # here to be imported.
         
-# from pyConics.errors import CTypeError, CArgumentsError
+# from pyConics.errors import CTypeError
 from pyConics.tolerance import ctol
 from pyConics.constants import cconst
 from pyConics.point import CPoint
@@ -88,20 +88,6 @@ def rank( M: np.ndarray ) -> int:
         if ( ev != 0.0 ):
             rk += 1
     return rk
-
-#------------------------------------------------------------------
-# Internal functions.
-#  
-def _test4zerorank( M: np.ndarray ) -> tuple[ int, np.ndarray ]:
-    nrows, *_ = M.shape
-    res = []
-    rk: int = nrows
-    for i in range( 0, nrows ):
-        if  ( ctol.iszero( LA.norm( M[ i ] ) ) ):
-            rk -= 1
-            continue
-        res.append( M[ i ] )
-    return ( rk, np.array( res ) )
 
 #------------------------------------------------------------------
 # For development and test.
