@@ -3,6 +3,8 @@
 `pyConics` handles points, lines and conics by using algebraic geometry
  and homogeneous coordinates (projective geometry).
 
+------------
+
 ## An overview
 
 `pyConics` is a personal project that I have been working on since 2020. Its main goal
@@ -31,6 +33,8 @@ perpendicular to the given line.
 In version 1.0.0, besides you being able to solve the problems as above, you will also
 be able to graph these results, allowing you to illustrate and insert them into
 any kind of document.
+
+------------
 
 ## Installation
 
@@ -66,6 +70,8 @@ touch ~/.Xauthority
 pip install pyConics
 ```
 
+------------
+
 ## Usage
 
 `pyConics` can be used to handle points, lines and conics by using algebraic
@@ -76,6 +82,8 @@ geometry and homogeneous coordinates.
 onwards, the `Point` and `Line` classes had their names changed to `CPoint` and
 `CLine`, respectively. For this reason, all of the examples in this file,
 `README.md`, had to be rewritten. I apologize for that.*
+
+------------
 
 ### Working with points *(v0.2.6 onwards)*
 
@@ -100,6 +108,8 @@ p=\left[\begin{array}{cc}
 $$
 
 where $\enspace\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
+
+------------
 
 - **How to work with points in `pyConics`.**
 
@@ -127,6 +137,8 @@ where $\enspace\alpha,\enspace\beta\enspace\in\enspace\mathcal{R}$
     d13 = p1.distance( p3 )
     print( f'Distance from {p1} to\n{p3} is {d13:.4f}.\n' ) # -> d13 = Inf.
 ```
+
+------------
 
 ### Working with lines *(v0.2.6 onwards)*
 
@@ -167,6 +179,8 @@ l\enspace=\left[\begin{array}{cc}
 $$
 
 where $\enspace\gamma\enspace\in\enspace\mathcal{R}$
+
+------------
 
 - **How to work with lines in `pyConics`.**
 
@@ -228,6 +242,8 @@ where $\enspace\gamma\enspace\in\enspace\mathcal{R}$
     print( f'Distance from {l5} to {l6} is {d56}.\n' )
 ```
 
+------------
+
 ### Working with points and lines *(v0.2.6 onwards)*
 
 Now that I have introduced you to the concepts of points and lines in projective
@@ -272,6 +288,8 @@ $$
 \hline
 \end{array}
 $$
+
+------------
 
 - **How to work with points and lines in `pyConics`.**
 
@@ -361,6 +379,8 @@ $$
     print( f'Distance from p2 to p  = {p2.distance( p ):.4f}.\n' )
 ```
 
+------------
+
 ### Creating and setting up the CFigure and CAxes Classes *(v1.0.0 onwards)*
 
 Two classes have been developed for this version, namely `CFigure` and `CAxes`,
@@ -377,6 +397,8 @@ want to get the result shown in our image, the current code segment must be
 inserted below the previous one.
 
 Let's know how to set up these classes.
+
+------------
 
 - **Creating an empty figure and its four axes.**
 
@@ -414,6 +436,8 @@ Let's know how to set up these classes.
     <!-- <img src="./docs/figs/howto-plot/fig-4axes-empty.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/fig-4axes-empty.jpeg"/>
 </p>
+
+------------
 
 - **Changing the x- and y-axis limits and ticks of an axes.**
 
@@ -467,6 +491,8 @@ Let's know how to set up these classes.
     <!-- <img src="./docs/figs/howto-plot/change-lim-and-ticks.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/change-lim-and-ticks.jpeg"/>
 </p>
+
+------------
 
 - **Changing title, x-label, and y-label of an axes.**
 
@@ -550,6 +576,8 @@ An example code to do this is shown below.
         input( 'Press any key to continue...' )
 ```
 
+------------
+
 ### Drawing points (`CPoint`) and lines (`CLine`) on CAxes Class *(v1.0.0 onwards)*
 
 Once you have already learned how to create and set up the `CFigure` and
@@ -567,6 +595,8 @@ list of straight lines such as `list[CLine]` as argument to be plotted on
 screen (into a `CAxes` class).
 
 Now, let's start.
+
+------------
 
 - **Plotting a `CPoint` and a `numpy` point.**
 
@@ -604,6 +634,8 @@ Now, let's start.
     <!-- <img src="./docs/figs/howto-plot/points.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/points.jpeg"/>
 </p>
+
+------------
 
 - **Plotting a list of `CPoint` and a list of `numpy` points.**
 
@@ -651,6 +683,8 @@ Now, let's start.
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/point-list.jpeg"/>
 </p>
 
+------------
+
 - **Plotting a `CLine` and a `numpy` line.**
 
 A `CLine` is drawn with a number of points determined by the *clinesamples*
@@ -696,6 +730,8 @@ parameter, with its default value being 11.
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/lines.jpeg"/>
 </p>
 
+------------
+
 - **Plotting a list of `CLine`.**
 
 ```python
@@ -737,6 +773,8 @@ parameter, with its default value being 11.
     <!-- <img src="./docs/figs/howto-plot/line-list.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/line-list.jpeg"/>
 </p>
+
+------------
 
 - **Plotting line segments through a sequence of points.**
 
@@ -813,11 +851,15 @@ $y$-axis, the input sequence $x$ will be assigned to a variable $y$ that will
 sweep the $y$-axis instead of the $x$-axis. For a better understanding, pay
 attention to the variable `l2` in the code segment as above.*
 
+------------
+
 - **Solving a simple problem of geometry with points and lines.**
 
 Finally, this is the last subsection about how to draw points (`CPoint`) and
 lines (`CLine`) on `CAxes` class. Here, you are going to learn how to solve
 a simple problem of geometry using `pyConics`. Are you ready? Let's do it.
+
+------------
 
 *Problem formulation:*
 
@@ -838,6 +880,8 @@ with the `in` operator and the `are_perpendicular()` method.
     <!-- <img src="./docs/figs/howto-plot/geometry-problem-q.jpeg"/> -->
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/geometry-problem-q.jpeg"/>
 </p>
+
+------------
 
 *Problem resolution:*
 
@@ -921,6 +965,8 @@ with the `in` operator and the `are_perpendicular()` method.
     <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/geometry-problem-a.jpeg"/>
 </p>
 
+------------
+
 ### Working with conics *(v1.1.0 onwards)*
 
 Finally, in this version, the main goal of `pyConics` has been achieved, in which you
@@ -976,19 +1022,243 @@ there are only three types of degenerate conics, namely:*
 - *two parallel lines that are distinct, where the rank of its matrix is equal to two.*
 - *two parallel lines that are coincident, where the rank of its matrix is equal to one.*
 
+------------
+
 - **Plotting non-degenerate ellipses with `CConic`.**
 
 Some non-degenerate ellipses will be drawn on the screen. You can see from the code
 below that this task is really simple when `pyConics` is used.
 ​
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
 
+    import numpy as np
 
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
 
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
 
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
 
+    # Define a title.
+    ax[ 0 ].title = 'Plotting non-degenerate ellipses.'
 
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
 
+    # Create and plot a circle with radius = 1, and center at ( 0, 0 )
+    C0 = CConic( name = 'C0' )
+    xy = CPoint( ( 0.0, 0.0 ) )
+    print( C0 )
+    print( f'The rank of {C0.name} is {C0.rank}.\n' )
+    
+    ax[ 0 ].plot( xy, 'ob', C0, '-b',
+                  cconicsamples = ( 101, 101 ), markersize = 3 )
 
+    # Create and plot a circle with radius = 3.5, and center at( 5.5, 4.5 )
+    xy = CPoint( ( 5.5, 4.5 ) )
+    C1 = CConic( 3.5, center = xy, name = 'C1' )
+    print( C1 )
+    print(f'The rank of {C1.name} is {C1.rank}.\n')
+    ax[ 0 ].plot( xy, 'or', C1, '-r',
+                  cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot an ellipse with vertex = 4, focal distance = 3.5,
+    # center at( 0.0, 0.0 ), and angle = +30 degrees ( counterclockwise ).
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C2 = CConic( 4.0, 3.5, 30 / 180 * cconst.pi, center = xy, name = 'C2' )
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.\n' )
+    ax[ 0 ].plot( C2, '-g', cconicsamples = ( 101, 101 ) )
+
+    # Create and plot an ellipse with vertex = 5,
+    # foci = [ ( -8, -2 ), ( -2, -8 ) ], and angle = -45 degrees ( clockwise ) .
+    f1 = CPoint( ( -8.0, -2.0 ) )
+    f2 = CPoint( ( -2.0, -8.0 ) )
+    C3 = CConic( 5.0, foci = ( f1, f2 ), name = 'C3' )
+    print( C3 )
+    print( f'The rank of {C3.name} is {C3.rank}.\n' )
+    ax[ 0 ].plot( [ f1, f2 ], 'oy', C3, '-y', cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot-conics/conic-ellipse.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-ellipse.jpeg"/> -->
+</p>
+
+------------
+
+- **Plotting non-degenerate hyperbolas with `CConic`.**
+
+Just as it was easy to build ellipses using `pyConics`. Building hyperbolas will be as well. Pay attention to the code below to see how this is done.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Plotting non-degenerate hyperboles.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot a hyperbole with vertex = 1.0, focal distance = 1.5,
+    # and center at ( 0, 0 )
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C0 = CConic( 1, 1.5, center = xy, name = 'C0' )
+    print( C0 )
+    print( f'The rank of {C0.name} is {C0.rank}.\n' )
+    ax[ 0 ].plot( xy, 'ob', C0, '-b', cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot a hyperbole with vertex = 1.0, focal distance = 2.5,
+    # and center at ( 6.5, 4.5 )
+    xy = CPoint( ( 6.5, 4.5 ) )
+    C1 = CConic( 1.0, 2.5, center = xy, name = 'C1' )
+    print( C1 )
+    print( f'The rank of {C1.name} is {C1.rank}.\n' )
+    ax[ 0 ].plot( xy, 'or', C1, '-r', cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot a hyperbole with vertex = 1.5, focal distance = 1.7
+    # center at ( -7.0, 3.0 ), and angle = +30 degrees ( counterclockwise ).
+    xy = CPoint( ( -7.0, 3.0 ) )
+    C2 = CConic( 1.5, 1.7, 30 / 180 * cconst.pi, center = xy, name = 'C2' )
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.\n' )
+    ax[ 0 ].plot( xy, 'og', C2, '-g', cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Create and plot a hyperbole with vertex = 1.5,
+    # foci = [ ( -7, -3 ), ( -3, -7 ) ], and angle = -45 degrees ( clockwise ).
+    f1 = CPoint( ( -7.0, -3.0 ) )
+    f2 = CPoint( ( -3.0, -7.0 ) )
+    C3 = CConic( 1.5, foci = ( f1, f2 ), name = 'C3' )
+    print( C3 )
+    print( f'The rank of {C3.name} is {C3.rank}.\n' )
+    ax[ 0 ].plot( [ f1, f2 ], 'oy', C3, '-y', cconicsamples = ( 101, 101 ), markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/> -->
+</p>
+
+------------
+
+- **Plotting degenerate conics with `CConic`.**
+
+Recalling, over the real field, there are only three types of degenerate conics:
+
+- two concurrent lines, where the rank of its matrix is equal to two.
+- two parallel lines that are distinct, where the rank of its matrix is equal to two.
+- two parallel lines that are coincident, where the rank of its matrix is equal to one.
+
+In the code below, these three types are going to be drawn.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Plotting degenerate conics.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot two distinct, parallel lines.
+    l1 = CLine( ( 1, 0, -1 ) )  # x = 1 for all y.
+    l2 = CLine( ( 1, 0, -4 ) )  # x = 4 for all y.
+    C0 = CConic( degenerate = ( l1, l2 ), name = 'C0' )
+    print( C0 )
+    print( f'The rank of {C0.name} is {C0.rank}.\n' )
+    ax[ 0 ].plot( C0, '-b', cconicsamples = ( 11, 11 ) )
+
+    # Create and plot two concurrent lines.
+    p1 = CPoint( ( -5, -2 ) )
+    p2 = CPoint( ( -7, 3 ) )
+    p3 = CPoint( ( 0, 2 ) )
+    l1: CLine = p1 * p2
+    l2: CLine = p1 * p3
+    C1 = CConic( degenerate = ( l1, l2 ), name = 'C1' )
+    print( C1 )
+    print( f'The rank of {C1.name} is {C1.rank}.\n' )
+    ax[ 0 ].plot( [ p1, p2, p3 ], 'or', C1, '-r',
+                  cconicsamples = ( 11, 11 ), markersize = 3 )
+
+    # Create and plot two coincident, parallel lines.
+    p1 = CPoint( ( -8, -9 ) )
+    p2 = CPoint( ( 6, 4 ) )
+    l1: CLine = p1 * p2
+    C2 = CConic( degenerate = ( l1, l1 ), name = 'C2' )
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.\n' )
+    ax[ 0 ].plot( [ p1, p2 ], 'og', C2, '-g',
+                 cconicsamples = ( 11, 11 ), markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot-conics/conic-degenerate.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-degenerate.jpeg"/> -->
+</p>
+
+------------
 
 ## Contributing
 
@@ -996,10 +1266,14 @@ Interested in contributing? Check out the contributing guidelines.
 Please note that this project is released with a Code of Conduct.
 By contributing to this project, you agree to abide by its terms.
 
+------------
+
 ## License
 
 `pyConics` was created by Jefferson Osowsky.
 It is licensed under the terms of the GNU General Public License v3.0 license.
+
+------------
 
 ## Credits
 
