@@ -78,6 +78,7 @@ class CConic( CAGObj ):
             else:
                 self._lines4deg = ( degenerate[ 0 ].copy(), degenerate[ 1 ].copy() )
                 self._gform = create_conic_from_lines( self._lines4deg )
+                self._from_origin = self._gform.copy()
         # 2) the parameter foci, and a were defined.
         #    the parameters c, center, and angle will be find out through foci.
         #    the parameter degenerate is not used.
@@ -88,8 +89,8 @@ class CConic( CAGObj ):
                 raise CConicTypeError( CConic.__name__, 'a or c' )
             else:
                 # Get center, c, and angle.
-                f1: CPoint = foci[ 0 ]
-                f2: CPoint = foci[ 1 ]
+                f1: CPoint = foci[ 0 ].copy()
+                f2: CPoint = foci[ 1 ].copy()
                 xm = ( f1.x + f2.x ) / 2
                 ym = ( f1.y + f2.y ) / 2
                 center = CPoint( ( xm, ym ) )
@@ -113,6 +114,7 @@ class CConic( CAGObj ):
         # Create the nondegenerate conic.
         if ( self._lines4deg is None ):
             self._gform = create_conic( a, c, center, angle )
+            self._from_origin = self._gform.copy()
 
         # Get the matrix rank.
         self._rank = rank( self._gform )
@@ -123,8 +125,9 @@ class CConic( CAGObj ):
         return info
 
     def __contains__( self, other: CPoint ) -> bool:
+        from pyConics import CPoint
         if ( not isinstance( other, CPoint ) ):
-            raise CTypeError( other.__class__.__name__ )
+           raise CTypeError( other.__class__.__name__ )
     
         # Get the line that is tangent to other.
         l: CLine = self * other
@@ -133,6 +136,7 @@ class CConic( CAGObj ):
         return other in l
 
     def __mul__( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
+        from pyConics import CPoint, CLine
         if ( not isinstance( other, ( CPoint, CLine ) ) ):
             raise CTypeError( other.__class__.__name__ )
     
@@ -177,17 +181,17 @@ class CConic( CAGObj ):
         C.name = self.name
 
         if ( self._lines4deg is not None ):
-            C._lines4deg = self._lines4deg
+            C._lines4deg = ( self._lines4deg[ 0 ].copy(), self._lines4deg[ 1 ].copy() )
             C._gform = create_conic_from_lines( C._lines4deg )
         else:
             C._gform = self._gform.copy()
-        
+        C._from_origin = C._gform.copy()        
         return C
 
     def sequence( self, x: list[ float ], /,
                   y: list[ float ] | None = None
                 ) -> tuple[ tuple[ CPoint, ... ], ... ]:
-        # from pyConics.point import CPoint
+        from pyConics.point import CPoint
         
         # Degenerate conic.
         if ( self._lines4deg is not None ):
@@ -223,25 +227,25 @@ class CConic( CAGObj ):
         idx = np.where( c == Path.MOVETO )
         idx = idx[ 0 ]
         if ( idx.size == 0 ):
-            return ( tuple( [] ), tuple( [] ) )
+            return tuple( [] ),
 
         # Build the lists.
-        xy1 = []
-        xy2 = []
-        if ( idx.size == 1 ):
-            for _xy in v:
-                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ), shift_origin = False )
-                xy1.append( p )
-        elif ( idx.size == 2 ):
-            for _xy in v[ idx[ 0 ] : idx[ 1 ] ]:
-                p = CPoint( ( _xy[ 0 ], _xy[ 1 ] ), shift_origin = False )
-                xy1.append( p )
-            for _xy in v[ idx[ 1 ] : ]:
-                p = CPoint((_xy[0], _xy[1]), shift_origin=False)
-                xy2.append( p )
-    
-        return ( tuple( xy1 ), tuple( xy2 ) )
+        res = []
+        xy = []
+        p = CPoint( ( v[ 0 ][ 0 ], v[ 0 ][ 1 ] ), shift_origin = False )
+        xy.append( p )
+        for i in range( 1, c.size ):
+            p = CPoint( ( v[ i ][ 0 ], v[ i ][ 1 ] ), shift_origin = False )
 
+            if ( c[ i ] == Path.MOVETO ):
+                res.append( tuple( xy ) )
+                xy = []            
+
+            xy.append( p )
+        res.append( tuple( xy ) )
+
+        return tuple( res )
+    
     def pole( self, l: CLine ) -> CPoint:
         p: CPoint = self * l
         return p
