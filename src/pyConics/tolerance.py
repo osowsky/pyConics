@@ -33,11 +33,17 @@ import numpy as np
 #  
 @dataclass
 class CTolerance:
-    eps_iszero: float = 1e-4    # It is used in iszero function.
-    eps_relzero: float = 1e-5   # It is used in adjust2relzeros function.
+    eps_iszero: float = 1e-4              # It is used in iszero function.
+    eps_iszero_fordotfn: float = 2.5e-3   # It is used in iszero_fordotfn function.
+    eps_relzero: float = 1e-5             # It is used in adjust2relzeros function.
 
     def iszero( self, num: float ) -> bool:
         if ( abs( num ) <= self.eps_iszero ):
+            return True
+        return False
+
+    def iszero_fordotfn( self, num: float ) -> bool:
+        if ( abs( num ) <= self.eps_iszero_fordotfn ):
             return True
         return False
 
