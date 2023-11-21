@@ -131,7 +131,7 @@ def dot( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> float:
         res = np.inner( gf1.gform, gf2.gform )
     else:
         raise CArgumentsError( dot.__name__, gf1.__class__.__name__, gf2.__class__.__name__ )
-    return 0.0 if ( ctol.iszero( res ) ) else res
+    return 0.0 if ( ctol.iszero_fordotfn( res ) ) else res
 
 def are_parallel( gf1: CLine, gf2: CLine ) -> bool:
     if ( not isinstance( gf1, CLine ) ):

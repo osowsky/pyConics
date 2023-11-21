@@ -87,7 +87,7 @@ class CLine( CAGObj ):
 
     def __contains__( self, other: CPoint ) -> bool:
         from pyConics.utils import dot
-
+        
         # Get the dot function.
         if ( dot( self, other ) == 0.0 ):
             return True

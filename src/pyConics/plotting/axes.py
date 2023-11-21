@@ -195,8 +195,18 @@ class CAxes:
                 else:
                     # Nondegenerate conic.
                     # Get the list of points.
-                    lp1, lp2 = C.sequence( list( x ), list( y ) )
+                    lst_pts = C.sequence( list( x ), list( y ) )
+                    lst_len = len( lst_pts )
                     
+                    if ( lst_len == 0 ):
+                        continue
+                    elif ( lst_len == 1 ):
+                        lp1 = lst_pts[ 0 ]
+                        lp2 = tuple( [] )
+                    else:
+                        lp1 = lst_pts[ 0 ]
+                        lp2 = lst_pts[ 1 ]
+
                     # Get the first list of points.
                     xy1 = CPointList2MatrixXY( list( lp1 ) )
 
