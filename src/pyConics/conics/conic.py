@@ -33,6 +33,8 @@ from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
 from pyConics.conics.utils import rank
+from pyConics.point import CPoint
+from pyConics.line import CLine
 
 #------------------------------------------------------------------
 # Import as...
@@ -44,8 +46,8 @@ np.set_printoptions( formatter = { 'float': lambda x: "{0:0.4e}".format( x ) } )
 # Class CConic.
 #  
 class CConic( CAGObj ):
-    from pyConics.point import CPoint
-    from pyConics.line import CLine
+    # from pyConics.point import CPoint
+    # from pyConics.line import CLine
 
     def __init__( self,
                   a: float = 1.0, # by default, it is created a circle with
@@ -57,7 +59,7 @@ class CConic( CAGObj ):
                   *,
                   foci: tuple[ CPoint, CPoint ] | None = None,
                   degenerate: tuple[ CLine, CLine ] | None = None ) -> None:
-        from pyConics.point import CPoint
+        # from pyConics.point import CPoint
 
         # Precedence for creating the conic:
         # 1) First: the parameter degenerate was defined.
@@ -125,7 +127,7 @@ class CConic( CAGObj ):
         return info
 
     def __contains__( self, other: CPoint ) -> bool:
-        from pyConics import CPoint
+        # from pyConics import CPoint
         if ( not isinstance( other, CPoint ) ):
            raise CTypeError( other.__class__.__name__ )
     
@@ -136,7 +138,7 @@ class CConic( CAGObj ):
         return other in l
 
     def __mul__( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
-        from pyConics import CPoint, CLine
+        # from pyConics import CPoint, CLine
         if ( not isinstance( other, ( CPoint, CLine ) ) ):
             raise CTypeError( other.__class__.__name__ )
     
@@ -191,7 +193,7 @@ class CConic( CAGObj ):
     def sequence( self, x: list[ float ], /,
                   y: list[ float ] | None = None
                 ) -> tuple[ tuple[ CPoint, ... ], ... ]:
-        from pyConics.point import CPoint
+        # from pyConics.point import CPoint
         
         # Degenerate conic.
         if ( self._lines4deg is not None ):
@@ -311,11 +313,8 @@ if __name__ == '__main__':
     print( f'Path.STOP: {Path.STOP}' )
     print()
 
-    lp1, lp2 = C0.sequence( list( x ) )
-    for p in lp1:
-        print( p.gform )
-    print()
-    for p in lp2:
+    lp = C0.sequence( list( x ) )
+    for p in lp[ 0 ]:
         print( p.gform )
     print()
 

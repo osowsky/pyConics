@@ -38,18 +38,21 @@ any kind of document.
 
 ## Installation
 
-From a local directory clones this project:
+From a local directory clones this project by using http:
 
 ```bash
-git clone https://github.com/osowsky/pyConics.git (by using http)
-or
-git clone git@github.com:osowsky/pyConics.git (by using ssh)
+$ git clone https://github.com/osowsky/pyConics.git
+```
+or by using ssh:
+
+```bash
+$ git clone git@github.com:osowsky/pyConics.git
 ```
 
 You can install this package, as well:
 
 ```bash
-pip install pyConics
+$ pip install pyConics
 ```
 
 <span style="color:green">**NOTE:**<br></span>
@@ -63,11 +66,11 @@ such as Ubuntu OS on WSL2 (Windows Subsystem for Linux) and intend to install th
 `pyConics` can work correctly.*
 
 ```bash
-sudo apt-get install x11-xserver-utils
-sudo apt-get install python3-tk python3-dev
-xhost +
-touch ~/.Xauthority
-pip install pyConics
+$ sudo apt-get install x11-xserver-utils
+$ sudo apt-get install python3-tk python3-dev
+$ xhost +
+$ touch ~/.Xauthority
+$ pip install pyConics
 ```
 
 ------------
@@ -1260,10 +1263,225 @@ In the code below, these three types are going to be drawn.
 
 ------------
 
+- **Working with points, lines, and conics.**
+
+In this section, you are going to learn how to work with points, lines, and conics
+at the same time.
+
+After plotting a circle on the screen, a region painted blue will be used along
+with the `sequence()` method in `CConic` class to get all points on that region and
+that lie in the circle.
+
+Next, those points in the blue region will be tested to check if they really
+belong to the conic named `C0`. This test is going to be performed by the `in`
+operator (`__contains__` dunder) of the `CConic` class.
+
+<span style="color:red">**WARNING:**<br></span>
+*The `CConic.sequence()` method calls the `pyPlot.contour()` method to return
+a sequence of `CPoint` points which lie in `C0`. The latter method uses an
+approximation algorithm to join points of a function of two variables which are
+on the same level curve. Therefore, the condition for a point to belong to a
+conic depends on the resolution (step) used in the `numpy`'s `linspace()` method
+which creates the range on the x- and y-axis that are passed as arguments to
+the `sequence()` and `contour()` functions.*
+
+*The larger the step, the better the result. Try increasing the step from 19 to 51
+and see the new results obtained in the console.*
+
+Finally, using the multiplication operator (`__mul__` dunder) you will be able
+to perform operations between a conic and a point (`CConic * CPoint`) and between
+a conic and a straight line (`CConic * CLine`), namely:
+
+1. Given a conic $C$ and a point $p \in C$, the $C * p$ operation,
+`CConic * CPoint`, will return a line $l$, `CLine`, where $l$ will be
+tangent to the given conic $C$ at the given point $p$.
+
+2. Given a non-degenerate conic $C$ and a line $l$, where $l$ is tangent to $C$
+at a point $p$ to be determinated, the $C * l$ operation, `CConic * CLine`, will
+return the unknown point $p$, `CPoint`, that belongs to the conic $C$ and to the
+line $l$.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    import matplotlib.patches as patches
+    from matplotlib.path import Path
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Working with points, lines, and conics all together.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    x = np.linspace( -10, 10, 21 )
+    ax[ 0 ].xticks = x
+    ax[ 0 ].ylim = ( -10, 10 )
+    y = np.linspace( -10, 10, 21 )
+    ax[ 0 ].yticks = y
+
+    # Create a circle with radius = 5, and center at ( 0, 0 ).
+    radius = 7.0
+    C0 = CConic( radius, name = 'C0' )
+    ax[ 0 ].plot( C0, 'b-' )
+
+    # Create a region where the sequence() method will be used.
+    x = np.linspace( -4.0, 6.0, 19 )
+    y = np.linspace( -6.5, 6.5, 19 )
+    verts = [
+                ( x[ 0 ], y[ 0 ] ),   # left, bottom
+                ( x[ 0 ], y[ -1 ] ),  # left, top
+                ( x[ -1 ], y[ -1 ] ), # right, top
+                ( x[ -1 ], y[ 0 ] ),  # right, bottom
+                ( x[ 0 ], y[ 0 ] ),   # ignored
+            ]
+    codes = [
+                Path.MOVETO,
+                Path.LINETO,
+                Path.LINETO,
+                Path.LINETO,
+                Path.CLOSEPOLY,
+            ]
+    rect = Path( verts, codes )
+    patch = patches.PathPatch( rect, linewidth = 0.0 )
+    ax[ 0 ].get_pyplot_axes().add_patch( patch )
+
+    # Get the points belonging to C0 and that are within the blue region.
+    lst = C0.sequence( list( x ), list( y ) )
+    for lp in lst:
+        ax[ 0 ].plot( list( lp ), 'or', markersize = 4 )
+
+    # Test those points to check if they really belong to C0.
+    # Warning: The condition so that a points belongs to a conic depends on
+    # the resolution (step) used in linspace() method applied to the sequence()
+    # method.
+    # The larger the step, the better the result.
+    # Try changing the step from 19 to 51 steps and see the new results.
+    for lp in lst:
+        for p in lp:
+            print( f'Does p=({p.x:.4f}, {p.y:.4f}) lie in {C0.name}? {p in C0}' )
+    print()
+
+    # Create a point that belongs to C0. So, get the line that is tangent to C0
+    # at that point.
+    p1 = CPoint( ( -radius, 0 ), name = 'p1' )
+    l1: CLine = C0 * p1
+    l1.name = 'l1'
+    ax[ 0 ].plot( p1, 'og', l1, '-g', linewidth = 1.5, markersize = 5 )
+    print( f'Does {p1.name}=({p1.x:.4f}, {p1.y:.4f}) lie in {l1}? {p1 in l1}' )
+    print( f'Does {p1.name}=({p1.x:.4f}, {p1.y:.4f}) lie in {C0.name}? {p1 in C0}' )
+    print()
+    
+    # Create another point that belongs to C0. So, get the line that is tangent
+    # to C0 at that other point.
+    l2 = CLine( ( 1, 1, radius * np.sqrt( 2 ) ),
+                name = 'l2' )  # y = -x - ( 7 * sqrt( 2 ) )
+    p2: CPoint = C0 * l2
+    p2.name = 'p2'
+    ax[ 0 ].plot( p2, 'oy', l2, '-y', linewidth = 1.5, markersize = 5 )
+    print( f'Does {p2.name}=({p2.x:.4f}, {p2.y:.4f}) lie in {l2}? {p2 in l2}' )
+    print( f'Does {p2.name}=({p2.x:.4f}, {p2.y:.4f}) lie in {C0.name}? {p2 in C0}' )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot-conics/points-lines-conics.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/points-lines-conics.jpeg"/> -->
+</p>
+
+------------
+
+- **Creating an envelope of non-degenerate conic.**
+
+The envelope of a curve $C$ is given by a sequence of curves $l$ that touch each
+point $p$ in $C$.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Creating an envelope of an ellipse.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot an ellipse with vertex = 5, focal distance = 3.5,
+    # center at( 0.0, 0.0 ), and angle = +30 degrees ( counterclockwise ).
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C = CConic( 5.0, 3.5, 30 / 180 * cconst.pi, center = xy, name = 'C' )
+    print( C )
+    print( f'The rank of {C.name} is {C.rank}.\n' )
+    ax[ 0 ].plot( C, '-b', cconicsamples = ( 101, 101 ), linewidth = 0.5 )
+
+    # Create a region where the sequence() method will be used.
+    x = np.linspace( -10.0, 10.0, 37 )
+    y = np.linspace( -10.0, 10.0, 37 )
+
+    # Get the points belonging to C.
+    lst = C.sequence( list( x ), list( y ) )
+    for lp in lst:
+        # For each list of points create a list of tangent lines.
+        ll = []
+        for p in lp:
+            l: CLine = C * p # l is a line tangent to C at the point p in C.
+            ll.append( l )
+
+        # Create the envelope of C.
+        ax[ 0 ].plot( list( ll ), '-r', clinesamples = 7, linewidth = 1.0 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/> -->
+</p>
+
+
+------------
+
 ## Contributing
 
-Interested in contributing? Check out the contributing guidelines.
-Please note that this project is released with a Code of Conduct.
+Interested in contributing? Check out the [contributing guidelines](https://raw.githubusercontent.com/osowsky/pyConics/main/CONTRIBUTING.md).
+Please note that this project is released with a [Code of Conduct](https://raw.githubusercontent.com/osowsky/pyConics/main/CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
 ------------
@@ -1271,7 +1489,7 @@ By contributing to this project, you agree to abide by its terms.
 ## License
 
 `pyConics` was created by Jefferson Osowsky.
-It is licensed under the terms of the GNU General Public License v3.0 license.
+It is licensed under the terms of the [GNU General Public License v3.0 license](https://raw.githubusercontent.com/osowsky/pyConics/main/LICENSE).
 
 ------------
 

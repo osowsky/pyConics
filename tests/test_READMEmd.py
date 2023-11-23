@@ -758,6 +758,161 @@ def test_Conics_Degenerate():
     # Show Figure on screen.
     CFigure.show()
 
+def test_Points_Lines_Conics():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    import matplotlib.patches as patches
+    from matplotlib.path import Path
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Working with points, lines, and conics all together.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    x = np.linspace( -10, 10, 21 )
+    ax[ 0 ].xticks = x
+    ax[ 0 ].ylim = ( -10, 10 )
+    y = np.linspace( -10, 10, 21 )
+    ax[ 0 ].yticks = y
+
+    # Create a circle with radius = 5, and center at ( 0, 0 ).
+    radius = 7.0
+    C0 = CConic( radius, name = 'C0' )
+    ax[ 0 ].plot( C0, 'b-' )
+
+    # Create a region where the sequence() method will be used.
+    x = np.linspace( -4.0, 6.0, 19 )
+    y = np.linspace( -6.5, 6.5, 19 )
+    verts = [
+                ( x[ 0 ], y[ 0 ] ),   # left, bottom
+                ( x[ 0 ], y[ -1 ] ),  # left, top
+                ( x[ -1 ], y[ -1 ] ), # right, top
+                ( x[ -1 ], y[ 0 ] ),  # right, bottom
+                ( x[ 0 ], y[ 0 ] ),   # ignored
+            ]
+    codes = [
+                Path.MOVETO,
+                Path.LINETO,
+                Path.LINETO,
+                Path.LINETO,
+                Path.CLOSEPOLY,
+            ]
+    rect = Path( verts, codes )
+    patch = patches.PathPatch( rect, linewidth = 0.0 )
+    ax[ 0 ].get_pyplot_axes().add_patch( patch )
+
+    # Get the points belonging to C0 and that are within the blue region.
+    lst = C0.sequence( list( x ), list( y ) )
+    for lp in lst:
+        ax[ 0 ].plot( list( lp ), 'or', markersize = 4 )
+
+    # Test those points to check if they really belong to C0.
+    # Warning: The condition so that a points belongs to a conic depends on
+    # the resolution (step) used in linspace() method applied to the sequence()
+    # method.
+    # The larger the step, the better the result.
+    # Try changing the step from 19 to 51 steps and see the new results.
+    for lp in lst:
+        for p in lp:
+            print( f'Does p=({p.x:.4f}, {p.y:.4f}) lie in {C0.name}? {p in C0}' )
+    print()
+
+    # Create a point that belongs to C0. So, get the line that is tangent to C0
+    # at that point.
+    p1 = CPoint( ( -radius, 0 ), name = 'p1' )
+    l1: CLine = C0 * p1
+    l1.name = 'l1'
+    ax[ 0 ].plot( p1, 'og', l1, '-g', linewidth = 1.5, markersize = 5 )
+    print( f'Does {p1.name}=({p1.x:.4f}, {p1.y:.4f}) lie in {l1}? {p1 in l1}' )
+    print( f'Does {p1.name}=({p1.x:.4f}, {p1.y:.4f}) lie in {C0.name}? {p1 in C0}' )
+    print()
+    
+    # Create another point that belongs to C0. So, get the line that is tangent
+    # to C0 at that other point.
+    l2 = CLine( ( 1, 1, radius * np.sqrt( 2 ) ),
+                name = 'l2' )  # y = -x - ( 7 * sqrt( 2 ) )
+    p2: CPoint = C0 * l2
+    p2.name = 'p2'
+    ax[ 0 ].plot( p2, 'oy', l2, '-y', linewidth = 1.5, markersize = 5 )
+    print( f'Does {p2.name}=({p2.x:.4f}, {p2.y:.4f}) lie in {l2}? {p2 in l2}' )
+    print( f'Does {p2.name}=({p2.x:.4f}, {p2.y:.4f}) lie in {C0.name}? {p2 in C0}' )
+
+    # Show Figure on screen.
+    CFigure.show()
+
+def test_Envelope():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Creating an envelope of an ellipse.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot an ellipse with vertex = 5, focal distance = 3.5,
+    # center at( 0.0, 0.0 ), and angle = +30 degrees ( counterclockwise ).
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C = CConic( 5.0, 3.5, 30 / 180 * cconst.pi, center = xy, name = 'C' )
+    print( C )
+    print( f'The rank of {C.name} is {C.rank}.\n' )
+    ax[ 0 ].plot( C, '-b', cconicsamples = ( 101, 101 ), linewidth = 0.5 )
+
+    # Create a region where the sequence() method will be used.
+    x = np.linspace( -10.0, 10.0, 37 )
+    y = np.linspace( -10.0, 10.0, 37 )
+
+    # Get the points belonging to C.
+    lst = C.sequence( list( x ), list( y ) )
+    for lp in lst:
+        # For each list of points create a list of tangent lines.
+        ll = []
+        for p in lp:
+            l: CLine = C * p # l is a line tangent to C at the point p in C.
+            ll.append( l )
+
+        # Create the envelope of C.
+        ax[ 0 ].plot( list( ll ), '-r', clinesamples = 7, linewidth = 1.0 )
+
+    # Show Figure on screen.
+    CFigure.show()
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -776,4 +931,6 @@ if __name__ == '__main__':
     # test_Solve_A_Simple_Problem_Of_Geometry()
     # test_Conics_Ellipses()
     # test_Conics_Hyperbole()
-    test_Conics_Degenerate()
+    # test_Conics_Degenerate()
+    # test_Points_Lines_Conics()
+    test_Envelope()
