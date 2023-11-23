@@ -1413,6 +1413,14 @@ line $l$.
 The envelope of a curve $C$ is given by a sequence of curves $l$ that touch each
 point $p$ in $C$.
 
+Here, the envelope of an ellipse is going to be plotted on screen. First, an
+ellipse will be created. Then, the `CConic.sequence()` method is called to return
+a set of points, where these points belong to that ellipse. Next, the multiplication
+operator is used between the ellipse and the points to return a set of lines, where
+each of those lines is tangent to the conic. Finally, by using the `CAxes.plot()`
+method, all lines are plotted on screen, drawing the envelope of the ellipse. 
+
+
 ```python
     from pyConics import CFigure, CAxes
     from pyConics import CPoint, CLine
