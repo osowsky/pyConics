@@ -1420,7 +1420,6 @@ operator is used between the ellipse and the points to return a set of lines, wh
 each of those lines is tangent to the conic. Finally, by using the `CAxes.plot()`
 method, all lines are plotted on screen, drawing the envelope of the ellipse. 
 
-
 ```python
     from pyConics import CFigure, CAxes
     from pyConics import CPoint, CLine
