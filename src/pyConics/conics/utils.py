@@ -77,6 +77,10 @@ def rank( M: np.ndarray ) -> int:
     if ( nrows != ncols ):
         return 0
 
+    n = LA.norm( M )
+    if ( ctol.iszero( float( n ) ) ):
+        return 0
+
     if ( not ctol.iszero( LA.det( M ) ) ):
         return nrows
 
