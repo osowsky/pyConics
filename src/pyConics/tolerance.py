@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 # Import as...
 #  
 import numpy as np
+import numpy.linalg as LA
 
 #------------------------------------------------------------------
 # Data Class Origin.
@@ -51,6 +52,10 @@ class CTolerance:
         if ( x.size <= 1 ):
             return x
         
+        n = LA.norm( x )
+        if ( self.iszero( float( n ) ) ):
+            return np.zeros( shape = x.shape )
+
         # Get the rank of the largest number in x.
         rk: float = _larger_rank( x )
 
@@ -106,4 +111,9 @@ if __name__ == '__main__':
     A = np.array( [ [ 1e-1, 1e-6 ],[ 1e-6, 1e-5 ] ] )
     A = ctol.adjust2relzeros( A )
     print( A )
+    
+    y = np.array( [ 0.0, 0.0, -7e-15 ] )
+    print( _larger_rank( y ) )
+    y = ctol.adjust2relzeros( y )
+    print( y )
     
