@@ -913,6 +913,236 @@ def test_Envelope():
     # Show Figure on screen.
     CFigure.show()
 
+
+def test_Polar_Pole_NonDeg():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # # Set interactive mode.
+    # # Activate this mode so that it is not necessary to call the show() method.
+    # # Whether you comment this line or use CFigure.ioff() method, the show()
+    # # method must be called.
+    # CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.25
+    f: CFigure = CFigure( (width, 3.5 * width ) )
+
+    # Create a 2x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 2, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define titles.
+    ax[ 0 ].title = 'Poles and polars of an ellipse.'
+    ax[ 1 ].title = 'Poles and polars of a hyperbole.'
+
+    # Change their axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 1 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 1 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot an ellipse with vertex = ve, focal distance = 5,
+    # center at cCe, and angle = +45 degrees ( counterclockwise ).
+    ve = 6
+    cCe = -5.0
+    xy = CPoint( ( cCe, cCe ) )
+    Ce = CConic( ve, 5.0, 45 / 180 * cconst.pi, center = xy, name = 'Ce' )
+    print( Ce )
+    print( f'The rank of {Ce.name} is {Ce.rank}.\n' )
+    ax[ 0 ].plot( Ce, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for the ellipse.
+    polar = CLine( ( 1, 1, 10 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ob', polar, '--b', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -3.5, -3.5, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, 1, 6 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'oy', polar, '--y', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -2.0, -2.0, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, 1, 2 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    coord = cCe + np.sqrt( ( ve ** 2 ) / 2 )
+    pole = CPoint( ( coord, coord, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( f'Does {pole.name} lies in {Ce.name}? {pole in Ce}' )
+    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 0, 0, 1 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Create and plot a hyperbole with vertex = vh, focal distance = 5,
+    # center at cCh, and angle = -45 degrees ( clockwise ).
+    vh = 4.0
+    cCh = 4.0
+    xy = CPoint( ( -cCh, cCh ) )
+    Ch = CConic( vh, 5.0, -45 / 180 * cconst.pi, center = xy, name = 'Ch' )
+    print( Ch )
+    print(f'The rank of {Ch.name} is {Ch.rank}.\n')
+    ax[1].plot( Ch, '-b', cconicsamples = ( 101, 101 ), linewidth=1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for the ellipse.
+    polar = CLine( ( 1, -1, 8 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'ob', polar, '--b', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -3.0, 3.0, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, -1, 5 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'oy', polar, '--y', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -2.0, 2.0, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, -1, 3 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    coord = -cCh + np.sqrt( ( vh ** 2 ) / 2 )
+    pole = CPoint( ( coord, -coord, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( f'Does {pole.name} lies in {Ch.name}? {pole in Ch}' )
+    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 0, 0, 1 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -933,4 +1163,5 @@ if __name__ == '__main__':
     # test_Conics_Hyperbole()
     # test_Conics_Degenerate()
     # test_Points_Lines_Conics()
-    test_Envelope()
+    # test_Envelope()
+    test_Polar_Pole_NonDeg()

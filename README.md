@@ -21,7 +21,7 @@ also known as hyperbolic positioning. In other words, it is a method of locating
 by getting the time difference of arrival (TDOA) of a signal emitted from the object to
 three or more receivers/stations.
 
-Additionally (version 0.2.6), this package can be used by high school and undergraduate
+Additionally, in version 0.2.6, this package can be used by high school and undergraduate
 students to solve two-dimensional Cartesian geometry problems with points and lines,
 such as:
 
@@ -33,6 +33,16 @@ perpendicular to the given line.
 In version 1.0.0, besides you being able to solve the problems as above, you will also
 be able to graph these results, allowing you to illustrate and insert them into
 any kind of document.
+
+In version 1.1.0, a class that handles and works with conics sections has been
+incorporated into the `pyConics` package. Now, you can:
+
+- create non-degenerate and degenerate ellipses and hyberbolas.
+- print them on screen.
+- find out whether a point belongs to them or not.
+- get their envelope and print it on screen.
+- from a point named *pole* with respect to a given conic, find out its *polar*
+line and vice versa.
 
 ------------
 
@@ -1410,15 +1420,16 @@ line $l$.
 
 - **Creating an envelope of non-degenerate conic.**
 
-The envelope of a curve $C$ is given by a sequence of curves $l$ that touch each
-point $p$ in $C$.
+By definition, the envelope of a curve $C$ is given by a sequence of curves $l$ that
+touch each point $p$ in $C$.
 
 Here, the envelope of an ellipse is going to be plotted on screen. First, an
 ellipse will be created. Then, the `CConic.sequence()` method is called to return
 a set of points, where these points belong to that ellipse. Next, the multiplication
-operator is used between the ellipse and the points to return a set of lines, where
-each of those lines is tangent to the conic. Finally, by using the `CAxes.plot()`
-method, all lines are plotted on screen, drawing the envelope of the ellipse. 
+operator will be used between the ellipse and the points to return a set of lines,
+where each of those lines is going to be tangent to the conic. Finally, by using
+the `CAxes.plot()` method, all lines will be plotted on screen, thus drawing the
+envelope of the ellipse. 
 
 ```python
     from pyConics import CFigure, CAxes
@@ -1482,6 +1493,275 @@ method, all lines are plotted on screen, drawing the envelope of the ellipse.
     <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/> -->
 </p>
 
+------------
+
+- **Poles and polars of non-degenerate conic sections.**
+
+By definition, a *pole* and *polar* are respectively a point and a line that have
+a unique reciprocal relationship with respect to a given conic section.
+For further reading, visit these external links:
+
+- [Pole and polar - Wikipedia](https://en.wikipedia.org/wiki/Pole_and_polar)
+- [Polar -- from Wolfram MathWorld](https://mathworld.wolfram.com/Polar.html)
+
+This reciprocal relationship is valid only for non-degenerate conics. For
+degenerate conics it is possible to obtain their "reciprocal" straight line from
+a point, but the inverse is not possible since degenerate conics are represented
+by singular matrices.
+
+In fact, the terms *pole* and *polar* with respect to a given conic could not
+even be used when referring to degenerate conics.
+
+In this section, only the concept of *pole* and *polar* for non-degenerate conics
+will be presented through the multiplication operator between conics and points
+and conics and lines.
+
+In the next section, the results of using the multiplication operator between
+conics and points for degenerate conics will be presented. As stated before, this
+operator cannot be used in multiplication between conics and lines, given that
+such conics are degenerate.
+
+It is worth noting that this reciprocity relationship has a very interesting
+property that will be used in the implementation of a method in the `CConic` class
+(not in this version, namely 1.1.0). This new method will allow getting the points
+of intersection between a given non-degenerate conic and a line.
+
+Now you are ready, let's start learning these new concepts about conics.
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Set interactive mode.
+    # Activate this mode so that it is not necessary to call the show() method.
+    # Whether you comment this line or use CFigure.ioff() method, the show()
+    # method must be called.
+    CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.25
+    f: CFigure = CFigure( (width, 3.5 * width ) )
+
+    # Create a 2x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 2, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define titles.
+    ax[ 0 ].title = 'Poles and polars of an ellipse.'
+    ax[ 1 ].title = 'Poles and polars of a hyperbole.'
+
+    # Change their axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 1 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 1 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot an ellipse with vertex = ve, focal distance = 5,
+    # center at cCe, and angle = +45 degrees ( counterclockwise ).
+    ve = 6
+    cCe = -5.0
+    xy = CPoint( ( cCe, cCe ) )
+    Ce = CConic( ve, 5.0, 45 / 180 * cconst.pi, center = xy, name = 'Ce' )
+    print( Ce )
+    print( f'The rank of {Ce.name} is {Ce.rank}.\n' )
+    ax[ 0 ].plot( Ce, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for the ellipse.
+    polar = CLine( ( 1, 1, 10 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ob', polar, '--b', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -3.5, -3.5, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, 1, 6 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'oy', polar, '--y', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -2.0, -2.0, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, 1, 2 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    coord = cCe + np.sqrt( ( ve ** 2 ) / 2 )
+    pole = CPoint( ( coord, coord, 1 ), 'pole' )
+    polar: CLine = Ce * pole
+    polar.name = 'polar'
+    print( f'Does {pole.name} lies in {Ce.name}? {pole in Ce}' )
+    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 0, 0, 1 ), 'polar' )
+    pole: CPoint = Ce * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Create and plot a hyperbole with vertex = vh, focal distance = 5,
+    # center at cCh, and angle = -45 degrees ( clockwise ).
+    vh = 4.0
+    cCh = 4.0
+    xy = CPoint( ( -cCh, cCh ) )
+    Ch = CConic( vh, 5.0, -45 / 180 * cconst.pi, center = xy, name = 'Ch' )
+    print( Ch )
+    print(f'The rank of {Ch.name} is {Ch.rank}.\n')
+    ax[1].plot( Ch, '-b', cconicsamples = ( 101, 101 ), linewidth=1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for the ellipse.
+    polar = CLine( ( 1, -1, 8 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'ob', polar, '--b', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -3.0, 3.0, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, -1, 5 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'oy', polar, '--y', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -2.0, 2.0, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 1, -1, 3 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3)
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    coord = -cCh + np.sqrt( ( vh ** 2 ) / 2 )
+    pole = CPoint( ( coord, -coord, 1 ), 'pole' )
+    polar: CLine = Ch * pole
+    polar.name = 'polar'
+    print( f'Does {pole.name} lies in {Ch.name}? {pole in Ch}' )
+    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    polar = CLine( ( 0, 0, 1 ), 'polar' )
+    pole: CPoint = Ch * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/> -->
+</p>
 
 ------------
 
