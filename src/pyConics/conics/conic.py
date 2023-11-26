@@ -264,7 +264,7 @@ class CConic( CAGObj ):
             return cconst.inf
         
         A = LA.det( self._gform )
-        if ( A > 0.0 ):
+        if ( A < 0.0 ):
             return cconst.pi / np.sqrt( -A )
         return cconst.inf
     
@@ -366,3 +366,11 @@ if __name__ == '__main__':
     print( p3 in C6 )
     print()
 
+    print( f'The area of {C0.name} is {C0.area()}' )
+    print( f'The area of {C1.name} is {C1.area()}' )
+    print( f'The area of {C2.name} is {C2.area()}' )
+    print( f'The area of {C3.name} is {C3.area()}' )
+    print( f'The area of {C4.name} is {C4.area()}' )
+    print( f'The area of {C5.name} is {C5.area()}' )
+    print( f'The area of {C6.name} is {C6.area()}' )
+    print()

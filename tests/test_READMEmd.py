@@ -275,15 +275,11 @@ def test_Set_Up():
     axes[ 2 ].xlabel = f'beta is written as $\\beta$'
     axes[ 2 ].ylabel = f'gamma is written as $\\gamma$'
 
-    # If CFigure.ion() is on then you need to press a key to continue.
-    if ( CFigure.is_interactive() ):
-        input( 'Press any key to continue...' )
+    # Show Figure on screen.
+    # CFigure.show()
 
 def test_Font_Size():
     from pyConics import CFigure, CAxes
-
-    # Set interactive mode.
-    # CFigure.ion()
 
     # Create an empty figure.
     # Its width and height are relative to the screen size.
@@ -308,9 +304,8 @@ def test_Font_Size():
     # Now, the title font size is 16.
     pp_ax.set_title( pp_ax.get_title(), fontsize = 16 ) 
 
-    # If CFigure.ion() is on then you need to press a key to continue.
-    if ( CFigure.is_interactive() ):
-        input( 'Press any key to continue...' )
+    # Show Figure on screen.
+    # CFigure.show()
 
 def test_Plot_Point():
     from pyConics import CFigure, CAxes
@@ -629,7 +624,7 @@ def test_Conics_Ellipses():
     ax[ 0 ].plot( [ f1, f2 ], 'oy', C3, '-y', cconicsamples = ( 101, 101 ), markersize = 3 )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
 
 def test_Conics_Hyperbole():
     from pyConics import CFigure, CAxes
@@ -694,7 +689,7 @@ def test_Conics_Hyperbole():
     ax[ 0 ].plot( [ f1, f2 ], 'oy', C3, '-y', cconicsamples = ( 101, 101 ), markersize = 3 )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
 
 def test_Conics_Degenerate():
     from pyConics import CFigure, CAxes
@@ -756,7 +751,7 @@ def test_Conics_Degenerate():
                  cconicsamples = ( 11, 11 ), markersize = 3 )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
 
 def test_Points_Lines_Conics():
     from pyConics import CFigure, CAxes
@@ -855,7 +850,7 @@ def test_Points_Lines_Conics():
     print( f'Does {p2.name}=({p2.x:.4f}, {p2.y:.4f}) lie in {C0.name}? {p2 in C0}' )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
 
 def test_Envelope():
     from pyConics import CFigure, CAxes
@@ -911,8 +906,7 @@ def test_Envelope():
         ax[ 0 ].plot( list( ll ), '-r', clinesamples = 7, linewidth = 1.0 )
 
     # Show Figure on screen.
-    CFigure.show()
-
+    # CFigure.show()
 
 def test_Polar_Pole_NonDeg():
     from pyConics import CFigure, CAxes
@@ -1141,7 +1135,7 @@ def test_Polar_Pole_NonDeg():
     ax[ 1 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
 
 def test_Polar_Pole_Deg():
     from pyConics import CFigure, CAxes
@@ -1452,7 +1446,114 @@ def test_Polar_Pole_Deg():
     print(f'Does {f3} equal to {polar}? {f3 == polar}', '\n' )
 
     # Show Figure on screen.
-    CFigure.show()
+    # CFigure.show()
+
+def test_Area():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Area of conics.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot a circle.
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C0 = CConic( 3.0, name = 'C0' )
+    A = C0.area()
+    print( C0 )
+    print( f'The rank of {C0.name} is {C0.rank}.' )
+    print( f'The area of {C0.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C0, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot an ellipse.
+    xy = CPoint( ( 0.0, 7.0 ) )
+    C1 = CConic( 3.0, 2.0, center = xy, name = 'C1' )
+    A = C1.area()
+    print( C1 )
+    print( f'The rank of {C1.name} is {C1.rank}.' )
+    print( f'The area of {C1.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C1, '-r', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot the same ellipse as C1, but it will be rotated and
+    # tranlated.
+    xy = CPoint( ( 7.0, 7.0 ) )
+    C2 = CConic( 3.0, 2.0, 60.0 / 180.0 * cconst.pi, xy, name = 'C2' )
+    A = C2.area()
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.' )
+    print( f'The area of {C2.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C2, '-r', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot a hyperbole.
+    xy = CPoint( ( -7.0, 6.0 ) )
+    C3 = CConic( np.sqrt( 2.0 ), 3.0, -45.0 / 180.0 * cconst.pi, xy, name = 'C3' )
+    A = C3.area()
+    print( C3 )
+    print( f'The rank of {C3.name} is {C3.rank}.' )
+    print( f'The area of {C3.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C3, '-g', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 0.5, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two coincident lines.
+    p1 = CPoint( ( 9, 5 ) )
+    p2 = CPoint( ( 3, -9 ) )
+    g: CLine = p1 * p2
+    C4 = CConic( degenerate = ( g, g ), name = 'C4' )
+    A = C4.area()
+    print( C4 )
+    print( f'The rank of {C4.name} is {C4.rank}.' )
+    print( f'The area of {C4.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C4, '-y', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( 7, 0, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two distinct, and parallel lines.
+    l1 = CLine( ( 0, 1, 9 ) )
+    l2 = CLine( ( 0, 1, 7 ) )
+    C5 = CConic( degenerate = ( l1, l2 ), name = 'C5' )
+    A = C5.area()
+    print( C5 )
+    print( f'The rank of {C5.name} is {C5.rank}.' )
+    print( f'The area of {C5.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C5, '-m', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( -8, -8, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two distinct, and parallel lines.
+    l1 = CLine( ( 1, 1, 9 ) )
+    l2 = CLine( ( 1, -1, 5 ) )
+    C6 = CConic( degenerate = ( l1, l2 ), name = 'C6' )
+    A = C6.area()
+    print( C6 )
+    print( f'The rank of {C6.name} is {C6.rank}.' )
+    print( f'The area of {C6.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C6, '-c', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( -6.6, -2, f'A={A:0.2f}' )
+
+    # Show Figure on screen.
+    # CFigure.show()
 
 #------------------------------------------------------------------
 # For development and test.
@@ -1476,4 +1577,6 @@ if __name__ == '__main__':
     # test_Points_Lines_Conics()
     # test_Envelope()
     # test_Polar_Pole_NonDeg()
-    test_Polar_Pole_Deg()
+    # test_Polar_Pole_Deg()
+    test_Area()
+

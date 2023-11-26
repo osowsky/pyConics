@@ -43,6 +43,7 @@ incorporated into the `pyConics` package. Now, you can:
 - get their envelope and print it on screen.
 - from a point named *pole* with respect to a given conic, find out its *polar*
 line and vice versa.
+- get the area of an ellipse.
 
 ------------
 
@@ -510,7 +511,7 @@ Let's know how to set up these classes.
 - **Changing title, x-label, and y-label of an axes.**
 
 ```python
-# Changing the title of axes[ 0 ].
+    # Changing the title of axes[ 0 ].
     axes[ 0 ].title = 'The tittle is hello, world!'
 
     # If CFigure.ion() is on then you need to press a key to continue.
@@ -530,9 +531,8 @@ Let's know how to set up these classes.
     axes[ 2 ].xlabel = f'beta is written as $\\beta$'
     axes[ 2 ].ylabel = f'gamma is written as $\\gamma$'
 
-    # If CFigure.ion() is on then you need to press a key to continue.
-    if ( CFigure.is_interactive() ):
-        input( 'Press any key to continue...' )
+    # Show Figure on screen.
+    CFigure.show()
 ```
 
 <p align="center">
@@ -558,9 +558,6 @@ An example code to do this is shown below.
 ```python
     from pyConics import CFigure, CAxes
 
-    # Set interactive mode.
-    CFigure.ion()
-
     # Create an empty figure.
     # Its width and height are relative to the screen size.
     width = 0.35
@@ -584,10 +581,14 @@ An example code to do this is shown below.
     # Now, the title font size is 16.
     pp_ax.set_title( pp_ax.get_title(), fontsize = 16 ) 
 
-    # If CFigure.ion() is on then you need to press a key to continue.
-    if ( CFigure.is_interactive() ):
-        input( 'Press any key to continue...' )
+    # Show Figure on screen.
+    CFigure.show()
 ```
+
+<p align="center">
+    <!-- <img src="./docs/figs/howto-plot/title-size-changed.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot/title-size-changed.jpeg"/>
+</p>
 
 ------------
 
@@ -1772,7 +1773,37 @@ $l$ from its "*pole*" $p$ with respect to a given degenerate conic $C$. Notice t
 the inverse operation is not allowed, because the conic $C$ is represented by a
 singular matrix.
 
+Over the real field, there are three types of degenerate conics. Each of them behaves
+differently with regard to their "*polar*" lines and "*poles*", namely:
 
+1. Two distinct, and parallel lines $f$ and $g$,
+such that $f \neq g$, and $f \parallel g$.
+    - "*poles*" in the range between $f$ and $g$ will return "*polar*" lines $h$
+     outside this range, such that $h \parallel f$, and $h \parallel g$.
+    - "*poles*" outside the range between $f$ and $g$ will return "*polar*" lines $h$
+     in the range between $f$ and $g$, such that $h \parallel f$, and $h \parallel g$.
+    - "*poles*" in $f$ or $g$ will return "*polar*" lines $h$, such that
+    $h = f$ or $h = g$, respectively.
+    - "*poles*" in the middle of the range between $f$ and $g$ will return "*polar*"
+    lines at infinity.
+    - "*poles*" at infinity will return "*polar*" lines $h$ in the middle of the range
+     between $f$ and $g$.
+2. Two concurrent lines $f$ and $g$,
+such that $f \neq g$, and $f \nparallel g$.
+    - "*poles*" in $f$ or $g$ will return "*polar*" lines $h$, such that
+    $h = f$ or $h = g$, respectively.
+    - the "*pole*" in $f$ and $g$, point of intersection, will return a "*polar*"
+     line $h$, such that $h$ is at infinity.
+    - "*poles*" outside $f$ and $g$ will return "*polar*" lines $h$, such that
+    $h$ will pass through the point of intersection.
+
+3. Two coincident lines $f$ and $g$, such that $f = g$.
+    - "*poles*" in $f = g$ will return "*polar*" lines $h$, such that
+    $h$ is at infinity.
+    - "*poles*" outside $f = g$ will return "*polar*" lines $h$, such that
+    $h = f = g$. 
+
+See the example below for a better understanding.
 
 ```python
     from pyConics import CFigure, CAxes
@@ -2089,6 +2120,137 @@ singular matrix.
 <p align="center">
     <img src="./docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/>
     <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/> -->
+</p>
+
+------------
+
+- **Getting the area of the conics.**
+
+The area $A$ of the conics is given by:
+
+1. if the conic is a hyperbole, two distinct, and parallel lines, or two
+concurrent lines, then $A = \infty$.
+2. if the conic is two coincident lines, then $A = 0$.
+3. if the conic is an ellipse/circle, then
+$$
+A = \frac{ \pi }{ \sqrt{-\text{det}( C )} }\enspace,
+$$
+where $A$ is a symmetric matrix that represents the conic.
+
+<span style="color:green">**NOTE:**<br></span>
+*The area of the conics is invariant under rotation and translation transformations.*
+
+```python
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.35
+    f: CFigure = CFigure( (width, 16.0 / 9.0 * width ) )
+
+    # Create a 1x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 1, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define a title.
+    ax[ 0 ].title = 'Area of conics.'
+
+    # Change its axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot a circle.
+    xy = CPoint( ( 0.0, 0.0 ) )
+    C0 = CConic( 3.0, name = 'C0' )
+    A = C0.area()
+    print( C0 )
+    print( f'The rank of {C0.name} is {C0.rank}.' )
+    print( f'The area of {C0.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C0, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot an ellipse.
+    xy = CPoint( ( 0.0, 7.0 ) )
+    C1 = CConic( 3.0, 2.0, center = xy, name = 'C1' )
+    A = C1.area()
+    print( C1 )
+    print( f'The rank of {C1.name} is {C1.rank}.' )
+    print( f'The area of {C1.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C1, '-r', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot the same ellipse as C1, but it will be rotated and
+    # tranlated.
+    xy = CPoint( ( 7.0, 7.0 ) )
+    C2 = CConic( 3.0, 2.0, 60.0 / 180.0 * cconst.pi, xy, name = 'C2' )
+    A = C2.area()
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.' )
+    print( f'The area of {C2.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C2, '-r', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 1.0, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot a hyperbole.
+    xy = CPoint( ( -7.0, 6.0 ) )
+    C3 = CConic( np.sqrt( 2.0 ), 3.0, -45.0 / 180.0 * cconst.pi, xy, name = 'C3' )
+    A = C3.area()
+    print( C3 )
+    print( f'The rank of {C3.name} is {C3.rank}.' )
+    print( f'The area of {C3.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C3, '-g', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( xy.x - 0.5, xy.y, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two coincident lines.
+    p1 = CPoint( ( 9, 5 ) )
+    p2 = CPoint( ( 3, -9 ) )
+    g: CLine = p1 * p2
+    C4 = CConic( degenerate = ( g, g ), name = 'C4' )
+    A = C4.area()
+    print( C4 )
+    print( f'The rank of {C4.name} is {C4.rank}.' )
+    print( f'The area of {C4.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C4, '-y', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( 7, 0, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two distinct, and parallel lines.
+    l1 = CLine( ( 0, 1, 9 ) )
+    l2 = CLine( ( 0, 1, 7 ) )
+    C5 = CConic( degenerate = ( l1, l2 ), name = 'C5' )
+    A = C5.area()
+    print( C5 )
+    print( f'The rank of {C5.name} is {C5.rank}.' )
+    print( f'The area of {C5.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C5, '-m', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( -8, -8, f'A={A:0.2f}' )
+
+    # Create and plot a degenerate conic with two distinct, and parallel lines.
+    l1 = CLine( ( 1, 1, 9 ) )
+    l2 = CLine( ( 1, -1, 5 ) )
+    C6 = CConic( degenerate = ( l1, l2 ), name = 'C6' )
+    A = C6.area()
+    print( C6 )
+    print( f'The rank of {C6.name} is {C6.rank}.' )
+    print( f'The area of {C6.name} is {A:0.4f}.\n' )
+    ax[ 0 ].plot( C6, '-c', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+    ax[ 0 ].text( -6.6, -2, f'A={A:0.2f}' )
+
+    # Show Figure on screen.
+    CFigure.show()
+```
+
+<p align="center">
+    <img src="./docs/figs/utils/cconic-area.jpeg"/>
+    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/utils/cconic-area.jpeg"/> -->
 </p>
 
 ------------
