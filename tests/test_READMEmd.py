@@ -399,7 +399,7 @@ def test_Plot_Line():
     # Creating a line using numpy.
     x_i, x_f = ax[ 0 ].xlim
     x = np.linspace( x_i, x_f, 11 )
-    y = 1.05 * x                            #  y = 1.05x
+    y = 1.05 * x                       #  y = 1.05x
 
     # Creating a line using CLine.
     l1 = CLine( ( 1.05, 1.0, -1.0 ), 'l1' ) # y = -1.05x + 1.0 
@@ -1028,8 +1028,8 @@ def test_Polar_Pole_NonDeg():
     pole = CPoint( ( coord, coord, 1 ), 'pole' )
     polar: CLine = Ce * pole
     polar.name = 'polar'
-    print( f'Does {pole.name} lies in {Ce.name}? {pole in Ce}' )
-    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( f'Does the {pole.name} lie in {Ce.name}? {pole in Ce}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
     print( polar )
     print( pole, '\n' )
     ax[ 0 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
@@ -1123,8 +1123,8 @@ def test_Polar_Pole_NonDeg():
     pole = CPoint( ( coord, -coord, 1 ), 'pole' )
     polar: CLine = Ch * pole
     polar.name = 'polar'
-    print( f'Does {pole.name} lies in {Ch.name}? {pole in Ch}' )
-    print( f'Does {pole.name} lies in {polar.name}? {pole in polar}' )
+    print( f'Does the {pole.name} lie in {Ch.name}? {pole in Ch}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
     print( polar )
     print( pole, '\n' )
     ax[ 1 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
@@ -1139,6 +1139,317 @@ def test_Polar_Pole_NonDeg():
     print( polar )
     print( pole, '\n' )
     ax[ 1 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # Show Figure on screen.
+    CFigure.show()
+
+def test_Polar_Pole_Deg():
+    from pyConics import CFigure, CAxes
+    from pyConics import CPoint, CLine
+    from pyConics import CConic
+    from pyConics import cconst
+
+    import numpy as np
+
+    # # Set interactive mode.
+    # # Activate this mode so that it is not necessary to call the show() method.
+    # # Whether you comment this line or use CFigure.ioff() method, the show()
+    # # method must be called.
+    # CFigure.ion()
+
+    # Create an empty figure.
+    # Its width and height are relative to the screen size.
+    width = 0.25
+    f: CFigure = CFigure( (width, 3.5 * width ) )
+
+    # Create a 2x1 grid of axes from f.
+    # The title font size is 9.
+    f.create_axes( ( 2, 1 ) )
+
+    # Get the tuple of CAxes classes for the 1x1 grid.
+    ax = f.axes
+
+    # Define titles.
+    ax[ 0 ].title = '"Poles" and "polars" of two distinct, and parallel lines.'
+    ax[ 1 ].title = '"Poles" and "polars" of two concurrent lines.'
+
+    # Change their axis.
+    ax[ 0 ].xlim = ( -10, 10 )
+    ax[ 1 ].xlim = ( -10, 10 )
+    ax[ 0 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].xticks = np.linspace( -10, 10, 21 )
+    ax[ 0 ].ylim = ( -10, 10 )
+    ax[ 1 ].ylim = ( -10, 10 )
+    ax[ 0 ].yticks = np.linspace( -10, 10, 21 )
+    ax[ 1 ].yticks = np.linspace( -10, 10, 21 )
+
+    # Create and plot a degenerate conic represented by two distinct, and
+    # parallel lines.
+    f1 = CLine( ( 1, 0, -1 ), name = 'f1' )
+    g1 = CLine( ( 1, 0, -7 ), name = 'g1' )
+    C1 = CConic( degenerate = ( f1, g1 ), name = 'C1' )
+    print( C1 )
+    print( f'The rank of {C1.name} is {C1.rank}.\n' )
+    ax[ 0 ].plot( C1, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for this degenerate
+    # conic.
+    pole = CPoint( ( -15, 0, 0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ob', polar, '--b', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    pole = CPoint( ( -5.0, 0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( 0.0, 0.0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( 1.0, 0.0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( f'Does the {pole.name} lie in {C1.name}? {pole in C1}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( 2.5, 0.0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( 4.0, 0.0 ), 'pole' )
+    polar: CLine = C1 * pole
+    polar.name = 'polar'
+    print( polar )
+    print( pole, '\n' )
+    ax[ 0 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # The operation CConic * CLine can not be performed because the conic C1
+    # is not full rank. Therefore, if you do this operation, the point returned
+    # will be a point at infinity. See the example above:
+    polar = CLine( ( 1, 0, 8 ), 'polar' )
+    pole: CPoint = C1 * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # Create and plot a degenerate conic represented by two concurrent lines.
+    f2 = CLine( ( 2.5, 1, 14.5 ), name = 'f2' )
+    g2 = CLine( ( 0.8, -1, 2 ), name = 'g2' )
+    C2 = CConic( degenerate = ( f2, g2 ), name = 'C2' )
+    print( C2 )
+    print( f'The rank of {C2.name} is {C2.rank}.\n' )
+    ax[ 1 ].plot( C2, '-b', cconicsamples = ( 101, 101 ), linewidth = 1.0 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # Creating and plotting a sequence of pairs of pole-polar for this degenerate
+    # conic.
+    # A point in g2 is going to return the "polar" g2.
+    pole = CPoint( ( 0, 2 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {pole.name} lie in {C2.name}? {pole in C2}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # A point in f2 is going to return the "polar" f2.
+    pole = CPoint( ( -7, 3 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {pole.name} lie in {C2.name}? {pole in C2}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input( 'Press any key to continue...' )
+
+    # A point in f2 and g2 is going to return the "polar" at infinity.
+    pole = CPoint( ( -5, -2 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {pole.name} lie in {C2.name}? {pole in C2}' )
+    print( f'Does the {pole.name} lie in {polar.name}? {pole in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'or', polar, '--r', linewidth = 1.0, markersize = 3 )
+
+    # Any points outside the lines g2 and f2 will return a "polar" line that
+    # passes through the point of intersection between g and f.
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # Point of intersection.
+    p_i = CPoint( ( -5, -2 ), 'p_i' )
+    print( p_i, '\n' )
+
+    pole = CPoint( ( 0, 0 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {p_i.name} lie in {polar.name}? {p_i in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'og', polar, '--g', linewidth = 1.0, markersize = 3 )
+
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( -5, 7 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {p_i.name} lie in {polar.name}? {p_i in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'om', polar, '--m', linewidth = 1.0, markersize = 3 )
+
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( -9, -2 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {p_i.name} lie in {polar.name}? {p_i in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'ok', polar, '--k', linewidth = 1.0, markersize = 3 )
+
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    pole = CPoint( ( -5, -7 ), 'pole' )
+    polar: CLine = C2 * pole
+    polar.name = 'polar'
+    print( f'Does the {p_i.name} lie in {polar.name}? {p_i in polar}' )
+    print( polar )
+    print( pole, '\n' )
+    ax[ 1 ].plot( pole, 'oc', polar, '--c', linewidth = 1.0, markersize = 3 )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # Again, the operation CConic * CLine can not be performed because the
+    # conic C2 is not full rank. See the example above:
+    polar = CLine( ( 1, 0, 8 ), 'polar' )
+    pole: CPoint = C2 * polar
+    pole.name = 'pole'
+    print( polar )
+    print( pole, '\n' )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # Create a degenerate conic represented by two coincident lines.
+    f3 = CLine( ( 13, -14, -22 ), name = 'f3' )
+    C3 = CConic( degenerate = ( f3, f3 ), name = 'C3' )
+    print( C3 )
+    print( f'The rank of {C3.name} is {C3.rank}.\n' )
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # For points in C3, the "polar" lines that are returned are at infinity.
+    # See the examples in the console.
+    pole = CPoint( ( 6, 4 ), name = 'pole' )
+    print( pole )
+    print(f'Does the {pole.name} lie in {C3.name}? {pole in C3}')
+    polar: CLine = C3 * pole
+    polar.name = 'polar'
+    print( polar, '\n' )
+
+    pole = CPoint( ( -8, -9 ), name = 'pole' )
+    print( pole )
+    print(f'Does the {pole.name} lie in {C3.name}? {pole in C3}')
+    polar: CLine = C3 * pole
+    polar.name = 'polar'
+    print(polar, '\n')
+
+    # If CFigure.ion() is on then you need to press a key to continue.
+    if ( CFigure.is_interactive() ):
+        input('Press any key to continue...')
+
+    # For points outside C3, the "polar" lines that are returned are
+    # the same as f3. See the examples in the console.
+    pole = CPoint( ( 2, -3 ), name = 'pole' )
+    print( pole )
+    polar: CLine = C3 * pole
+    polar.name = 'polar'
+    print( polar )
+    print(f'Does {f3} equal to {polar}? {f3 == polar}', '\n' )
+
+    pole = CPoint( ( 0, 0 ), name = 'pole' )
+    print( pole )
+    polar: CLine = C3 * pole
+    polar.name = 'polar'
+    print( polar )
+    print(f'Does {f3} equal to {polar}? {f3 == polar}', '\n' )
+
+    pole = CPoint( ( -5, 9, 0 ), name = 'pole' )
+    print( pole )
+    polar: CLine = C3 * pole
+    polar.name = 'polar'
+    print( polar )
+    print(f'Does {f3} equal to {polar}? {f3 == polar}', '\n' )
 
     # Show Figure on screen.
     CFigure.show()
@@ -1164,4 +1475,5 @@ if __name__ == '__main__':
     # test_Conics_Degenerate()
     # test_Points_Lines_Conics()
     # test_Envelope()
-    test_Polar_Pole_NonDeg()
+    # test_Polar_Pole_NonDeg()
+    test_Polar_Pole_Deg()
