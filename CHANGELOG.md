@@ -2,7 +2,7 @@
 
 <!--next-version-placeholder-->
 
-## v1.1.0 (XX/XX/2023)
+## v1.1.0 (26/11/2023)
 
 - The `CConic.pole()`, `CConic.polar()`, `CConic.area()`, and
 `CConic.sequence()` methods have been implemented in `CConic` class.
