@@ -1111,8 +1111,8 @@ below that this task is really simple when `pyConics` is used.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot-conics/conic-ellipse.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-ellipse.jpeg"/> -->
+    <!-- <img src="./docs/figs/howto-plot-conics/conic-ellipse.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-ellipse.jpeg"/>
 </p>
 
 ------------
@@ -1188,8 +1188,8 @@ Just as it was easy to build ellipses using `pyConics`. Building hyperbolas will
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/> -->
+    <!-- <img src="./docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-hyperbole.jpeg"/>
 </p>
 
 ------------
@@ -1268,8 +1268,8 @@ In the code below, these three types are going to be drawn.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot-conics/conic-degenerate.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-degenerate.jpeg"/> -->
+    <!-- <img src="./docs/figs/howto-plot-conics/conic-degenerate.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/conic-degenerate.jpeg"/>
 </p>
 
 ------------
@@ -1413,8 +1413,8 @@ line $l$.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot-conics/points-lines-conics.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/points-lines-conics.jpeg"/> -->
+    <!-- <img src="./docs/figs/howto-plot-conics/points-lines-conics.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/points-lines-conics.jpeg"/>
 </p>
 
 ------------
@@ -1490,8 +1490,8 @@ envelope of the ellipse.
 ```
 
 <p align="center">
-    <img src="./docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/> -->
+    <!-- <img src="./docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/howto-plot-conics/ellipse-envelope.jpeg"/>
 </p>
 
 ------------
@@ -1760,8 +1760,8 @@ Now you are ready, let's start learning these new concepts about conics.
 ```
 
 <p align="center">
-    <img src="./docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/> -->
+    <!-- <img src="./docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-non-degenerate.jpeg"/>
 </p>
 
 ------------
@@ -2118,8 +2118,8 @@ See the example below for a better understanding.
 ```
 
 <p align="center">
-    <img src="./docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/> -->
+    <!-- <img src="./docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/poles-and-polar/poles-polars-degenerate.jpeg"/>
 </p>
 
 ------------
@@ -2249,8 +2249,8 @@ where $A$ is a symmetric matrix that represents the conic.
 ```
 
 <p align="center">
-    <img src="./docs/figs/utils/cconic-area.jpeg"/>
-    <!-- <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/utils/cconic-area.jpeg"/> -->
+    <!-- <img src="./docs/figs/utils/cconic-area.jpeg"/> -->
+    <img src="https://raw.githubusercontent.com/osowsky/pyConics/main/docs/figs/utils/cconic-area.jpeg"/>
 </p>
 
 ------------
