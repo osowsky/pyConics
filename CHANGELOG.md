@@ -4,6 +4,8 @@
 
 ## v1.1.0 (XX/XX/2023)
 
+- The `CConic.pole()`, `CConic.polar()`, `CConic.area()`, and
+`CConic.sequence()` methods have been implemented in `CConic` class.
 - The global variable `origin` has been renamed to `corigin`.
 - The global variable `tol` has been renamed to `ctol`.
 - The global variable `const` has been renamed to `cconst`.

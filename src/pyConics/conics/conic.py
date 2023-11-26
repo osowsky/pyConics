@@ -256,6 +256,18 @@ class CConic( CAGObj ):
         l: CLine = self * p
         return l
 
+    def area( self ) -> float:
+        if ( self._rank == 1 ):
+            return 0.0
+        
+        if ( self._rank == 2 ):
+            return cconst.inf
+        
+        A = LA.det( self._gform )
+        if ( A > 0.0 ):
+            return cconst.pi / np.sqrt( -A )
+        return cconst.inf
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
