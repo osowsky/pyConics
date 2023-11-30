@@ -68,6 +68,21 @@ class CConic( CAGObj ):
         # 4) Fourth: if no parameter was defined, then a circle is created.
         super().__init__( name )
 
+        # Validate the CPoint and CLine objects.
+        if ( not isinstance( center, CPoint ) ):
+            raise CTypeError( center.__class__.__name__ )
+        if ( foci is not None ):
+            if ( not isinstance( foci[ 0 ], CPoint ) ):
+                raise CTypeError( foci[ 0 ].__class__.__name__ )
+            if ( not isinstance( foci[ 1 ], CPoint ) ):
+                raise CTypeError( foci[ 1 ].__class__.__name__ )
+    
+        if ( degenerate is not None ):
+            if ( not isinstance( degenerate[ 0 ], CLine ) ):
+                raise CTypeError( degenerate[ 0 ].__class__.__name__ )
+            if ( not isinstance( degenerate[ 1 ], CLine ) ):
+                raise CTypeError( degenerate[ 1 ].__class__.__name__ )
+            
         # We need to keep the main parameters saved, so that it is possible
         # to recover them.
         # Each precedence will be analyzed.
@@ -129,7 +144,7 @@ class CConic( CAGObj ):
     def __contains__( self, other: CPoint ) -> bool:
         # from pyConics import CPoint
         if ( not isinstance( other, CPoint ) ):
-           raise CTypeError( other.__class__.__name__ )
+            raise CTypeError( other.__class__.__name__ )
     
         # Get the line that is tangent to other.
         l: CLine = self * other
@@ -249,10 +264,14 @@ class CConic( CAGObj ):
         return tuple( res )
     
     def pole( self, l: CLine ) -> CPoint:
+        if ( not isinstance( l, CLine ) ):
+            raise CTypeError( l.__class__.__name__ )
         p: CPoint = self * l
         return p
     
     def polar( self, p: CPoint ) -> CLine:
+        if ( not isinstance( p, CPoint ) ):
+            raise CTypeError( p.__class__.__name__ )
         l: CLine = self * p
         return l
 
