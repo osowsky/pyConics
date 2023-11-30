@@ -164,7 +164,7 @@ class CConic( CAGObj ):
             return l
 
         # Multiply the Conic by the line. A point is returned.
-        if ( self.is_fullrank() == False ):
+        if ( self.is_fullrank == False ):
             return CPoint(( 0.0, 0.0, 0.0 ), shift_origin = False )
 
         v = LA.inv( self._gform ) @ other._gform
@@ -179,6 +179,7 @@ class CConic( CAGObj ):
     def rank( self ) -> int:
         return self._rank
     
+    @property
     def is_fullrank( self ) -> bool:
         nrow, *_ = self._gform.shape
         return True if ( nrow == self._rank ) else False
@@ -358,7 +359,7 @@ if __name__ == '__main__':
     print()
 
     C6 = CConic( name = 'C6' )
-    print( C6.is_fullrank() )
+    print( C6.is_fullrank )
 
     p1 = CPoint( ( 1, 0 ), name = 'p1' )
     l1: CLine = C6 * p1
@@ -393,3 +394,5 @@ if __name__ == '__main__':
     print( f'The area of {C5.name} is {C5.area()}' )
     print( f'The area of {C6.name} is {C6.area()}' )
     print()
+
+#     print( C6 * 5.0 )
