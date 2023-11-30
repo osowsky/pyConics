@@ -2,6 +2,19 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.0 (10/12/2023)
+
+- The logical equality operator (`__eq__` dunder) has been implemented
+in `CConic` class. 
+- The operators to perform linear combination of conics have been
+created. This linear combination is of the form
+$\lambda C_{1} + \mu C_{2}$, where $\lambda, \mu \in \mathcal{R}$, and
+$C_{1}$ and $C_{2}$ are symmetric matrices that represent two conics.
+$C_{1}$ and $C_{2}$ are objects of the type `CConic`.
+- `Conic.intersect()` method has been created. This method retuns a
+set of points that represents the intersection points between a conic
+and a line which is passed as argument to this method.
+
 ## v1.1.0 (26/11/2023)
 
 - The `CConic.pole()`, `CConic.polar()`, `CConic.area()`, and

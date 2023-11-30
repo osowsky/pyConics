@@ -45,6 +45,12 @@ incorporated into the `pyConics` package. Now, you can:
 line and vice versa.
 - get the area of an ellipse.
 
+In version 1.2.0, you will be able to:
+
+- check whether two conics are the same or not.
+- create a new conic that is a linear combination of two other conics.
+- get the points of intersection between a conic and a line.
+
 ------------
 
 ## Installation
