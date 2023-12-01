@@ -108,7 +108,7 @@ if __name__ == '__main__':
     C0 = CConic( degenerate = ( f, g ), name = 'C0' )
     print( C0 )
     print( f'Rank of {C0.name}: {C0.rank}.' )
-    print( f'Is {C0.name} full rank? {C0.is_fullrank()}' )
+    print( f'Is {C0.name} full rank? {C0.is_fullrank}' )
     print( f'Is {C0.name} degenerate? {C0.is_degenerate}.\n' )
 
     # Degenerate conic.
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     C1 = CConic( degenerate = ( f, g ), name = 'C1' )
     print( C1 )
     print( f'Rank of {C1.name}: {C1.rank}.' )
-    print( f'Is {C1.name} full rank? {C1.is_fullrank()}' )
+    print( f'Is {C1.name} full rank? {C1.is_fullrank}' )
     print( f'Is {C1.name} degenerate? {C1.is_degenerate}.\n' )
 
     # Degenerate conic.
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     C2 = CConic( degenerate = ( f, g ), name = 'C2' )
     print( C2 )
     print( f'Rank of {C2.name}: {C2.rank}.' )
-    print( f'Is {C2.name} full rank? {C2.is_fullrank()}' )
+    print( f'Is {C2.name} full rank? {C2.is_fullrank}' )
     print( f'Is {C2.name} degenerate? {C2.is_degenerate}.\n' )
 
     # Degenerate conic.
@@ -134,28 +134,28 @@ if __name__ == '__main__':
     C3 = CConic( degenerate = ( f, f ), name = 'C3' )
     print( C3 )
     print( f'Rank of {C3.name}: {C3.rank}.' )
-    print( f'Is {C3.name} full rank? {C3.is_fullrank()}' )
+    print( f'Is {C3.name} full rank? {C3.is_fullrank}' )
     print( f'Is {C3.name} degenerate? {C3.is_degenerate}.\n' )
 
     # Default nondegenerate conic.
     C4 = CConic( name = 'C4' )
     print( C4 )
     print( f'Rank of {C4.name}: {C4.rank}.' )
-    print( f'Is {C4.name} full rank? {C4.is_fullrank()}' )
+    print( f'Is {C4.name} full rank? {C4.is_fullrank}' )
     print( f'Is {C4.name} degenerate? {C4.is_degenerate}.\n' )
 
     # Nondegenerate conic with a, c, center, and angle.
     C5 = CConic( 2.0, 0.5, 30.0 / 180 * cconst.pi, CPoint( ( 2, 1 ) ), 'C5' )
     print( C5 )
     print( f'Rank of {C5.name}: {C5.rank}.' )
-    print( f'Is {C5.name} full rank? {C5.is_fullrank()}' )
+    print( f'Is {C5.name} full rank? {C5.is_fullrank}' )
     print( f'Is {C5.name} degenerate? {C5.is_degenerate}.\n' )
 
     # Nondegenerate conic with a, and foci.
     C6 = CConic( 2.0, name = 'C6', foci = ( CPoint( ( 0, 1 ) ), CPoint( ( 0, -1 ) ) ) )
     print( C6 )
     print( f'Rank of {C6.name}: {C6.rank}.' )
-    print( f'Is {C6.name} full rank? {C6.is_fullrank()}' )
+    print( f'Is {C6.name} full rank? {C6.is_fullrank}' )
     print( f'Is {C6.name} degenerate? {C6.is_degenerate}.\n' )
 
     # Testing rank function.
