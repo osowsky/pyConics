@@ -50,6 +50,7 @@ In version 1.2.0, you will be able to:
 - check whether two conics are the same or not.
 - create a new conic that is a linear combination of two other conics.
 - get the points of intersection between a conic and a line.
+- create a `CConic` object from a bidimensional `numpy` array. 
 
 ------------
 

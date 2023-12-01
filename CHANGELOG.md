@@ -14,6 +14,9 @@ $C_{1}$ and $C_{2}$ are objects of the type `CConic`.
 - `Conic.intersect()` method has been created. This method retuns a
 set of points that represents the intersection points between a conic
 and a line which is passed as argument to this method.
+- A class method called `create_from_array()` in `CConic` has been
+created. This method will allow you to create a conic, `CConic`, from a
+real symmetric matrix of dimension $3 \times 3$ defined by a `numpy` array.
 
 ## v1.1.0 (26/11/2023)
 
