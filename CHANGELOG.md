@@ -2,12 +2,12 @@
 
 <!--next-version-placeholder-->
 
-## v1.2.0 (10/12/2023)
+## v1.2.0 (17/12/2023)
 
 - The logical equality operator (`__eq__` dunder) has been implemented
 in `CConic` class. 
-- The operators to perform linear combination of conics have been
-created. This linear combination is of the form
+- The operators to perform linear combination of conics (*Pencil of Conics*)
+have been created. This linear combination is of the form
 $\lambda C_{1} + \mu C_{2}$, where $\lambda, \mu \in \mathcal{R}$, and
 $C_{1}$ and $C_{2}$ are symmetric matrices that represent two conics.
 $C_{1}$ and $C_{2}$ are objects of the type `CConic`.
