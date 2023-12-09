@@ -28,13 +28,14 @@ if TYPE_CHECKING:
 
 from pyConics.constants import cconst
 from pyConics.agobj import CAGObj
-from pyConics.errors import CTypeError, CConicTypeError
+from pyConics.errors import CTypeError, CConicTypeError, CValueError
 from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
-from pyConics.conics.utils import rank
+from pyConics.conics.utils import get_lines_from_degenerate_conic
 from pyConics.point import CPoint
 from pyConics.line import CLine
+from pyConics.linearAlgebra import rank
 
 #------------------------------------------------------------------
 # Import as...
@@ -171,6 +172,18 @@ class CConic( CAGObj ):
         p = CPoint( ( v[ 0 ], v[ 1 ], v[ 2 ] ), shift_origin = False )
         return p
     
+    def __rmul__( self, other: int | float ) -> CConic:
+        if ( not isinstance( other, ( float, int ) ) ):
+            raise CTypeError( other.__class__.__name__ )
+        
+        C = self.copy()
+        if ( self.is_degenerate ):
+            ...
+        else:
+            ...
+        print( f'passou aqui! {other}\n' )
+        return C
+
     @property
     def is_degenerate( self ) -> bool:
         return False if ( self._lines4deg is None ) else True
@@ -184,6 +197,59 @@ class CConic( CAGObj ):
         nrow, *_ = self._gform.shape
         return True if ( nrow == self._rank ) else False
 
+    @classmethod
+    def create_from_array( cls, M: np.ndarray ) -> CConic:
+        if ( not isinstance( M, np.ndarray ) ):
+            raise CTypeError( M.__class__.__name__ )
+        
+        # The matrix must be a square matrix.
+        nrows, ncols = M.shape
+        if ( nrows != ncols ):
+            raise CValueError( M.__class__.__name__,
+                               f'You can not create a conic from a ({nrows}x{ncols}) matrix.')
+
+        # The matrix must be a 3x3 matrix.
+        if ( nrows != 3 ):
+            raise CValueError(M.__class__.__name__,
+                              f'You can not create a conic from a ({nrows}x{ncols}) matrix. It must be a (3x3) matrix.')
+
+        # Check tolerance.
+        Madj = ctol.adjust2relzeros( M )
+
+        # The matrix can not be full of zeros.
+        if ( ctol.iszero( LA.norm( Madj ) ) ):
+            raise CValueError(M.__class__.__name__,
+                              f'The matrix cannot be filled with zero.')
+
+        # Check to see if Madj is symmetric.
+        if ( np.allclose( Madj, Madj.T ) == False ):
+            raise CValueError(M.__class__.__name__,
+                              f'The matrix must be a symmetric matrix.')
+
+        # It is all ok.
+        # Get its rank.
+        rk = rank( Madj )
+
+        # Is it full rank?
+        if ( rk == nrows ):
+            C = cls()
+            C._gform = Madj.copy()
+            C._from_origin = Madj.copy()
+            return C
+        
+        # It is a degenerate conic.
+        # l1, l2 = get_lines_from_deg_matrix( Madj )
+
+
+
+
+
+
+
+
+        C = CConic()
+        return C
+    
     def update_origin( self ) -> None:
         # Translate the origin from ( 0, 0 ) to another origin in '(origin.x, origin.y )'.
         if ( self._lines4deg is not None ):
@@ -395,4 +461,46 @@ if __name__ == '__main__':
     print( f'The area of {C6.name} is {C6.area()}' )
     print()
 
-#     print( C6 * 5.0 )
+    A = np.zeros( shape = ( 2, 3 ) )
+    try:
+        CConic.create_from_array( A )
+    except CValueError as e:
+        print( e, '\n' )
+
+    A = np.zeros( shape = ( 2, 2 ) )
+    try:
+        CConic.create_from_array( A )
+    except CValueError as e:
+        print( e, '\n' )
+
+    A = np.zeros( shape = ( 3, 3 ) )
+    try:
+        CConic.create_from_array( A )
+    except CValueError as e:
+        print( e, '\n' )
+
+    A[ 0, 1 ] = 1.0
+    try:
+        CConic.create_from_array( A )
+    except CValueError as e:
+        print( e, '\n' )
+
+    A = C6.copy()
+    A.name = 'A'
+    B = CConic.create_from_array( A.gform )
+    B.name = 'B'
+    print( A, '\n' )
+    print( B, '\n' )
+
+
+
+
+    C7 = 5.0 * C6
+    C7.name = 'C7'
+    print( C6, '\n' )
+    print( C7, '\n' )
+
+    C8 = 5 * C3
+    C8.name = 'C8'
+    print( C3, '\n' )
+    print( C8, '\n' )

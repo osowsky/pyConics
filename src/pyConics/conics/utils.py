@@ -6,7 +6,8 @@ from __future__ import annotations
 # #------------------------------------------------------------------
 # # Everything that can be visible to the world.
  
-__all__ = [ 'create_conic_from_lines', 'create_conic', 'rank' ]
+__all__ = [ 'create_conic_from_lines', 'create_conic',
+            'get_lines_from_degenerate_conic' ]
 
 # #------------------------------------------------------------------
 # # Import from...
@@ -71,27 +72,11 @@ def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarr
     # Build the matrix representation of a conic.
     return ctol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
-def rank( M: np.ndarray ) -> int:
-    # Determinant of M must be less that its dim.
-    nrows, ncols = M.shape
-    if ( nrows != ncols ):
-        return 0
+def get_lines_from_degenerate_conic( M: np.ndarray ) -> tuple[ CLine, CLine ]:
+    l1 = CLine( ( 1, -1, 0 ) )
+    l2 = CLine( ( 1, 1, 0 ) )
 
-    n = LA.norm( M )
-    if ( ctol.iszero( float( n ) ) ):
-        return 0
-
-    if ( not ctol.iszero( LA.det( M ) ) ):
-        return nrows
-
-    # Calc rank by using the eigenvalues.
-    eigs = LA.eigvalsh( M )
-    eigs = ctol.adjust2relzeros( eigs )
-    rk: int = 0
-    for ev in eigs:
-        if ( ev != 0.0 ):
-            rk += 1
-    return rk
+    return ( l1, l2 )
 
 #------------------------------------------------------------------
 # For development and test.
@@ -157,33 +142,4 @@ if __name__ == '__main__':
     print( f'Rank of {C6.name}: {C6.rank}.' )
     print( f'Is {C6.name} full rank? {C6.is_fullrank}' )
     print( f'Is {C6.name} degenerate? {C6.is_degenerate}.\n' )
-
-    # Testing rank function.
-    A = np.array( [ [ 0, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, 0 ] ] )
-    print(f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}')
-    A = np.array( [ [ 1, 0, 0 ], [ 2, 0, 0 ], [ 0, 0, 0 ] ] )
-    print(f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}')
-    A = np.array( [ [ 1, 0, 0 ], [ 1, 0, 0 ], [ 1, 0, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 0, 0 ], [ 2, 0, 0 ], [ 3, 0, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 0, 0, 1 ], [ 0, 0, 2 ], [ 0, 0, 3 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 0, 0 ], [ 0, 2, 0 ], [ 0, 0, 3 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 0, 0, 1 ], [ 2, 0, 0 ], [ 3, 0, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 2, 0 ], [ 2, 4, 0 ], [ 3, 6, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 2, 0 ], [ 2, 4, 0 ], [ 0, 0, 5 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 1, 2, 0 ], [ 1, 3, 0 ], [ 0, 0, 5 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 0, 0, 1 ], [ 0, 0, 2 ], [ 4, 4, 0 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    # A = np.array( [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ] )
-    # print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
-    A = np.array( [ [ 40, -17, 166 ], [ -17, -20, -125 ], [ 166, -125, 580 ] ] )
-    print( f'Rank of Matrix A: {rank( A )} --- Det of A: {LA.det( A )}' )
+   
