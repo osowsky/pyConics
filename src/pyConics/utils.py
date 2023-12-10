@@ -104,7 +104,7 @@ def cross( gf1: CPoint | CLine, gf2: CPoint | CLine ) -> Any[ CPoint | CLine ]:
             a = alpha * gf1.gform[ 0 ]
             b = alpha * gf1.gform[ 1 ]
             c = alpha * gf1.gform[ 2 ]
-            l0 = CLine( ( a, b, c ), 'l0' )
+            l0 = CLine( ( a, b, c ), shift_origin = False )
 
             # Get the skew-symmetric matrix from l0.
             ss_gf1 = skew_symmetric( l0 )
