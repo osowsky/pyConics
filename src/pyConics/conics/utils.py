@@ -30,6 +30,7 @@ from pyConics.tolerance import ctol
 from pyConics.constants import cconst
 from pyConics.point import CPoint
 from pyConics.line import CLine
+from pyConics.linearAlgebra import cofactor
 
 # #------------------------------------------------------------------
 # # Import as...
@@ -73,10 +74,56 @@ def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarr
     return ctol.adjust2relzeros( np.block( [ [ ABC, DE ], [ DE.T, F ] ] ) )
 
 def get_lines_from_degenerate_conic( M: np.ndarray ) -> tuple[ CLine, CLine ]:
-    l1 = CLine( ( 1, -1, 0 ) )
-    l2 = CLine( ( 1, 1, 0 ) )
+    l1 = CLine( ( 0.0, 0.0, 0.0 ), shift_origin = False )
+    l2 = CLine( ( 0.0, 0.0, 0.0 ), shift_origin = False )
 
+    # Matrix must not be zero.
+    if ( ctol.iszero( LA.norm( M ) ) ):
+        return ( l1, l2 )
+        
+    # Get its cofactor matrix.
+    C = cofactor( M )
+
+    # Get the point of intersection of the two lines.
+    if ( C[ 0, 0 ] != 0.0 ):
+        p = C[ 0 ] / np.sqrt( np.abs( C[ 0, 0 ] ) )
+    elif ( C[ 1, 1 ] != 0.0 ):
+        p = C[ 1 ] / np.sqrt( np.abs( C[ 1, 1 ] ) )
+    elif ( C[ 2, 2 ] != 0.0 ):
+        p = C[ 2 ] / np.sqrt( np.abs( C[ 2, 2 ] ) )
+    else:
+        p = np.array( [ 0.0, 0.0, 0.0 ] )
+
+    # Build a skew_symmetric matrix form p.
+    Mss = _skew_symmetric_from_array( p )
+
+    # Get the matrix created by the multiplication of two lines.
+    R = ( M + Mss ) / 2.0
+
+    # Find a element of R that is not zero.
+    rows, cols = np.where( R != 0.0 )
+    
+    # Get the first row to create l1 and
+    # the first col to create l2.
+    arr1 = R[ rows[ 0 ], : ]
+    arr2 = R[ :, cols[ 0 ] ]
+    arr1 = arr1 / arr2[ cols[ 0 ] ]
+    arr2 = arr2 / arr1[ rows[ 0 ] ]
+
+    # Create the lines.
+    l1 = CLine( ( arr1[ 0 ], arr1[ 1 ], arr1[ 2 ] ), shift_origin = False )
+    l2 = CLine( ( arr2[ 0 ], arr2[ 1 ], arr2[ 2 ] ), shift_origin = False )
     return ( l1, l2 )
+
+#------------------------------------------------------------------
+# Internal functions.
+#  
+def _skew_symmetric_from_array( arr: np.ndarray ) -> np.ndarray:
+    # Build a skew-symmetric matrix from an array.
+    l1 = [ 0.0, -arr[ 2 ], arr[ 1 ] ]
+    l2 = [ arr[ 2 ], 0.0, -arr[ 0 ] ]
+    l3 = [ -arr[ 1 ], arr[ 0 ], 0.0 ]
+    return np.array( [ l1, l2, l3 ] )
 
 #------------------------------------------------------------------
 # For development and test.
@@ -142,4 +189,26 @@ if __name__ == '__main__':
     print( f'Rank of {C6.name}: {C6.rank}.' )
     print( f'Is {C6.name} full rank? {C6.is_fullrank}' )
     print( f'Is {C6.name} degenerate? {C6.is_degenerate}.\n' )
-   
+
+    # Testing get_lines_from_degenerate_conic.
+    # l1 = ( 1, 0, -1 )
+    # l2 = ( 1, 0, 1 )
+    M = np.array( [ [ 2, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, -2 ] ] )
+    l1, l2 = get_lines_from_degenerate_conic( M )
+    print( l1, l2, sep = '\n' )
+    print()
+
+    # l1 = ( 1, -1, 1 )
+    # l2 = ( -1, -1, 1 )
+    M = np.array( [ [ -2, 0, 0 ], [ 0, 2, -2 ], [ 0, -2, 2 ] ] )
+    l1, l2 = get_lines_from_degenerate_conic( M )
+    print( l1, l2, sep = '\n' )
+    print()
+    
+    # l1 = ( 1, -1, 1 )
+    # l2 = ( 1, -1, 1 )
+    M = np.array( [ [ 2, -2, 2 ], [ -2, 2, -2 ], [ 2, -2, 2 ] ] )
+    l1, l2 = get_lines_from_degenerate_conic( M )
+    print( l1, l2, sep = '\n' )
+    print()
+    
