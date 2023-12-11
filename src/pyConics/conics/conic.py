@@ -35,7 +35,7 @@ from pyConics.conics.utils import create_conic_from_lines, create_conic
 from pyConics.conics.utils import get_lines_from_degenerate_conic
 from pyConics.point import CPoint
 from pyConics.line import CLine
-from pyConics.linearAlgebra import rank
+from pyConics.linearAlgebra import rank, is_symmetric
 
 #------------------------------------------------------------------
 # Import as...
@@ -214,40 +214,34 @@ class CConic( CAGObj ):
                               f'You can not create a conic from a ({nrows}x{ncols}) matrix. It must be a (3x3) matrix.')
 
         # Check tolerance.
-        Madj = ctol.adjust2relzeros( M )
+        M1 = ctol.adjust2relzeros( M )
 
         # The matrix can not be full of zeros.
-        if ( ctol.iszero( LA.norm( Madj ) ) ):
+        if ( ctol.iszero( LA.norm( M1 ) ) ):
             raise CValueError(M.__class__.__name__,
                               f'The matrix cannot be filled with zero.')
 
-        # Check to see if Madj is symmetric.
-        if ( np.allclose( Madj, Madj.T ) == False ):
+        # Check to see if the matrix is symmetric.
+        if ( is_symmetric( M1 ) == False ):
             raise CValueError(M.__class__.__name__,
                               f'The matrix must be a symmetric matrix.')
 
         # It is all ok.
         # Get its rank.
-        rk = rank( Madj )
+        rk = rank( M1 )
 
         # Is it full rank?
         if ( rk == nrows ):
             C = cls()
-            C._gform = Madj.copy()
-            C._from_origin = Madj.copy()
+            C._gform = M1.copy()
+            C._from_origin = M1.copy()
             return C
         
         # It is a degenerate conic.
-        # l1, l2 = get_lines_from_deg_matrix( Madj )
+        l1, l2 = get_lines_from_degenerate_conic( M1 )
 
-
-
-
-
-
-
-
-        C = CConic()
+        # Create a degenerate conic and return it.
+        C = cls( degenerate = ( l1, l2 ) )
         return C
     
     def update_origin( self ) -> None:
@@ -492,15 +486,36 @@ if __name__ == '__main__':
     print( A, '\n' )
     print( B, '\n' )
 
+    l1 = CLine( ( 1, 0, -1 ) )
+    l2 = CLine( ( 2, 0, 2 ) )
+    A = CConic( degenerate = ( l1, l2 ), name = 'A' )
+    B = CConic.create_from_array( A.gform )
+    B.name = 'B'
+    print( A, '\n' )
+    print( B, '\n' )
+
+    l1 = CLine( ( 1, -1, 1 ) )
+    l2 = CLine( ( -3, -3, 3 ) )
+    A = CConic( degenerate = ( l1, l2 ), name = 'A' )
+    B = CConic.create_from_array( A.gform )
+    B.name = 'B'
+    print( A, '\n' )
+    print( B, '\n' )
+
+    l1 = CLine( ( 1, -1, 1 ) )
+    A = CConic( degenerate = ( l1, l1 ), name = 'A' )
+    B = CConic.create_from_array( A.gform )
+    B.name = 'B'
+    print( A, '\n' )
+    print( B, '\n' )
 
 
+    # C7 = 5.0 * C6
+    # C7.name = 'C7'
+    # print( C6, '\n' )
+    # print( C7, '\n' )
 
-    C7 = 5.0 * C6
-    C7.name = 'C7'
-    print( C6, '\n' )
-    print( C7, '\n' )
-
-    C8 = 5 * C3
-    C8.name = 'C8'
-    print( C3, '\n' )
-    print( C8, '\n' )
+    # C8 = 5 * C3
+    # C8.name = 'C8'
+    # print( C3, '\n' )
+    # print( C8, '\n' )
