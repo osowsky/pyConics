@@ -153,6 +153,13 @@ class CConic( CAGObj ):
         # The point lies in the line.
         return other in l
 
+    def __add__( self, other: CConic ) -> CConic:
+        if ( not isinstance( other, CConic ) ):
+            raise CTypeError( other.__class__.__name__ )
+        
+        M = self._gform + other._gform
+        return CConic.create_from_array( M )
+
     def __mul__( self, other: CPoint | CLine ) -> Any[ CPoint | CLine ]:
         # from pyConics import CPoint, CLine
         if ( not isinstance( other, ( CPoint, CLine ) ) ):
@@ -177,11 +184,18 @@ class CConic( CAGObj ):
             raise CTypeError( other.__class__.__name__ )
         
         C = self.copy()
-        if ( self.is_degenerate ):
-            ...
+        if ( self._lines4deg is not None ):
+            l1 = self._lines4deg[ 0 ].copy()
+            l1._gform = other * l1._gform
+            l1._from_origin = l1._gform.copy()
+            l2 = self._lines4deg[ 1 ].copy()
+
+            C._lines4deg = ( l1, l2 )
+            C._gform = create_conic_from_lines( C._lines4deg )
+            C._from_origin = self._gform.copy()
         else:
-            ...
-        print( f'passou aqui! {other}\n' )
+            C._gform = other * self._gform
+            C._from_origin = C._gform.copy()
         return C
 
     @property
@@ -509,13 +523,24 @@ if __name__ == '__main__':
     print( A, '\n' )
     print( B, '\n' )
 
+    C7 = CConic( name = 'C7 ')
+    C8 = 5.0 * C7
+    C8.name = 'C8'
+    print( C7, '\n' )
+    print( '5.0 * C7 =', C8, '\n' )
 
-    # C7 = 5.0 * C6
-    # C7.name = 'C7'
-    # print( C6, '\n' )
-    # print( C7, '\n' )
+    l1 = CLine( ( 1, -1, 1 ) )
+    l2 = CLine( ( -1, -1, 1 ) )
+    C9 = CConic( degenerate = ( l1, l2 ), name = 'C9' )
+    C10 = 3.0 * C9
+    C10.name = 'C10'
+    print( C9, '\n' )
+    print( '3.0 * C9 =', C10, '\n' )
+    
+    C11 = C7 + C9
+    C11.name = 'C11'
+    print( 'C7 + C9 =', C11, '\n' )
 
-    # C8 = 5 * C3
-    # C8.name = 'C8'
-    # print( C3, '\n' )
-    # print( C8, '\n' )
+    C12 = 5.0 * C7 + 3.0 * C9
+    C12.name = 'C12'
+    print('5.0 * C7 + 3.0 * C9 =', C12, '\n')
