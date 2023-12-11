@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     ... # Do nothing here, because there are no pyConics modules
         # here to be imported.
 
+from pyConics.errors import CTypeError
+
 #------------------------------------------------------------------
 # Import as...
 #  
@@ -38,10 +40,22 @@ class CTolerance:
     eps_iszero_fordotfn: float = 1.0e-3   # It is used in iszero_fordotfn function.
     eps_relzero: float = 1e-5             # It is used in adjust2relzeros function.
 
-    def iszero( self, num: float ) -> bool:
-        if ( abs( num ) <= self.eps_iszero ):
-            return True
-        return False
+    def iszero( self, num: int | float | np.ndarray ) -> bool:
+        if ( not isinstance( num, ( int, float, np.ndarray ) ) ):
+            raise CTypeError( num.__class__.__name__ )
+
+        if ( isinstance( num, ( int, float ) ) ):
+            if ( abs( num ) <= self.eps_iszero ):
+                return True
+            else:
+                return False
+            
+        if ( isinstance( num, np.ndarray ) ):
+            if ( LA.norm( num ) <= self.eps_iszero ):
+                return True
+            else:
+                return False
+        
 
     def iszero_fordotfn( self, num: float ) -> bool:
         if ( abs( num ) <= self.eps_iszero_fordotfn ):
