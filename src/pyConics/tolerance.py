@@ -55,7 +55,6 @@ class CTolerance:
                 return True
             else:
                 return False
-        
 
     def iszero_fordotfn( self, num: float ) -> bool:
         if ( abs( num ) <= self.eps_iszero_fordotfn ):
