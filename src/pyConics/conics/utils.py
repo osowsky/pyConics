@@ -55,12 +55,13 @@ def create_conic( a: float, c: float, center: CPoint, angle: float ) -> np.ndarr
     # Build a quadratic form for the conic with centered on ( 0, 0 )
     # and without rotation.
     if ( a >= c ): # it is an ellipse.
-        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / b2 ] ] )
+        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / b2 ] ], dtype = np.double )
     else:
-        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / -b2 ] ] )
+        C = np.array( [ [ 1.0 / a2, 0.0 ], [ 0.0, 1.0 / -b2 ] ], dtype = np.double )
 
     # Build the rotating matrix.
-    R = np.array( [ [ np.cos( angle ), np.sin( angle ) ], [ -np.sin( angle ), np.cos( angle ) ] ] )
+    R = np.array( [ [ np.cos( angle ), np.sin( angle ) ], [ -np.sin( angle ), np.cos( angle ) ] ],
+                 dtype = np.double )
 
     # Get the center vector.
     xy_o = center.gform[ 0 : 2 ][np.newaxis].T
@@ -78,7 +79,7 @@ def get_lines_from_degenerate_conic( M: np.ndarray ) -> tuple[ CLine, CLine ]:
     l2 = CLine( ( 0.0, 0.0, 0.0 ), shift_origin = False )
 
     # Matrix must not be zero.
-    if ( ctol.iszero( LA.norm( M ) ) ):
+    if ( ctol.iszero( float( LA.norm( M ) ) ) ):
         return ( l1, l2 )
         
     # Get its cofactor matrix.
@@ -123,7 +124,7 @@ def _skew_symmetric_from_array( arr: np.ndarray ) -> np.ndarray:
     l1 = [ 0.0, -arr[ 2 ], arr[ 1 ] ]
     l2 = [ arr[ 2 ], 0.0, -arr[ 0 ] ]
     l3 = [ -arr[ 1 ], arr[ 0 ], 0.0 ]
-    return np.array( [ l1, l2, l3 ] )
+    return np.array( [ l1, l2, l3 ], dtype = np.double )
 
 #------------------------------------------------------------------
 # For development and test.
@@ -193,21 +194,21 @@ if __name__ == '__main__':
     # Testing get_lines_from_degenerate_conic.
     # l1 = ( 1, 0, -1 )
     # l2 = ( 1, 0, 1 )
-    M = np.array( [ [ 2, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, -2 ] ] )
+    M = np.array( [ [ 2, 0, 0 ], [ 0, 0, 0 ], [ 0, 0, -2 ] ], dtype = np.double )
     l1, l2 = get_lines_from_degenerate_conic( M )
     print( l1, l2, sep = '\n' )
     print()
 
     # l1 = ( 1, -1, 1 )
     # l2 = ( -1, -1, 1 )
-    M = np.array( [ [ -2, 0, 0 ], [ 0, 2, -2 ], [ 0, -2, 2 ] ] )
+    M = np.array( [ [ -2, 0, 0 ], [ 0, 2, -2 ], [ 0, -2, 2 ] ], dtype = np.double )
     l1, l2 = get_lines_from_degenerate_conic( M )
     print( l1, l2, sep = '\n' )
     print()
     
     # l1 = ( 1, -1, 1 )
     # l2 = ( 1, -1, 1 )
-    M = np.array( [ [ 2, -2, 2 ], [ -2, 2, -2 ], [ 2, -2, 2 ] ] )
+    M = np.array( [ [ 2, -2, 2 ], [ -2, 2, -2 ], [ 2, -2, 2 ] ], dtype = np.double )
     l1, l2 = get_lines_from_degenerate_conic( M )
     print( l1, l2, sep = '\n' )
     print()

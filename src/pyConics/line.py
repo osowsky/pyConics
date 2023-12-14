@@ -194,7 +194,7 @@ class CLine( CAGObj ):
 #  
 def _validate_line( line: tuple[ float, float, float ] ) -> np.ndarray:
     if ( len( line ) == 3 ):
-        return np.array( line )
+        return np.array( line, dtype = np.double )
     else:
         raise CLineTypeError( CLine.__name__, CLine.gform.fget.__name__ )
 

@@ -89,7 +89,7 @@ def cofactor( M: np.ndarray ) -> np.ndarray:
                           f'The matrix must be symmetric.' )
     n = nrows
 
-    C = np.ndarray( shape = M.shape )
+    C = np.ndarray( shape = M.shape, dtype = np.double )
     for i in range( n ):
         for j in range( n ):
             C[ i ][ j ] = ( ( -1.0 ) ** ( i + j ) ) * minor( M, i, j )

@@ -51,7 +51,7 @@ class CTolerance:
                 return False
             
         if ( isinstance( num, np.ndarray ) ):
-            if ( LA.norm( num ) <= self.eps_iszero ):
+            if ( float( LA.norm( num ) ) <= self.eps_iszero ):
                 return True
             else:
                 return False
@@ -64,16 +64,17 @@ class CTolerance:
     def adjust2relzeros( self, x: np.ndarray ) -> np.ndarray:
         if ( x.size <= 1 ):
             return x
-        
-        n = LA.norm( x )
+        y = np.array( x, dtype = np.double )
+
+        n = LA.norm( y )
         if ( self.iszero( float( n ) ) ):
-            return np.zeros( shape = x.shape )
+            return np.zeros( shape = y.shape, dtype = np.double )
 
         # Get the rank of the largest number in x.
-        rk: float = _larger_rank( x )
+        rk: float = _larger_rank( y )
 
         # Return 'x' that was adjusted to relative zeros.
-        return np.where( np.abs( x ) > rk * self.eps_relzero, x, 0.0 )
+        return np.where( np.abs( y ) > rk * self.eps_relzero, y, 0.0 )
 
 #------------------------------------------------------------------
 # Internal functions.

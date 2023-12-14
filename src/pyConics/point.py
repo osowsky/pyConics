@@ -121,9 +121,9 @@ class CPoint( CAGObj ):
 #  
 def _validate_point( coord: tuple[ float, float ] | tuple[ float, float, float ] ) -> np.ndarray:
     if ( len( coord ) == 2 ):
-        return np.array( coord + ( 1.0, ) )
+        return np.array( coord + ( 1.0, ), dtype = np.double )
     elif ( len( coord ) == 3 ):
-        return np.array( coord )
+        return np.array( coord, dtype = np.double )
     else:
         raise CPointTypeError( CPoint.__name__, CPoint.gform.fget.__name__ )
 
