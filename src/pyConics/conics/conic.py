@@ -153,6 +153,41 @@ class CConic( CAGObj ):
         # The point lies in the line.
         return other in l
 
+    def __eq__( self, other: CConic ) -> bool:
+        if ( not isinstance( other, CConic ) ):
+            raise CTypeError( other.__class__.__name__ )
+
+        # Copy the matrices in the input arguments.
+        A = self._gform.copy()
+        B = other._gform.copy()
+
+        # Get the elements that are different of zero.
+        rows, cols = np.where( A != 0.0 )
+    
+        # At least one element of self must be different of zero.
+        if ( ( rows.size == 0 ) or ( cols.size == 0 ) ):
+            return False
+    
+        # Get the constant that multiplies A.
+        i = rows[ 0 ]
+        j = cols[ 0 ]
+        alf = B[ i, j ] / A[ i, j ]
+
+        # alp can not be zero.
+        if ( alf == 0.0 ):
+            return False
+    
+        # Scaling B.
+        B = B / alf
+
+        # Test all elements.    
+        n, *_ = A.shape
+        for i in range( n ):
+            for j in range( n ):
+                if ( not ctol.iszero( A[ i, j ] - B[ i, j ] ) ):
+                    return False
+        return True
+    
     def __add__( self, other: CConic ) -> CConic:
         if ( not isinstance( other, CConic ) ):
             raise CTypeError( other.__class__.__name__ )
@@ -231,7 +266,7 @@ class CConic( CAGObj ):
         M1 = ctol.adjust2relzeros( M )
 
         # The matrix can not be full of zeros.
-        if ( ctol.iszero( LA.norm( M1 ) ) ):
+        if ( ctol.iszero( float( LA.norm( M1 ) ) ) ):
             raise CValueError(M.__class__.__name__,
                               f'The matrix cannot be filled with zero.')
 
@@ -523,6 +558,7 @@ if __name__ == '__main__':
     print( A, '\n' )
     print( B, '\n' )
 
+    # Testing multiplication operator.
     C7 = CConic( name = 'C7 ')
     C8 = 5.0 * C7
     C8.name = 'C8'
@@ -537,10 +573,19 @@ if __name__ == '__main__':
     print( C9, '\n' )
     print( '3.0 * C9 =', C10, '\n' )
     
+    # Testing addition operator.
     C11 = C7 + C9
     C11.name = 'C11'
     print( 'C7 + C9 =', C11, '\n' )
 
+    # Testing linear combintion.
     C12 = 5.0 * C7 + 3.0 * C9
     C12.name = 'C12'
     print('5.0 * C7 + 3.0 * C9 =', C12, '\n')
+
+    # Testing equality.
+    print( f'Is {C9.name} equals to {C10.name}? {C9 == C10}' )
+    print( f'Is {C7.name} equals to {C8.name}? {C7 == C8}' )
+    print( f'Is {C9.name} equals to {C8.name}? {C9 == C8}' )
+    print( f'Is {C11.name} equals to {C12.name}? {C11 == C12}', '\n' )
+    
