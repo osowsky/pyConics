@@ -4,6 +4,8 @@
 
 ## v1.2.0 (17/12/2023)
 
+- The `README.md` file has been updated to show examples of how to work
+with new features about conics.
 - The logical equality operator (`__eq__` dunder) has been implemented
 in `CConic` class. 
 - The operators to perform linear combination of conics (*Pencil of Conics*)
@@ -11,9 +13,9 @@ have been created. This linear combination is of the form
 $\lambda C_{1} + \mu C_{2}$, where $\lambda, \mu \in \mathcal{R}$, and
 $C_{1}$ and $C_{2}$ are symmetric matrices that represent two conics.
 $C_{1}$ and $C_{2}$ are objects of the type `CConic`.
-- `Conic.intersect()` method has been created. This method retuns a
+- `Conic.intersect()` method has been created. This method returns a
 set of points that represents the intersection points between a conic
-and a line which is passed as argument to this method.
+and a line or between two conics.
 - A class method called `create_from_array()` in `CConic` has been
 created. This method will allow you to create a conic, `CConic`, from a
 real symmetric matrix of dimension $3 \times 3$ defined by a `numpy` array.
@@ -25,7 +27,7 @@ real symmetric matrix of dimension $3 \times 3$ defined by a `numpy` array.
 - The global variable `origin` has been renamed to `corigin`.
 - The global variable `tol` has been renamed to `ctol`.
 - The global variable `const` has been renamed to `cconst`.
-- The file `README.md` has been updated to show examples of how to
+- The `README.md` file has been updated to show examples of how to
 work with conics.
 - `plot()` method in `CAxes` class can now show conics on screen.  
 - `CConic` class has been incorporated into `pyConics`.
