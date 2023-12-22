@@ -88,6 +88,7 @@ $ sudo apt-get install x11-xserver-utils
 $ sudo apt-get install python3-tk python3-dev
 $ xhost +
 $ touch ~/.Xauthority
+$ xauth add ${HOST}:0 . $(xxd -l 16 -p /dev/urandom)
 $ pip install pyConics
 ```
 
