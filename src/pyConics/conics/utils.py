@@ -3,16 +3,17 @@
 # to a member function
 from __future__ import annotations
 
-# #------------------------------------------------------------------
-# # Everything that can be visible to the world.
+#------------------------------------------------------------------
+# Everything that can be visible to the world.
  
 __all__ = [ 'create_conic_from_lines', 'create_conic',
-            'get_lines_from_degenerate_conic' ]
+            'get_lines_from_degenerate_conic',
+            'get_skew_symmetric_matrix' ]
 
-# #------------------------------------------------------------------
-# # Import from...
-# #
-# from typing import Any
+#------------------------------------------------------------------
+# Import from...
+#
+from typing import Any
 from numpy import linalg as LA
 
 # #------------------------------------------------------------------
@@ -22,8 +23,8 @@ from numpy import linalg as LA
 # #
 # from typing import TYPE_CHECKING
 # if TYPE_CHECKING:
-#     ... # Do nothing here, because there are no pyConics modules
-#         # here to be imported.
+#     # Do nothing here, because there are no pyConics modules
+#     # here to be imported.
         
 # from pyConics.errors import CTypeError
 from pyConics.tolerance import ctol
@@ -32,9 +33,9 @@ from pyConics.point import CPoint
 from pyConics.line import CLine
 from pyConics.linearAlgebra import cofactor
 
-# #------------------------------------------------------------------
-# # Import as...
-# #
+#------------------------------------------------------------------
+# Import as...
+#
 import numpy as np
 
 def create_conic_from_lines( lines: tuple[ CLine, CLine ] ) -> np.ndarray:
@@ -115,6 +116,9 @@ def get_lines_from_degenerate_conic( M: np.ndarray ) -> tuple[ CLine, CLine ]:
     l1 = CLine( ( arr1[ 0 ], arr1[ 1 ], arr1[ 2 ] ), shift_origin = False )
     l2 = CLine( ( arr2[ 0 ], arr2[ 1 ], arr2[ 2 ] ), shift_origin = False )
     return ( l1, l2 )
+
+def get_skew_symmetric_matrix( gf: CPoint | CLine ) -> np.ndarray:
+    return _skew_symmetric_from_array( gf._gform )
 
 #------------------------------------------------------------------
 # Internal functions.
