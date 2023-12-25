@@ -76,6 +76,11 @@ class CTolerance:
         # Return 'x' that was adjusted to relative zeros.
         return np.where( np.abs( y ) > rk * self.eps_relzero, y, 0.0 )
 
+    def is_real( self, n: complex ) -> bool:
+        N = np.array( [ n.real, n.imag ], dtype = np.double )
+        R = self.adjust2relzeros( N )
+        return True if ( R[ 1 ] == 0.0 ) else False
+
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -130,4 +135,23 @@ if __name__ == '__main__':
     print( _larger_rank( y ) )
     y = ctol.adjust2relzeros( y )
     print( y )
+    
+    # Test real numbers in complex class.
+    x1 = 2.0 + 1e-6 * 1j
+    print( f'Is {x1} real? {ctol.is_real( x1 )}' )
+    x2 = 2.0 - 0.5 * 1j
+    print( f'Is {x2} real? {ctol.is_real( x2 )}' )
+    x3 = 0.0 + 5 * 1j
+    print(f'Is {x3} real? {ctol.is_real( x3 )}')
+    x4 = 0.0 + 0.0 * 1j
+    print( f'Is {x4} real? {ctol.is_real( x4 )}' )
+    x5 = 1e6 + 1.5 * 1j
+    print( f'Is {x5} real? {ctol.is_real( x5 )}' )
+
+    a = 1
+    b = 2 + 2 * 1j
+    z = complex( a )
+    print( z )
+    z = complex( b )
+    print( z )
     
