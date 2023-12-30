@@ -6,7 +6,8 @@ from __future__ import annotations
 #------------------------------------------------------------------
 # Everything that can be visible to the world.
 #  
-__all__ = [ 'cofactor', 'minor', 'rank', 'is_symmetric' ]
+__all__ = [ 'cofactor', 'minor', 'rank', 'is_symmetric',
+            'real_eigenvecs', 'real_eigenvals' ]
 
 #------------------------------------------------------------------
 # Import from...
@@ -95,6 +96,45 @@ def cofactor( M: np.ndarray ) -> np.ndarray:
             C[ i ][ j ] = ( ( -1.0 ) ** ( i + j ) ) * minor( M, i, j )
     return ctol.adjust2relzeros( C )
 
+def real_eigenvals( M: np.ndarray ) -> tuple[ float, ...]:
+    eigenvalues, *_ = LA.eig( M )
+    
+    # Are the eigenvalues zero?
+    eigs = np.zeros( shape = ( eigenvalues.size ), dtype = np.double )
+    for i, e in enumerate( eigenvalues ):
+        if ( ctol.iszero( float( LA.norm( e ) ) ) ):
+            continue
+
+        z = complex( e )
+        if ( ctol.is_real( z ) ):
+            eigs[ i ] = z.real
+    return tuple( eigs )
+
+def real_eigenvecs( M: np.ndarray ) -> tuple[ tuple[ float, ...], ...]:
+    eigenvalues = real_eigenvals( M )
+    *_, eigenvectors = LA.eig( M )
+
+    # Check only the real eigenvalues.
+    evec = []
+    for i, e in enumerate( eigenvalues ):
+        eigs = np.zeros( shape = ( len( eigenvalues ) ), dtype = np.double )
+        if ( e == 0.0 ):
+            evec.append( tuple( eigs ) )
+            continue
+        
+        # v must be assessed.
+        v = eigenvectors[ :, i ]
+        for j in range( v.size ):
+            z = complex( v[ j ] )
+            if ( ctol.is_real( z ) == False ):
+                eigs = np.zeros( shape = ( len( eigenvalues ) ), dtype = np.double )
+                break
+            else:
+                eigs[ j ] = z.real
+        evec.append( tuple( eigs ) )
+
+    return tuple( evec )
+
 #------------------------------------------------------------------
 # For development and test.
 #  
@@ -137,8 +177,28 @@ if __name__ == '__main__':
             print( f'Minor of ( { i }, { j } ) is {minor( A, i, j ):.2f}' )
     print()
 
-    # Resting cofactor matrix.
+    # Testing cofactor matrix.
     C = cofactor( A )
     print( C, '\n' )
     
+    # Testing real eigenvalues and real eigenvectors.
+    A = np.array( [ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ] )
+    eigs = real_eigenvals( A )
+    print( f'Real eigenvalues: {eigs} --- Rank: {LA.matrix_rank( A )}' )
+    eigs = real_eigenvecs(A)
+    print('Real eigenvectors:', *eigs, sep='\n')
+    print()
 
+    A = np.array( [ [ 1, 0, 0 ], [ 0, 1, 0 ], [ 0, 0, 0 ] ] )
+    eigs = real_eigenvals( A )
+    print( f'Real eigenvalues: {eigs} --- Rank: {LA.matrix_rank( A )}' )
+    eigs = real_eigenvecs(A)
+    print('Real eigenvectors:', *eigs, sep='\n')
+    print()
+
+    A = np.array( [ [ 1, 1, 0 ], [ 0, 1, 1 ], [ 1, 0, 1 ] ] )
+    eigs = real_eigenvals( A )
+    print(f'Real eigenvalues: {eigs} --- Rank: {LA.matrix_rank( A )}', )
+    eigs = real_eigenvecs( A )
+    print( 'Real eigenvectors:', *eigs, sep='\n' )
+    print()
