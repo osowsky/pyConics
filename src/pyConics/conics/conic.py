@@ -33,9 +33,11 @@ from pyConics.origin import corigin
 from pyConics.tolerance import ctol
 from pyConics.conics.utils import create_conic_from_lines, create_conic
 from pyConics.conics.utils import get_lines_from_degenerate_conic
+from pyConics.conics.utils import get_skew_symmetric_matrix
 from pyConics.point import CPoint
 from pyConics.line import CLine
 from pyConics.linearAlgebra import rank, is_symmetric
+from pyConics.linearAlgebra import real_eigenvecs, real_eigenvals
 
 #------------------------------------------------------------------
 # Import as...
@@ -397,6 +399,53 @@ class CConic( CAGObj ):
             return cconst.pi / np.sqrt( -A )
         return cconst.inf
     
+    def intersect( self, lc: CLine | CConic ) -> tuple[ CPoint, ... ]:
+        if ( not isinstance( lc, ( CLine | CConic ) ) ):
+            raise CTypeError( lc.__class__.__name__ )
+        
+        iPts = []
+
+        # Intersection between conic and line.
+        if ( isinstance( lc, CLine ) ):
+            if ( self._lines4deg is not None ):
+                # treating degenerate conics.
+                p: CPoint = self._lines4deg[ 0 ] * lc
+                iPts.append( p )
+                if ( self.rank > 1 ):
+                    p: CPoint = self._lines4deg[ 1 ] * lc
+                    q: CPoint = self._lines4deg[ 0 ] * self._lines4deg[ 1 ]
+                    if ( p != q ):
+                        iPts.append( p )
+            else:
+                # treating non-degenerate conics.
+                # Is p in C?
+                p = self.pole( lc )
+                if ( p in self ):
+                    iPts.append( p )
+                    return tuple( iPts, )
+                
+                # No.
+                M1 = LA.inv( self._gform )
+                M2 = get_skew_symmetric_matrix( p )
+                A = M1 @ M2
+
+                # Get the real eigenvalues and its real eigenvectors of A.
+                e_vals = real_eigenvals( A )
+                e_vecs = real_eigenvecs( A )
+
+                # for each non-zero eigenvalue get its eigenvector.
+                for i, e_val in enumerate( e_vals ):
+                    if ( e_val == 0.0 ):
+                        continue
+
+                    # This is a point of intersection.
+                    e_vec = e_vecs[ i ]
+                    p = CPoint( ( e_vec[ 0 ], e_vec[ 1 ], e_vec[ 2 ] ),
+                                shift_origin = False )
+                    iPts.append( p )
+
+        return tuple( iPts, )
+    
 #------------------------------------------------------------------
 # Internal functions.
 #  
@@ -588,4 +637,120 @@ if __name__ == '__main__':
     print( f'Is {C7.name} equals to {C8.name}? {C7 == C8}' )
     print( f'Is {C9.name} equals to {C8.name}? {C9 == C8}' )
     print( f'Is {C11.name} equals to {C12.name}? {C11 == C12}', '\n' )
+    
+    # Testing intersection between conic and line (degenerate).
+    C2 = CConic( degenerate = ( CLine( ( 1.0, -1.0, 0.0 ) ), CLine( ( 1.0, -1.0, 0.0 ) ) ),
+                 name = 'C2' )
+    print( C2 )
+    l2 = CLine( ( 1, 1, 0 ), 'l2' )
+    print( l2 )
+    lp = C2.intersect( l2 )
+    for p in lp:
+        print( f'line {l2.name} intersepts conic {C2.name} at the point {p}' )
+    l3 = CLine( ( 2, -2, 2 ), 'l3' )
+    print( l3 )
+    lp = C2.intersect( l3 )
+    for p in lp:
+        print( f'line {l3.name} intersepts conic {C2.name} at the point {p}' )
+    print( '' )
+
+    C3 = CConic( degenerate = ( CLine( ( 1.0, -1.0, 0.0 ) ), CLine( ( 1.0, 1.0, 0.0 ) ) ),
+                 name = 'C3' )
+    print( C3 )
+    l4 = CLine( ( 2, 0, 0 ), 'l4' )
+    print( l4 )
+    lp = C3.intersect( l4 )
+    for p in lp:
+        print( f'line {l4.name} intersepts conic {C3.name} at the point {p}' )
+    l5 = CLine( ( 1, 0, -5 ), 'l5' )
+    print( l5 )
+    lp = C3.intersect( l5 )
+    for p in lp:
+        print( f'line {l5.name} intersepts conic {C3.name} at the point {p}' )
+    print( '' )
+
+    C4 = CConic( degenerate = ( CLine( ( 1.0, 0.0, -1.0 ) ), CLine( ( 1.0, 0.0, -3.0 ) ) ),
+                 name = 'C4' )
+    print( C4 )
+    l6 = CLine( ( 2, 0, 0 ), 'l6' )
+    print( l6 )
+    lp = C4.intersect( l6 )
+    for p in lp:
+        print( f'line {l6.name} intersepts conic {C4.name} at the point {p}' )
+    l7 = CLine( ( 1, 0, -2 ), 'l7' )
+    print( l7 )
+    lp = C4.intersect( l7 )
+    for p in lp:
+        print( f'line {l7.name} intersepts conic {C4.name} at the point {p}' )
+    print( '' )
+
+    # Testing intersection between conic and line (nondegenerate)
+    C1 = CConic( name = 'C1' )
+    print( C1 )
+
+    l0 = CLine( ( 1, 1, -3 ), name = 'l0' ) # l0 is outside C1.
+    print( l0 )
+    lst_pi = C1.intersect( l0 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l0.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l0.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
+
+    l1 = CLine( ( 1, 0, -2 ), name = 'l1' ) # l1 is outside C1.
+    print( l1 )
+    lst_pi = C1.intersect( l1 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l1.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l1.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
+
+    l2 = CLine( ( 1, 0, -1 ), name = 'l2' ) # l2 is in C1.
+    print( l2 )
+    lst_pi = C1.intersect( l2 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l2.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l2.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
+
+    l3 = CLine( ( 1, 1, -np.sqrt( 2 ) ), name = 'l3' ) # l3: y = -x + sqrt( 2 ).
+    print( l3 )
+    lst_pi = C1.intersect( l3 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l3.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l3.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
+
+    l4 = CLine( ( 1, 1, -1 ), name = 'l4' ) # l4: y = -x + 1.
+    print( l4 )
+    lst_pi = C1.intersect( l4 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l4.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l4.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
+
+    l5 = CLine( ( 0, 1, 0 ), name = 'l5' ) # l5: y = 0 for all x.
+    print( l5 )
+    lst_pi = C1.intersect( l5 )
+    if ( len( lst_pi ) == 0 ):
+        print( f'No points of intersection between {C1.name} and {l5.name}.' )
+    else:
+        print( f'Points of intersection between {C1.name} and {l5.name}:' )
+        for pi in lst_pi:
+            print( f'\t', pi )
+    print()
     
